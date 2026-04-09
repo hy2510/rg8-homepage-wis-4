@@ -1,0 +1,90 @@
+.rg_news_post {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+  background-color: var(--white);
+  padding: var(--space-m);
+  border-radius: var(--round-l);
+  position: sticky;
+  top: 60px;
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  @media (prefers-color-scheme: no-preference) {
+    background-color: #0c0541;
+    border: 1.5px solid rgba($color: #ffffff, $alpha: 0.15);
+  }
+  .row_1 {
+    display: grid;
+    grid-template-columns: 1fr 150px;
+    padding: var(--space-xs);
+    .txt_1 {
+      font-size: var(--text-l);
+      font-weight: 500;
+    }
+    .txt_2 {
+      font-size: var(--text-m);
+      color: var(--gray1);
+      font-weight: 500;
+      text-align: end;
+    }
+  }
+  .editor_fn {
+    display: flex;
+    flex-direction: row-reverse;
+    .btn_modify {
+      cursor: pointer;
+      border: 1px solid var(--gray1);
+      border-radius: 8px;
+      color: var(--gray-dark);
+      font-size: var(--text-m);
+      font-weight: 500;
+      padding: 0.6rem 1rem;
+      margin: 0 0.3rem;
+    }
+    .btn_delete {
+      cursor: pointer;
+      border: 1px solid var(--red);
+      border-radius: 8px;
+      color: var(--red);
+      font-size: var(--text-m);
+      font-weight: 500;
+      padding: 0.6rem 1rem;
+      margin: 0 0.3rem;
+    }
+  }
+  .row_download_file {
+    width: fit-content;
+    border: 1px solid #ccc;
+    padding: 0.6em 1em;
+    border-radius: 0.2em;
+    box-sizing: border-box;
+    margin-left: auto;
+    .filename_container {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      .filename {
+        white-space: nowrap;
+        overflow: hidden;
+        min-width: 0;
+        flex-shrink: 1;
+        padding-right: 6px;
+        color: #aaa;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+      .btn_download {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        flex-shrink: 0;
+        white-space: nowrap;
+        .icon {
+          text-align: center;
+          width: 40px;
+          height: 40px;
+          padding: 6px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,205 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+@import url('https://fonts.googleapis.com/css2?family=Chiron+GoRound+TC:wght@200..900&display=swap');
+
+@font-face {
+  font-family: 'SDGdGulim2';
+  src: url('/src/8th/fonts/SDGdGulimTTF.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'SDRGGothicNeoRoundA';
+  src: url('/src/8th/fonts/SDRGGothicNeoRoundTTF-aRg.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'SDRGGothicNeoRoundB';
+  src: url('/src/8th/fonts/SDRGGothicNeoRoundTTF-bBd.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Quicksand';
+  src: url('/src/8th/fonts/Quicksand-VariableFont_wght.ttf') format('truetype');
+}
+
+:root {
+  --font-family-primary: 'SDGdGulim2', sans-serif;
+  /* --font-family-secondary:
+    'Noto Sans KR', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; */
+  --font-family-secondary: 'Chiron GoRound TC', sans-serif;
+  --font-family-rg-a: 'SDRGGothicNeoRoundA', 'Quicksand', sans-serif;
+  --font-family-rg-b: 'SDRGGothicNeoRoundB', 'Quicksand', sans-serif;
+
+  --font-color-primary: #3c4b62;
+  --font-color-primary-shadow: #293445;
+  --font-color-secondary: #a2b1c4;
+  --font-color-dark-blue: #0089ad;
+  --font-color-light-blue: #24bae0;
+
+  --font-size-small: 0.8em;
+  --font-size-medium: 0.9em;
+  --font-size-large: 1.1em;
+  --font-size-xlarge: 1.2em;
+  --font-size-xxlarge: 1.4em;
+
+  --color-gray-strong: #a2b1c4;
+  --color-gray-medium: #eceff3;
+  --color-gray-light: #f6f8fa;
+  --color-red-strong: #f02e3e;
+  --color-red-medium: #ff374b;
+  --color-red-medium-shadow: #ce0000;
+
+  --color-gray-opacity-70: rgb(212, 220, 230, 0.7);
+  --color-light-blue-opacity-10: rgb(76, 207, 241, 0.1);
+
+  --line-color-primary: rgb(212, 220, 230, 0.5);
+  --line-color-secondary: rgb(212, 220, 230, 0.2);
+  --line-color-gray: #dbe2ea;
+  --line-color-light-blue: #4ccff1;
+
+  /* 애니메이션 변수 */
+  --animation-glass-reflection: glassReflection 3s ease 1;
+  --animation-glass-reflection-infinite: glassReflection 3s ease infinite;
+  --animation-slide-to-center: slideToCenter 1s ease 3s forwards;
+  --animation-glass-complete:
+    glassReflection 3s ease 1, slideToCenter 1s ease 3s forwards;
+
+  color: var(--font-color-primary);
+
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #fff;
+}
+
+@media screen and (max-width: 1440px) {
+  :root {
+    font-size: 15px;
+  }
+}
+
+* {
+  font-family: var(--font-family-primary);
+
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
+  user-select: none;
+  touch-action: manipulation;
+}
+
+html,
+body {
+  min-width: 100%;
+  max-width: 100%;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 0;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+}
+
+button,
+[role='button'],
+.clickable,
+.cursor-pointer {
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+  touch-action: manipulation !important;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+
+input,
+textarea,
+[contenteditable='true'] {
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+  -webkit-tap-highlight-color: transparent;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
+/* 전역 애니메이션 키프레임 */
+@keyframes glassReflection {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  75% {
+    left: 50%;
+    opacity: 0.8;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes slideToCenter {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 5%;
+    opacity: 0.8;
+  }
+}
+/* ------------------------------------------------------------ */
+
+:root {
+  --gray1: #b3b9c2;
+  --space-xxs: 5px;
+  --text-m: 1em;
+}
+
+button {
+  cursor: pointer;
+  background-color: white;
+  border: none;
+  min-width: 30px;
+  min-height: 30px;
+  display: block;
+}
+
+input {
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: var(--space-xxs);
+  font-size: var(--text-m);
+  background-color: transparent;
+}
+
+input::placeholder {
+  color: var(--gray1);
+}

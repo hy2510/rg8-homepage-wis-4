@@ -1,0 +1,19 @@
+{
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "rules": {
+    // 비어있는 {} 객체 허용 (off, 끄기)
+    "@typescript-eslint/no-empty-object-type": "off",
+    // 객체에 any 타입 사용 (off, 끄기)
+    "@typescript-eslint/no-explicit-any": "off",
+    // 사용하지 않는 변수 선언 (warn, 경고)
+    "@typescript-eslint/no-unused-vars": "warn",
+    // 함수를 축약형 fn && fn() 으로 사용 (warn, 경고)
+    "@typescript-eslint/no-unused-expressions": "warn",
+    // <a> 태그 사용 검사 (warn, 경고)
+    "@next/next/no-html-link-for-pages": "warn",
+    // hook Deps에 참조되는 상태변수 입력 검사 (warn, 경고)
+    "react-hooks/exhaustive-deps": "warn",
+    // hook 사용 규칙에 맞게 작성 되었는지 검사 (warn, 경고)
+    "react-hooks/rules-of-hooks": "warn"
+  }
+}

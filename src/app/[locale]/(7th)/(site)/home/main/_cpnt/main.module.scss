@@ -1,0 +1,75 @@
+.home_layout {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+  padding-top: var(--space-m);
+  margin-bottom: var(--space-l);
+  @media (min-width: 600px) and (max-width: 1023px) {
+    max-width: 600px !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  &.mobile {
+    @media (min-width: 1024px) {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
+  .row_banner {
+    gap: var(--space-m);
+    @media (max-width: 1023px) {
+      display: flex;
+      flex-direction: column;
+      flex-flow: column-reverse;
+    }
+    @media (min-width: 1024px) and (max-width: 1127px) {
+      display: grid;
+      grid-template-columns: 1fr 264px;
+    }
+    @media (min-width: 1128px) {
+      display: grid;
+      grid-template-columns: 800px 1fr;
+    }
+    .slide_banner {
+      align-self: end;
+      @media (max-width: 1023px) {
+        width: 100%;
+        aspect-ratio: 1000 / 350;
+      }
+    }
+    .hi_dodo_banner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xs);
+      margin-top: var(--space-m);
+      border-radius: var(--round-l);
+      background-color: #fff0fb;
+      background-image: url('/src/images/@home/hi-dodo-banner/ball1.png'),
+        url('/src/images/@home/hi-dodo-banner/ball2.png');
+      background-position:
+        top -8px left -8px,
+        bottom -16px right -16px;
+      background-size: 60px, 90px;
+      background-repeat: no-repeat, no-repeat;
+      padding: var(--space-xs);
+      @media (max-width: 1023px) {
+        margin-top: var(--space-xs);
+        padding: var(--space-xxs);
+      }
+    }
+  }
+  .card_grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-m);
+    align-items: stretch;
+    .card_cell {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      height: 100%;
+    }
+  }
+}

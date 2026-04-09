@@ -1,0 +1,143 @@
+.nav_bar {
+  position: sticky;
+  top: calc(env(safe-area-inset-top) + 16px);
+  z-index: 10;
+  .txt_h {
+    font-size: var(--text-d-2);
+    font-weight: 600;
+    // margin: var(--space-m) 0 var(--space-xs);
+    margin-top: var(--space-m);
+    margin-bottom: var(--space-xs);
+  }
+}
+
+.pills_container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+  .pill_group {
+    display: flex;
+    gap: 15px;
+  }
+  .extra_menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.review {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+  .top {
+    display: flex;
+    align-items: end;
+    gap: var(--space-xxs);
+    .days {
+      color: var(--gray1);
+      font-weight: 500;
+    }
+  }
+  .extra_link {
+    cursor: pointer;
+    font-size: var(--text-s);
+    font-weight: 500;
+    color: var(--blue);
+    position: relative;
+    margin-left: 10px;
+    margin-right: 10px;
+    &.performance_link {
+      &::after {
+        content: '';
+        position: absolute;
+        top: calc(50% - 10px);
+        right: calc(100% + 5px);
+        width: 20px;
+        height: 20px;
+        margin-left: 30px;
+        background-image: url('/src/images/@ranking/download.svg');
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+    }
+  }
+  .days {
+    position: relative;
+    margin-top: 20px;
+    .days_data {
+      color: var(--gray1);
+      font-size: var(--text-s);
+      font-weight: 500;
+      position: absolute;
+      top: -45px;
+      left: 0;
+    }
+  }
+  .study_days_count {
+    color: var(--black);
+    font-size: var(--text-l);
+    font-weight: 500;
+    margin-bottom: var(--space-m);
+    padding-left: var(--space-xs);
+    padding-bottom: var(--space-s);
+    border-bottom: 1.5px dotted var(--gray2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .change_list_type_menu {
+      @mixin button_style {
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 20px;
+        opacity: 0.25;
+        &.active {
+          opacity: 1;
+        }
+      }
+      @media (orientation: portrait) {
+        @media (max-width: 600px) {
+          display: none;
+        }
+      }
+      @media (orientation: landscape) {
+        @media (max-height: 600px) {
+          display: none;
+        }
+      }
+      display: flex;
+      align-items: center;
+      .grid_menu_button {
+        @include button_style;
+        background-image: url('/src/images/grid-icons/grid_black.svg');
+      }
+      .list_menu_button {
+        @include button_style;
+        background-image: url('/src/images/grid-icons/list_black.svg');
+      }
+    }
+  }
+  .more {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    button {
+      background-color: rgba(218, 225, 234, 0.3);
+      padding: var(--space-xs) var(--space-m);
+      color: var(--gray1);
+      font-weight: 500;
+      font-size: var(--text-m);
+      border-radius: var(--round-full);
+      @media (prefers-color-scheme: no-preference) {
+        background-color: rgba($color: #ffffff, $alpha: 0.15);
+      }
+    }
+  }
+}

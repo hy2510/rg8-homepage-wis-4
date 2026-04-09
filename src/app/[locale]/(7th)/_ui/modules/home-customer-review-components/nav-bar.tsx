@@ -1,0 +1,35 @@
+import { useStyle } from '@/7th/_ui/context/StyleContext'
+import Link from 'next/link'
+import { ReactNode } from 'react'
+
+const STYLE_ID = 'nav_bar_home_customer_review_components'
+
+export function NavBar({ children }: { children?: ReactNode }) {
+  const style = useStyle(STYLE_ID)
+
+  return <div className={style.nav_bar}>{children}</div>
+}
+
+export function NavItem({
+  children,
+  active,
+  onClick,
+  href,
+}: {
+  children?: ReactNode
+  active?: boolean
+  onClick?: () => void
+  href?: string
+}) {
+  const style = useStyle(STYLE_ID)
+
+  return (
+    <Link href={href ? href : '/'}>
+      <div
+        className={`${style.nav_item} ${active ? style.active : null}`}
+        onClick={onClick}>
+        {children}
+      </div>
+    </Link>
+  )
+}

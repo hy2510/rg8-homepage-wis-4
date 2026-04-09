@@ -1,0 +1,65 @@
+.quick_view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-l);
+  .top {
+    display: flex;
+    align-items: end;
+    gap: var(--space-xxs);
+    .days {
+      color: var(--gray1);
+      font-weight: 500;
+    }
+  }
+  .performance_link {
+    cursor: pointer;
+    font-size: var(--text-s);
+    font-weight: 500;
+    color: var(--blue);
+    position: relative;
+    margin-left: 30px;
+    margin-right: 10px;
+    &::after {
+      content: '';
+      position: absolute;
+      top: calc(50% - 10px);
+      right: calc(100% + 5px);
+      width: 20px;
+      height: 20px;
+      background-image: url('/src/images/@ranking/download.svg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+  }
+  .days {
+    position: relative;
+    margin-top: 20px;
+    .days_data {
+      color: var(--gray1);
+      font-size: var(--text-s);
+      font-weight: 500;
+      position: absolute;
+      top: -45px;
+      left: 0;
+    }
+  }
+  .more {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    button {
+      width: 100%;
+      max-width: 300px;
+      background-color: rgba(218, 225, 234, 0.3);
+      padding: var(--space-s) var(--space-m);
+      color: var(--gray1);
+      font-weight: 500;
+      font-size: var(--text-m);
+      border-radius: var(--round-full);
+      @media (prefers-color-scheme: no-preference) {
+        background-color: rgba($color: #ffffff, $alpha: 0.15);
+      }
+    }
+  }
+}

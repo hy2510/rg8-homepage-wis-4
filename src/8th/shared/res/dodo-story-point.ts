@@ -1,0 +1,177 @@
+import { DodoFriendsPoint } from './dodo-story'
+
+// 포인트 범위 데이터 (언어 무관)
+export const dodofriendsPoint: DodoFriendsPoint[] = [
+  {
+    id: 'Baro',
+    minPoint: 0,
+    maxPoint: 100,
+    list: [
+      { startPoint: 0, endPoint: 25 },
+      { startPoint: 25, endPoint: 50 },
+      { startPoint: 50, endPoint: 75 },
+      { startPoint: 75, endPoint: 100 },
+    ],
+  },
+  {
+    id: 'Chello',
+    minPoint: 100,
+    maxPoint: 300,
+    list: [
+      { startPoint: 100, endPoint: 150 },
+      { startPoint: 150, endPoint: 200 },
+      { startPoint: 200, endPoint: 250 },
+      { startPoint: 250, endPoint: 300 },
+    ],
+  },
+  {
+    id: 'Millo',
+    minPoint: 300,
+    maxPoint: 600,
+    list: [
+      { startPoint: 300, endPoint: 375 },
+      { startPoint: 375, endPoint: 450 },
+      { startPoint: 450, endPoint: 525 },
+      { startPoint: 525, endPoint: 600 },
+    ],
+  },
+  {
+    id: 'Jack',
+    minPoint: 600,
+    maxPoint: 1000,
+    list: [
+      { startPoint: 600, endPoint: 700 },
+      { startPoint: 700, endPoint: 800 },
+      { startPoint: 800, endPoint: 900 },
+      { startPoint: 900, endPoint: 1000 },
+    ],
+  },
+  {
+    id: 'Blanc',
+    minPoint: 1000,
+    maxPoint: 1500,
+    list: [
+      { startPoint: 1000, endPoint: 1125 },
+      { startPoint: 1125, endPoint: 1250 },
+      { startPoint: 1250, endPoint: 1375 },
+      { startPoint: 1375, endPoint: 1500 },
+    ],
+  },
+  {
+    id: 'Sheila',
+    minPoint: 1500,
+    maxPoint: 2500,
+    list: [
+      { startPoint: 1500, endPoint: 1750 },
+      { startPoint: 1750, endPoint: 2000 },
+      { startPoint: 2000, endPoint: 2250 },
+      { startPoint: 2250, endPoint: 2500 },
+    ],
+  },
+  {
+    id: 'Tori',
+    minPoint: 2500,
+    maxPoint: 5000,
+    list: [
+      { startPoint: 2500, endPoint: 3000 },
+      { startPoint: 3000, endPoint: 3500 },
+      { startPoint: 3500, endPoint: 4000 },
+      { startPoint: 4000, endPoint: 4500 },
+      { startPoint: 4500, endPoint: 5000 },
+    ],
+  },
+  {
+    id: 'Roro',
+    minPoint: 5000,
+    maxPoint: 7500,
+    list: [
+      { startPoint: 5000, endPoint: 5500 },
+      { startPoint: 5500, endPoint: 6000 },
+      { startPoint: 6000, endPoint: 6500 },
+      { startPoint: 6500, endPoint: 7000 },
+      { startPoint: 7000, endPoint: 7500 },
+    ],
+  },
+  {
+    id: 'Green Thumb',
+    minPoint: 7500,
+    maxPoint: 10000,
+    list: [
+      { startPoint: 7500, endPoint: 8000 },
+      { startPoint: 8000, endPoint: 8500 },
+      { startPoint: 8500, endPoint: 9000 },
+      { startPoint: 9000, endPoint: 9500 },
+      { startPoint: 9500, endPoint: 10000 },
+    ],
+  },
+  {
+    id: 'Leoni',
+    minPoint: 10000,
+    maxPoint: 13000,
+    list: [
+      { startPoint: 10000, endPoint: 10500 },
+      { startPoint: 10500, endPoint: 11000 },
+      { startPoint: 11000, endPoint: 11500 },
+      { startPoint: 11500, endPoint: 12000 },
+      { startPoint: 12000, endPoint: 12500 },
+      { startPoint: 12500, endPoint: 13000 },
+    ],
+  },
+  {
+    id: 'Goma',
+    minPoint: 13000,
+    maxPoint: 16000,
+    list: [
+      { startPoint: 13000, endPoint: 13500 },
+      { startPoint: 13500, endPoint: 14000 },
+      { startPoint: 14000, endPoint: 14500 },
+      { startPoint: 14500, endPoint: 15000 },
+      { startPoint: 15000, endPoint: 15500 },
+      { startPoint: 15500, endPoint: 16000 },
+    ],
+  },
+  {
+    id: 'Gino',
+    minPoint: 16000,
+    maxPoint: 20000,
+    list: [
+      { startPoint: 16000, endPoint: 16667 },
+      { startPoint: 16667, endPoint: 17334 },
+      { startPoint: 17334, endPoint: 18000 },
+      { startPoint: 18000, endPoint: 18667 },
+      { startPoint: 18667, endPoint: 19334 },
+      { startPoint: 19334, endPoint: 20000 },
+    ],
+  },
+  {
+    id: 'Edmond',
+    minPoint: 20000,
+    maxPoint: 30000,
+    list: [
+      { startPoint: 20000, endPoint: 21600 },
+      { startPoint: 21600, endPoint: 23200 },
+      { startPoint: 23200, endPoint: 24800 },
+      { startPoint: 24800, endPoint: 26400 },
+      { startPoint: 26400, endPoint: 28000 },
+      { startPoint: 28000, endPoint: 30000 },
+    ],
+  },
+  {
+    id: 'Dodo1',
+    minPoint: 30000,
+    maxPoint: 40000,
+    list: [{ startPoint: 30000, endPoint: 40000 }],
+  },
+  {
+    id: 'Dodo2',
+    minPoint: 40000,
+    maxPoint: 50000,
+    list: [{ startPoint: 40000, endPoint: 50000 }],
+  },
+  {
+    id: 'Dodo3',
+    minPoint: 50000,
+    maxPoint: 50000,
+    list: [{ startPoint: 50000, endPoint: 50000 }],
+  },
+]

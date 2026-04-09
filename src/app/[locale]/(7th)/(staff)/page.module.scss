@@ -1,0 +1,35 @@
+.admin_header {
+  min-height: 78px;
+  background-color: var(--blue);
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-m);
+  }
+  .logo {
+    width: fit-content;
+  }
+  .link_group {
+    display: flex;
+    align-items: center;
+    gap: var(--space-m);
+    .link {
+      cursor: pointer;
+      color: var(--white);
+      font-weight: 600;
+      font-size: var(--text-l);
+    }
+  }
+}
+
+.admin {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+}

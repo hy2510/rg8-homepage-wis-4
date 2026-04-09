@@ -1,0 +1,123 @@
+.popup_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.popup_container {
+  position: relative;
+  background-color: var(--white);
+  border-radius: var(--round-l, 12px);
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease-out;
+  box-shadow:
+    rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px,
+    rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px,
+    rgba(0, 0, 0, 0.09) 0px -3px 5px;
+
+  @media (min-width: 600px) {
+    max-width: 500px;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.btn_close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: var(--white);
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  &:active {
+    background-color: rgba(0, 0, 0, 0.9);
+  }
+}
+
+.image_wrapper {
+  width: 100%;
+  overflow: auto;
+}
+
+.popup_image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.button_wrapper {
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid var(--gray-light, #e0e0e0);
+}
+
+.btn_dont_show {
+  padding: 10px 20px;
+  background-color: transparent;
+  color: var(--gray-dark, #666);
+  border: 1px solid var(--gray-light, #e0e0e0);
+  border-radius: var(--round-m, 8px);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--gray-light, #f5f5f5);
+    border-color: var(--gray, #ccc);
+  }
+
+  &:active {
+    background-color: var(--gray, #e0e0e0);
+  }
+}

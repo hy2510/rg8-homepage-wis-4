@@ -1,0 +1,721 @@
+// 도서 아이템
+.book_cover {
+  width: 100%;
+  min-height: 200px;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    position: relative;
+    .study_status {
+      position: absolute;
+      z-index: 1;
+      top: -10px;
+      right: -10px;
+      display: flex;
+      gap: 3px;
+      .assigned_todo,
+      .passed_1,
+      .passed_all,
+      .in_progress,
+      .home_work {
+        width: 34px;
+        height: 34px;
+      }
+    }
+    .book_image {
+      position: relative;
+      border-radius: var(--round-l);
+      border: 1px solid var(--gray3);
+      overflow: hidden;
+      .grade_badge {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        z-index: 1;
+        background-color: rgba($color: #000000, $alpha: 0.75);
+        color: var(--white);
+        font-size: var(--text-xs);
+        font-weight: 600;
+        padding: 2px var(--space-xs);
+        padding-bottom: 3px;
+        border-radius: var(--round-full);
+      }
+      .check_box {
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+      }
+      .movie_icon {
+        width: 34px;
+        height: 34px;
+        position: absolute;
+        z-index: 1;
+        bottom: 0;
+        right: 0;
+      }
+      .book_image_src {
+        cursor: pointer;
+        filter: contrast(103%);
+        border-radius: var(--round-l);
+        display: block;
+        // transform: scale(1.05);
+        // box-shadow:
+        //   rgba(0, 0, 0, 0.4) 0px 2px 4px,
+        //   rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+        //   rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+        background-image: url('/src/images/@global-header/company_logo_gray.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: auto;
+      }
+    }
+    .tag {
+      font-size: var(--text-s);
+      text-align: center;
+      color: var(--gray1);
+      &.point {
+        color: var(--blue);
+        font-weight: 600;
+        span {
+          background-color: var(--orange);
+          color: var(--white);
+          border: none;
+          padding: 3px 15px;
+        }
+      }
+      span {
+        // padding: 4px 8px;
+        // border: 1.5px dotted var(--gray2);
+        border-radius: var(--round-full);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        @media (orientation: portrait) {
+          flex-direction: column;
+        }
+      }
+      .line {
+        margin-top: 2px;
+        width: 1.5px;
+        height: 10px;
+        background-color: var(--gray2);
+        border-radius: 100px;
+        @media (orientation: portrait) {
+          display: none;
+        }
+      }
+      .point {
+        color: var(--black);
+        font-weight: 500;
+        @media (prefers-color-scheme: no-preference) {
+          color: var(--white);
+        }
+      }
+    }
+    .title_copy_box {
+      margin: auto;
+      width: fit-content;
+      &.copy_icon {
+        position: relative;
+        &::after {
+          content: '';
+          width: 8px;
+          height: 8px;
+          position: absolute;
+          top: -2px;
+          right: -8px;
+          background-image: url('/src/images/@book-cover/copy.svg');
+          background-size: 8px;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+      }
+      .book_title {
+        cursor: pointer;
+        width: 100%;
+        max-width: 140px;
+        color: var(--black);
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: var(--text-s);
+      }
+    }
+  }
+}
+
+// 도서 정보 모달
+.book_info_modal {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  height: 100%;
+  .col_a {
+    min-height: 60vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: var(--space-m);
+    background-position: center;
+    background-size: 200%;
+    background-repeat: no-repeat;
+    background-blend-mode: multiply;
+    position: relative;
+    .col_a_container {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .add_assignment {
+        display: flex;
+        justify-content: end;
+        .add_assignment_container {
+          display: flex;
+          gap: var(--space-xxs);
+          .add_favorite,
+          .add_todo {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            .add_favorite_icon,
+            .add_todo_icon {
+              cursor: pointer;
+              width: 40px;
+              height: 40px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+            .alert {
+              position: absolute;
+              top: calc(100% + 10px);
+              right: 0;
+              width: 250px;
+              z-index: 1;
+            }
+          }
+        }
+      }
+      .book {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-m);
+        margin-top: var(--space-m);
+        .book_container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: var(--space-xs);
+          .book_image {
+            border-radius: var(--round-l);
+            overflow: hidden;
+            max-width: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: end;
+            border: 2px solid #fff;
+          }
+          .movie_player {
+            width: fit-content;
+            border-radius: var(--round-l);
+            overflow: hidden;
+            background-color: #222;
+          }
+          .txt_h {
+            text-align: center;
+            color: var(--white);
+            font-size: var(--text-xl);
+            font-weight: 700;
+            line-height: normal;
+            margin-top: var(--space-m);
+          }
+          .txt_l {
+            color: var(--white);
+            font-size: var(--text-s);
+            font-weight: 500;
+            line-height: normal;
+            opacity: 0.5;
+          }
+        }
+        .download {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--white);
+          margin-bottom: var(--space-l);
+          .download_voca_container {
+            position: relative;
+            width: 100%;
+          }
+          .download_voca,
+          .download_worksheet {
+            cursor: pointer;
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: var(--space-xxs);
+          }
+          .download_worksheet {
+            &::after {
+              content: '';
+              width: 1px;
+              height: 15px;
+              background-color: rgba(255, 255, 255, 0.3);
+              position: absolute;
+              left: 0;
+              top: 3px;
+              border-radius: var(--round-full);
+            }
+          }
+        }
+      }
+      .full_easy_container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-s);
+      }
+    }
+    .light_box {
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 0;
+    }
+  }
+  .col_b {
+    padding: var(--space-m);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-m);
+    .col_b_header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .txt_h {
+        font-size: var(--text-d-2);
+        font-weight: 600;
+      }
+      .delete_button {
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-image: url('/src/images/delete-icons/x_black.svg');
+        background-size: 28px;
+        background-repeat: no-repeat;
+        background-position: center;
+        @media (prefers-color-scheme: no-preference) {
+          background-image: url('/src/images/delete-icons/x_white.svg');
+        }
+      }
+    }
+    .col_b_body {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-m);
+      height: 100%;
+      .book_info {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-m);
+        .txt_p {
+          font-size: var(--text-m);
+          color: var(--gray-dark) !important;
+          max-height: 12vh;
+          overflow-y: auto;
+          @media (prefers-color-scheme) {
+            color: var(--gray1);
+          }
+        }
+        .detaild {
+          .detaild_row_a {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-top: 1.5px solid var(--gray1);
+            @media (prefers-color-scheme: no-preference) {
+              border-top: 1.5px solid rgba($color: #ffffff, $alpha: 0.15);
+            }
+          }
+          .detaild_row_b {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+          }
+          .detaild_item {
+            font-size: var(--text-s);
+            border-bottom: 1px solid var(--gray2);
+            @media (prefers-color-scheme: no-preference) {
+              border-bottom: 1px solid rgba($color: #ffffff, $alpha: 0.15);
+            }
+            &:nth-child(odd) {
+              color: var(--gray1);
+              padding: var(--space-s) var(--space-xxs);
+            }
+            &:nth-child(even) {
+              font-weight: 500;
+              padding: var(--space-s) 0;
+            }
+            &.passed {
+              color: var(--gray1);
+            }
+          }
+        }
+      }
+      .book_resource {
+        height: 100%;
+        display: flex;
+        align-items: end;
+        .book_resource_container {
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-s);
+          width: 100%;
+          .txt_h {
+            font-size: var(--text-d-1);
+            font-weight: 600;
+          }
+          .buttons {
+            display: flex;
+            gap: var(--space-s);
+            .speak_button,
+            .movie_button {
+              cursor: pointer;
+              width: 100%;
+              height: 45px;
+              margin-bottom: 7px;
+              border-radius: var(--round-full);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-weight: 600;
+            }
+            .speak_button {
+              border: 2px dotted var(--gray2);
+              color: var(--red);
+            }
+            .movie_button {
+              border: 2px dotted var(--gray2);
+              color: var(--blue);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Voca Print Options
+.voca_print_options {
+  min-width: 360px;
+  min-height: 200px;
+  background-color: var(--white);
+  border-radius: var(--round-m);
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 20px);
+  color: var(--black);
+  padding: var(--space-m);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+  z-index: 100;
+  @media (prefers-color-scheme: no-preference) {
+    background-color: #0c0541;
+    color: var(--white);
+  }
+  &::after {
+    // content: '';
+    width: 0;
+    height: 0;
+    border-top: 10px solid #fff;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    position: absolute;
+    top: calc(100% - 1px);
+    left: 20%;
+    @media (prefers-color-scheme: no-preference) {
+      border-top: 10px solid #0c0541;
+    }
+  }
+  .btn_delete {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background-image: url('/src/images/delete-icons/x_black.svg');
+    background-size: 24px;
+    background-position: center;
+    background-repeat: no-repeat;
+    @media (prefers-color-scheme: no-preference) {
+      background-image: url('/src/images/delete-icons/x_white.svg');
+    }
+  }
+  .title {
+    font-size: var(--text-l);
+    font-weight: 600;
+  }
+  .check_item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xxs);
+  }
+}
+.voca_print_options_modal {
+  min-width: 360px;
+  min-height: 200px;
+  background-color: var(--white);
+  border-radius: var(--round-m);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--black);
+  padding: var(--space-m);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+  z-index: 100;
+  @media (prefers-color-scheme: no-preference) {
+    background-color: #0c0541;
+    color: var(--white);
+  }
+  .btn_delete {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background-image: url('/src/images/delete-icons/x_black.svg');
+    background-size: 24px;
+    background-position: center;
+    background-repeat: no-repeat;
+    @media (prefers-color-scheme: no-preference) {
+      background-image: url('/src/images/delete-icons/x_white.svg');
+    }
+  }
+  .title {
+    font-size: var(--text-l);
+    font-weight: 600;
+  }
+  .check_item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xxs);
+  }
+}
+/* 가상 요소로 오버레이 */
+.voca_print_options_modal_bg {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* 어두운 배경 */
+  z-index: 100; /* 모달 뒤에 */
+}
+// 무비 플레이어
+// .movie_player {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+//   z-index: 1;
+//   background-color: rgba(0, 0, 0, 1);
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   gap: var(--space-m);
+// }
+
+.scale_in_center {
+  -webkit-animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
+  animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+@-webkit-keyframes scale-in-center {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes scale-in-center {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.rotate_in_diag_2 {
+  -webkit-animation: rotate-in-diag-2 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
+  animation: rotate-in-diag-2 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+@-webkit-keyframes rotate-in-diag-2 {
+  0% {
+    -webkit-transform: rotate3d(-1, 1, 0, -360deg);
+    transform: rotate3d(-1, 1, 0, -360deg);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: rotate3d(-1, 1, 0, 0deg);
+    transform: rotate3d(-1, 1, 0, 0deg);
+    opacity: 1;
+  }
+}
+@keyframes rotate-in-diag-2 {
+  0% {
+    -webkit-transform: rotate3d(-1, 1, 0, -360deg);
+    transform: rotate3d(-1, 1, 0, -360deg);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: rotate3d(-1, 1, 0, 0deg);
+    transform: rotate3d(-1, 1, 0, 0deg);
+    opacity: 1;
+  }
+}
+
+.rotate_in_bl {
+  -webkit-animation: rotate-in-bl 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: rotate-in-bl 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+@-webkit-keyframes rotate-in-bl {
+  0% {
+    -webkit-transform: rotate(-360deg);
+    transform: rotate(-360deg);
+    -webkit-transform-origin: bottom left;
+    transform-origin: bottom left;
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform-origin: bottom left;
+    transform-origin: bottom left;
+    opacity: 1;
+  }
+}
+@keyframes rotate-in-bl {
+  0% {
+    -webkit-transform: rotate(-360deg);
+    transform: rotate(-360deg);
+    -webkit-transform-origin: bottom left;
+    transform-origin: bottom left;
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform-origin: bottom left;
+    transform-origin: bottom left;
+    opacity: 1;
+  }
+}
+
+.rotate_in_top {
+  -webkit-animation: rotate-in-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
+  animation: rotate-in-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+@-webkit-keyframes rotate-in-top {
+  0% {
+    -webkit-transform: rotate(-360deg);
+    transform: rotate(-360deg);
+    -webkit-transform-origin: top;
+    transform-origin: top;
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform-origin: top;
+    transform-origin: top;
+    opacity: 1;
+  }
+}
+@keyframes rotate-in-top {
+  0% {
+    -webkit-transform: rotate(-360deg);
+    transform: rotate(-360deg);
+    -webkit-transform-origin: top;
+    transform-origin: top;
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform-origin: top;
+    transform-origin: top;
+    opacity: 1;
+  }
+}
+
+.swirl_in_bck {
+  -webkit-animation: swirl-in-bck 0.65s ease-out both;
+  animation: swirl-in-bck 0.65s ease-out both;
+}
+@-webkit-keyframes swirl-in-bck {
+  0% {
+    -webkit-transform: rotate(540deg) scale(5);
+    transform: rotate(540deg) scale(5);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: rotate(0) scale(1);
+    transform: rotate(0) scale(1);
+    opacity: 1;
+  }
+}
+@keyframes swirl-in-bck {
+  0% {
+    -webkit-transform: rotate(540deg) scale(5);
+    transform: rotate(540deg) scale(5);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: rotate(0) scale(1);
+    transform: rotate(0) scale(1);
+    opacity: 1;
+  }
+}

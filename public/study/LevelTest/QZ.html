@@ -1,0 +1,412 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>학습 정보</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary: #0891b2;
+        --primary-light: #22d3ee;
+        --bg-start: #ecfeff;
+        --bg-end: #cffafe;
+        --card-bg: #ffffff;
+        --text-primary: #164e63;
+        --text-secondary: #0e7490;
+        --text-muted: #0891b2;
+        --border: #a5f3fc;
+        --row-hover: #f0fdfa;
+      }
+
+      body {
+        min-height: 100vh;
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(
+          135deg,
+          var(--bg-start) 0%,
+          var(--bg-end) 100%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* 배경 장식 요소 */
+      body::before,
+      body::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.3;
+        z-index: 0;
+      }
+
+      body::before {
+        width: 300px;
+        height: 300px;
+        background: linear-gradient(135deg, var(--primary-light), transparent);
+        top: -100px;
+        right: -100px;
+        animation: float 8s ease-in-out infinite;
+      }
+
+      body::after {
+        width: 200px;
+        height: 200px;
+        background: linear-gradient(135deg, transparent, var(--primary-light));
+        bottom: -50px;
+        left: -50px;
+        animation: float 6s ease-in-out infinite reverse;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-20px) rotate(5deg);
+        }
+      }
+
+      .container {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 480px;
+      }
+
+      /* 헤더 섹션 */
+      .header {
+        text-align: center;
+        margin-bottom: 24px;
+        animation: fadeInDown 0.6s ease-out;
+      }
+
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .header-icon {
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-light)
+        );
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+        box-shadow: 0 8px 24px rgba(79, 70, 229, 0.25);
+      }
+
+      /* CSS로 만든 문서 아이콘 */
+      .doc-icon {
+        width: 24px;
+        height: 28px;
+        background: white;
+        border-radius: 2px;
+        position: relative;
+      }
+
+      .doc-icon::before {
+        content: '';
+        position: absolute;
+        top: 6px;
+        left: 4px;
+        right: 4px;
+        height: 2px;
+        background: var(--primary-light);
+        box-shadow:
+          0 5px 0 var(--primary-light),
+          0 10px 0 var(--primary-light);
+        border-radius: 1px;
+      }
+
+      .header h1 {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 4px;
+      }
+
+      .header p {
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+
+      /* 메인 카드 */
+      .main-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow:
+          0 4px 6px rgba(0, 0, 0, 0.02),
+          0 12px 24px rgba(0, 0, 0, 0.04);
+        animation: fadeInUp 0.6s ease-out 0.2s both;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* 정보 리스트 */
+      .info-list {
+        padding: 8px 0;
+      }
+
+      .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 24px;
+        transition: background-color 0.2s ease;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .info-row:last-child {
+        border-bottom: none;
+      }
+
+      .info-row:hover {
+        background-color: var(--row-hover);
+      }
+
+      .info-label {
+        font-size: 13px;
+        color: var(--text-secondary);
+        font-weight: 500;
+        flex-shrink: 0;
+      }
+
+      .info-value {
+        font-size: 14px;
+        color: var(--text-primary);
+        font-weight: 600;
+        text-align: right;
+        word-break: break-all;
+        margin-left: 16px;
+        font-family: 'SF Mono', 'Consolas', 'Monaco', monospace;
+      }
+
+      /* 하단 메시지 */
+      .footer-section {
+        padding: 16px 24px;
+        background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+        border-top: 1px solid var(--border);
+      }
+
+      .footer-message {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .footer-message p {
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+
+      /* 로딩 도트 애니메이션 */
+      .loading-dots {
+        display: inline-flex;
+        gap: 3px;
+      }
+
+      .loading-dots span {
+        width: 4px;
+        height: 4px;
+        background: var(--primary);
+        border-radius: 50%;
+        animation: bounce 1.4s ease-in-out infinite;
+      }
+
+      .loading-dots span:nth-child(1) {
+        animation-delay: 0s;
+      }
+      .loading-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .loading-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes bounce {
+        0%,
+        80%,
+        100% {
+          transform: scale(0.6);
+          opacity: 0.4;
+        }
+        40% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      /* 타임스탬프 */
+      .timestamp {
+        text-align: center;
+        margin-top: 16px;
+        font-size: 11px;
+        color: var(--text-muted);
+        animation: fadeInUp 0.6s ease-out 0.4s both;
+      }
+
+      /* 반응형 */
+      @media (max-width: 480px) {
+        .main-card {
+          border-radius: 12px;
+        }
+
+        .info-row {
+          padding: 12px 16px;
+        }
+
+        .header h1 {
+          font-size: 18px;
+        }
+
+        .info-value {
+          font-size: 13px;
+        }
+      }
+    </style>
+    <script src="./js/api.js"></script>
+    <script>
+      function finish() {
+        onFinishLevelTestResult('PK')
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="header-icon">
+          <div class="doc-icon"></div>
+        </div>
+        <h1>레벨테스트</h1>
+        <p>Study Session Details</p>
+      </div>
+
+      <div class="main-card">
+        <div class="info-list" id="infoList">
+          <!-- 정보가 여기에 삽입됩니다 -->
+        </div>
+
+        <!-- <div class="footer-section">
+          <div class="footer-message">
+            <p>학습 준비 중</p>
+            <span class="loading-dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </div>
+        </div> -->
+      </div>
+
+      <div class="timestamp" id="timestamp"></div>
+      <button
+        style="
+          position: absolute;
+          top: 10px;
+          left: 20px;
+          background: var(--primary);
+          color: white;
+          border: none;
+          border-radius: 6px;
+          padding: 8px 14px;
+          font-size: 14px;
+          cursor: pointer;
+          z-index: 10;
+          box-shadow: 0px 2px 6px rgba(79, 70, 229, 0.15);
+        "
+        onclick="onExitStudy()"
+      >
+        ← Back
+      </button>
+      <button
+        style="
+          position: absolute;
+          top: 46px;
+          left: 20px;
+          background: var(--primary);
+          color: white;
+          border: none;
+          border-radius: 6px;
+          padding: 8px 14px;
+          font-size: 14px;
+          cursor: pointer;
+          z-index: 10;
+          box-shadow: 0px 2px 6px rgba(79, 70, 229, 0.15);
+        "
+        onclick="finish()"
+      >
+        Finish
+      </button>
+    </div>
+
+    <script>
+      // 예시 데이터 (실제로는 외부에서 주입)
+      const infoData = Object.entries(REF).map(([key, value]) => ({
+        label: key,
+        value: value,
+      }))
+
+      const list = document.getElementById('infoList')
+      list.innerHTML = infoData
+        .map(
+          (item) => `
+          <div class="info-row">
+            <span class="info-label">${item.label}</span>
+            <span class="info-value">${item.value}</span>
+          </div>
+        `,
+        )
+        .join('')
+
+      // 타임스탬프 표시
+      const now = new Date()
+      document.getElementById('timestamp').textContent = now.toLocaleDateString(
+        'ko-KR',
+        {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        },
+      )
+    </script>
+  </body>
+</html>

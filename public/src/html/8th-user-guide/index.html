@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReadingGate User Guide</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0 0;
+      background:
+        linear-gradient(90deg, rgba(240, 199, 111, 0.86) 1px, transparent 1px) 0 0 / 28px 28px,
+        linear-gradient(0deg, rgba(240, 199,111, 0.86) 1px, transparent 1px) 0 0 / 28px 28px,
+        #FFE7A5;
+      color: #333;
+    }
+
+    .rg-guide {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 12px;
+      position: relative;
+      overflow-x: clip;
+      overflow-y: visible;
+      font-family: inherit;
+    }
+
+    @media (min-width: 600px) {
+      .rg-guide {
+        overflow-x: visible;
+      }
+    }
+
+    .rg-guide * {
+      font-family: inherit;
+    }
+
+    .rg-guide__hero-logo {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 120px;
+      margin-top: 40px;
+      margin-bottom: 32px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .rg-guide__table-wrap {
+      background: #fff;
+      border: 2px solid #10b116;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .rg-guide__table-area {
+      position: relative;
+    }
+
+    .rg-guide__sticker {
+      position: absolute;
+      display: block;
+      width: auto;
+      height: auto;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .rg-guide__sticker--smile {
+      width: 76px;
+      top: -48px;
+      right: -20px;
+      transform: rotate(315deg);
+      transform-origin: center;
+    }
+
+    .rg-guide__sticker--pencil {
+      width: 36px;
+      left: -18px;
+      bottom: -52px;
+      transform: rotate(45deg);
+      transform-origin: center;
+    }
+
+    .rg-guide__table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: auto;
+    }
+
+    .rg-guide__table th,
+    .rg-guide__table td {
+      border: 1px solid #e5e5e5;
+      padding: 14px 12px;
+      vertical-align: middle;
+      background: #ffffff;
+    }
+
+    .rg-guide__table thead th {
+      background: #09b60e;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 800;
+      border-color: #09b60e;
+      text-align: center;
+      height: 30px;
+      padding: 0 8px;
+      line-height: 1;
+    }
+
+    .rg-guide__table td:first-child {
+      width: 1%;
+      white-space: nowrap;
+      text-align: center;
+      font-weight: 800;
+      color: #4a4a4a;
+      background: #ffffff;
+      letter-spacing: 0.3px;
+      padding: 10px 12px;
+    }
+
+    .rg-guide__menu-cell {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-align: center;
+    }
+
+    .rg-guide__menu-icon {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+      flex: 0 0 auto;
+    }
+
+    .rg-guide__menu-name {
+      font-size: 12px;
+      line-height: 1.15;
+    }
+
+    .rg-guide__desc {
+      font-size: 14px;
+      color: #444;
+      line-height: 1.35;
+      margin-bottom: 10px;
+      word-break: keep-all;
+    }
+
+    .rg-guide__tip {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      font-size: 13px;
+      line-height: 1.35;
+      color: #ff7700;
+    }
+
+    .rg-guide__tip-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #ff7700;
+      color: #fff;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      min-height: 18px;
+      padding: 0 10px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .rg-guide__tip-badge-text {
+      display: block;
+      transform: translateY(1px);
+    }
+
+    .rg-guide__tip-text {
+      display: block;
+    }
+
+    @media (min-width: 600px) {
+      .rg-guide__tip {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: start;
+        column-gap: 6px;
+      }
+
+      .rg-guide__tip-text {
+        min-width: 0;
+        overflow-wrap: anywhere;
+      }
+    }
+
+    .rg-guide__video-wrap {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 32px;
+    }
+
+    .rg-guide__video-logo {
+      align-self: center;
+      display: block;
+      width: auto;
+      max-width: 100%;
+      height: 36px;
+      object-fit: contain;
+      margin-top: 32px;
+      margin-bottom: 8px;
+    }
+
+    .rg-guide__video-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 24px;
+      border: 2px solid #14b319;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .rg-guide__video-player {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <div class="rg-guide">
+    <img class="rg-guide__hero-logo" src="./image/ko/img_top_logo.png" alt="상단 로고" data-translate-attr="alt:hero.logo_alt" data-translate-src="img_top_logo.png" />
+
+    <div class="rg-guide__table-area">
+      <div class="rg-guide__table-wrap">
+        <table class="rg-guide__table" aria-label="이용 가이드 표" data-translate-attr="aria-label:table.aria_label">
+          <thead>
+            <tr>
+              <th data-translate="table.header.menu">메뉴</th>
+              <th data-translate="table.header.intro">소개</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="rg-guide__menu-cell">
+                  <img class="rg-guide__menu-icon" src="./icon/main.png" alt="Daily RG 아이콘" />
+                  <span class="rg-guide__menu-name" data-translate="table.daily.menu">DAILY RG</span>
+                </div>
+              </td>
+              <td>
+                <div class="rg-guide__desc" data-translate="table.daily.desc">학생 학습 레벨에 맞춰 매일 읽을 영어 도서를 엄선하여 추천</div>
+                <div class="rg-guide__tip"><span class="rg-guide__tip-badge"><span class="rg-guide__tip-badge-text" data-translate="tip.badge">이용 TIP</span></span><span class="rg-guide__tip-text" data-translate="table.daily.tip">학습 레벨을 변경하면 추천 레벨도 동일하게 변경됨</span></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="rg-guide__menu-cell">
+                  <img class="rg-guide__menu-icon" src="./icon/ebooks.png" alt="E-BOOKS 아이콘" />
+                  <span class="rg-guide__menu-name" data-translate="table.ebooks.menu">E-BOOKS</span>
+                </div>
+              </td>
+              <td>
+                <div class="rg-guide__desc" data-translate="table.ebooks.desc">온라인에서 영어 도서를 읽고, 독후 학습까지 가능한 전자책</div>
+                <div class="rg-guide__tip"><span class="rg-guide__tip-badge"><span class="rg-guide__tip-badge-text" data-translate="tip.badge">이용 TIP</span></span><span class="rg-guide__tip-text" data-translate="table.ebooks.tip">Continue(최근 읽었던 책의 시리즈와 레벨, 진행중인 도서레벨), 레벨별, 무비북, 주제별, 시리즈별 도서 선택 이용</span></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="rg-guide__menu-cell">
+                  <img class="rg-guide__menu-icon" src="./icon/book-quiz.png" alt="P-BOOK QUIZ 아이콘" />
+                  <span class="rg-guide__menu-name" data-translate="table.pbook_quiz.menu">P-BOOK QUIZ</span>
+                </div>
+              </td>
+              <td>
+                <div class="rg-guide__desc" data-translate="table.pbook_quiz.desc">종이 원서를 읽고 온라인으로 독후 학습이 가능한 학습 콘텐츠</div>
+                <div class="rg-guide__tip"><span class="rg-guide__tip-badge"><span class="rg-guide__tip-badge-text" data-translate="tip.badge">이용 TIP</span></span><span class="rg-guide__tip-text" data-translate="table.pbook_quiz.tip">Continue(최근 읽었던 책의 시리즈와 레벨, 진행중인 도서레벨), 레벨별, 주제별, 시리즈별 도서 선택 이용</span></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="rg-guide__menu-cell">
+                  <img class="rg-guide__menu-icon" src="./icon/my-activity.png" alt="MY ACTIVITY 아이콘" />
+                  <span class="rg-guide__menu-name" data-translate="table.my_activity.menu">MY ACTIVITY</span>
+                </div>
+              </td>
+              <td>
+                <div class="rg-guide__desc" data-translate="table.my_activity.desc">학습 레벨, 독서 랭킹, 최근 학습 이력 등을 확인</div>
+                <div class="rg-guide__tip"><span class="rg-guide__tip-badge"><span class="rg-guide__tip-badge-text" data-translate="tip.badge">이용 TIP</span></span><span class="rg-guide__tip-text" data-translate="table.my_activity.tip">학습 레벨 변경 및 학습 결과 더 보기에서 기간별 상세 학습 확인</span></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="rg-guide__menu-cell">
+                  <img class="rg-guide__menu-icon" src="./icon/calendar.png" alt="CALENDAR 아이콘" />
+                  <span class="rg-guide__menu-name" data-translate="table.calendar.menu">CALENDAR</span>
+                </div>
+              </td>
+              <td>
+                <div class="rg-guide__desc" data-translate="table.calendar.desc">월별 출석 일수와 날짜별 학습 이력 확인</div>
+                <div class="rg-guide__tip"><span class="rg-guide__tip-badge"><span class="rg-guide__tip-badge-text" data-translate="tip.badge">이용 TIP</span></span><span class="rg-guide__tip-text" data-translate="table.calendar.tip">날짜별 학습 이력을 클릭하면 해당 일자에 학습한 도서 목록 확인</span></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="rg-guide__menu-cell">
+                  <img class="rg-guide__menu-icon" src="./icon/more.png" alt="MORE 아이콘" />
+                  <span class="rg-guide__menu-name" data-translate="table.more.menu">MORE</span>
+                </div>
+              </td>
+              <td>
+                <div class="rg-guide__desc" data-translate="table.more.desc">Level Test 이력 및 Fail 도서 확인, 각종 Setting 설정 가능</div>
+                <div class="rg-guide__tip"><span class="rg-guide__tip-badge"><span class="rg-guide__tip-badge-text" data-translate="tip.badge">이용 TIP</span></span><span class="rg-guide__tip-text" data-translate="table.more.tip">Level Test 다시 보기, 70점 미만 도서 재학습, 홈 화면 설정 등 가능</span></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <img class="rg-guide__sticker rg-guide__sticker--smile" src="./image/img_smile_sticker.png" alt="" />
+      <img class="rg-guide__sticker rg-guide__sticker--pencil" src="./image/img_pencil_sticker.png" alt="" />
+    </div>
+
+    <div class="rg-guide__video-wrap">
+      <img class="rg-guide__video-logo" src="./image/ko/img_movie_title.png" alt="이용 가이드 영상 보기" data-translate-attr="alt:video.logo_alt" data-translate-src="img_movie_title.png" />
+      <div class="rg-guide__video-placeholder">
+        <video
+          class="rg-guide__video-player"
+          controls
+          controlsList="nodownload"
+          disablepictureinpicture
+          playsinline
+          webkit-playsinline
+          preload="metadata"
+          poster="./image/ko/video_poster.png"
+          data-translate-poster="video_poster.png"
+          oncontextmenu="return false;"
+        >
+          <source
+            src="https://wcfresource.a1edu.com/newsystem/8th/user-guide/ko/rg-8th-user-guide.mp4"
+            data-translate-video-src
+            type="video/mp4"
+          />
+        </video>
+      </div>
+    </div>
+
+  </div>
+  <script src="./translate/ko.js"></script>
+  <script src="./translate/en.js"></script>
+  <script src="./translate/vi.js"></script>
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      // Default language is Korean. If JS is disabled, HTML Korean text remains as fallback.
+      var requestedLang = (params.get("lang") || "ko").trim().toLowerCase();
+      var translateMap = {
+        ko: window.TRANSLATE_KO,
+        en: window.TRANSLATE_EN,
+        vi: window.TRANSLATE_VI
+      };
+      var lang = translateMap[requestedLang] ? requestedLang : "ko";
+      var dict = translateMap[lang];
+      if (!dict || typeof dict !== "object") return;
+
+      function findValue(obj, path) {
+        return path.split(".").reduce(function (acc, key) {
+          return acc && acc[key] !== undefined ? acc[key] : undefined;
+        }, obj);
+      }
+
+      function applyTranslate(dict) {
+        var imageLang = dict.image_lang || lang;
+        var videoBaseUrl = "https://wcfresource.a1edu.com/newsystem/8th/user-guide/";
+        document.documentElement.lang = lang;
+
+        function buildVideoSrc(videoLang) {
+          return videoBaseUrl + videoLang + "/rg-8th-user-guide.mp4";
+        }
+
+        document.querySelectorAll("[data-translate]").forEach(function (el) {
+          var key = el.getAttribute("data-translate");
+          var value = findValue(dict, key);
+          if (typeof value === "string") el.textContent = value;
+        });
+
+        document.querySelectorAll("[data-translate-attr]").forEach(function (el) {
+          var spec = el.getAttribute("data-translate-attr");
+          if (!spec) return;
+          spec.split(",").forEach(function (pair) {
+            var chunks = pair.split(":");
+            if (chunks.length !== 2) return;
+            var attr = chunks[0].trim();
+            var key = chunks[1].trim();
+            var value = findValue(dict, key);
+            if (typeof value === "string") el.setAttribute(attr, value);
+          });
+        });
+
+        document.querySelectorAll("[data-translate-src]").forEach(function (el) {
+          var fileName = el.getAttribute("data-translate-src");
+          if (!fileName) return;
+          el.setAttribute("src", "./image/" + imageLang + "/" + fileName);
+        });
+
+        document.querySelectorAll("[data-translate-poster]").forEach(function (el) {
+          var fileName = el.getAttribute("data-translate-poster");
+          if (!fileName) return;
+          el.setAttribute("poster", "./image/" + imageLang + "/" + fileName);
+        });
+
+        document.querySelectorAll("[data-translate-video-src]").forEach(function (el) {
+          var video = el.parentElement;
+          if (!video || typeof video.load !== "function") return;
+          var fallbackQueue = lang === "ko" ? ["ko"] : [lang];
+          if (lang !== "en") fallbackQueue.push("en");
+          fallbackQueue.push("ko");
+          var currentIndex = 0;
+          var currentSrc = buildVideoSrc(fallbackQueue[currentIndex]);
+          var initialSrc = el.getAttribute("src");
+
+          el.onerror = function () {
+            currentIndex += 1;
+            if (currentIndex >= fallbackQueue.length) return;
+            el.setAttribute("src", buildVideoSrc(fallbackQueue[currentIndex]));
+            video.load();
+          };
+
+          if (initialSrc !== currentSrc) {
+            el.setAttribute("src", currentSrc);
+            video.load();
+          }
+        });
+      }
+
+      applyTranslate(dict);
+    })();
+  </script>
+</body>
+</html>
