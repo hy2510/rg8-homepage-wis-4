@@ -23,6 +23,33 @@ export default function ContinueViewed({
 
   const isPhone = useIsPhone()
 
+  const levelItems =
+    continueSection.levels.length > 0
+      ? continueSection.levels
+          .filter((level) => level.items.length > 0)
+          .flatMap((group) => group.items)
+      : []
+
+  const seriesItems =
+    continueSection.series && continueSection.series.length > 0
+      ? continueSection.series
+          .filter((series) => series.items.length > 0)
+          .flatMap((group) => group.items)
+      : []
+
+  const todoItems =
+    continueSection.todos && continueSection.todos.length > 0
+      ? continueSection.todos
+          .filter((level) => level.items.length > 0)
+          .flatMap((group) => group.items)
+      : []
+
+  const continueItems = [
+    ...levelItems.map((item) => ({ type: 'level' as const, item })),
+    ...seriesItems.map((item) => ({ type: 'series' as const, item })),
+    ...todoItems.map((item) => ({ type: 'todo' as const, item })),
+  ].slice(0, 3)
+
   return (
     <RecentlyViewedStyle>
       <BoxStyle display="flex" gap={isPhone ? 5 : 10} alignItems="center">
@@ -37,75 +64,51 @@ export default function ContinueViewed({
         </TextStyle>
       </BoxStyle>
       <BoxStyle
-        className="list"
-        display="grid"
-        gridTemplateColumns={isPhone ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)'}
+        className={`list ${isPhone ? 'mobile-slider' : ''}`}
+        display={isPhone ? 'flex' : 'grid'}
+        gridTemplateColumns={isPhone ? undefined : 'repeat(3, 1fr)'}
         gap={10}>
-        {continueSection.levels.length > 0 &&
-          continueSection.levels
-            .filter((level) => level.items.length > 0)
-            .map((group) => {
-              return group.items.map((level) => {
-                return (
-                  <LevelItem
-                    key={`${level.type}${level.level}-${level.title}`}
-                    type={level.type}
-                    level={level.level}
-                    title={level.title}
-                    bgColor={level.bgColor}
-                    fontColor={level.fontColor}
-                    completed={level.completed}
-                    href={level.href}
-                    imgSrc={level.imgSrc}
-                    total={level.total}
-                  />
-                )
-              })
-            })}
-        {continueSection.series &&
-          continueSection.series.length > 0 &&
-          continueSection.series
-            .filter((series) => series.items.length > 0)
-            .map((group) => {
-              return group.items.map((series) => {
-                return (
-                  <SeriesItem
-                    key={series.title}
-                    level={
-                      series.minLevel === series.maxLevel
-                        ? series.minLevel
-                        : `${series.minLevel}~${series.maxLevel}`
-                    }
-                    title={series.title}
-                    imgSrc={series.imgSrc}
-                    bgColor={series.color}
-                    href={series.href}
-                  />
-                )
-              })
-            })}
-        {continueSection.todos &&
-          continueSection.todos.length > 0 &&
-          continueSection.todos
-            .filter((level) => level.items.length > 0)
-            .map((group) => {
-              return group.items.map((level) => {
-                return (
-                  <LevelItem
-                    key={`${level.type}${level.level}-${level.title}`}
-                    type={level.type}
-                    level={level.level}
-                    title={level.title}
-                    bgColor={level.bgColor}
-                    fontColor={level.fontColor}
-                    completed={level.completed}
-                    href={level.href}
-                    imgSrc={level.imgSrc}
-                    total={level.total}
-                  />
-                )
-              })
-            })}
+        {continueItems.map((entry, index) => {
+          if (entry.type === 'series') {
+            const series = entry.item
+            return (
+              <div
+                key={`${entry.type}-${series.title}-${index}`}
+                className={isPhone ? 'slider-item' : ''}>
+                <SeriesItem
+                  level={
+                    series.minLevel === series.maxLevel
+                      ? series.minLevel
+                      : `${series.minLevel}~${series.maxLevel}`
+                  }
+                  title={series.title}
+                  imgSrc={series.imgSrc}
+                  bgColor={series.color}
+                  href={series.href}
+                />
+              </div>
+            )
+          }
+
+          const level = entry.item
+          return (
+            <div
+              key={`${entry.type}-${level.type}${level.level}-${level.title}-${index}`}
+              className={isPhone ? 'slider-item' : ''}>
+              <LevelItem
+                type={level.type}
+                level={level.level}
+                title={level.title}
+                bgColor={level.bgColor}
+                fontColor={level.fontColor}
+                completed={level.completed}
+                href={level.href}
+                imgSrc={level.imgSrc}
+                total={level.total}
+              />
+            </div>
+          )
+        })}
       </BoxStyle>
     </RecentlyViewedStyle>
   )

@@ -34,7 +34,7 @@ import {
   useCustomerConfiguration,
   useCustomerInfo,
 } from '@/8th/shared/context/CustomerContext'
-import { useIsDesktop } from '@/8th/shared/context/ScreenModeContext'
+import { useIsDesktop, useIsPhone } from '@/8th/shared/context/ScreenModeContext'
 import { useLockBodyScroll } from '@/8th/shared/context/ScrollLockContext'
 import useConnectRefreshToken from '@/8th/shared/hook/useConnectRefreshToken'
 import {
@@ -65,19 +65,15 @@ import { useEffect, useRef, useState } from 'react'
 // 페이지 타입별 제목 및 아이콘 매핑
 const PAGE_CONFIG = {
   [SITE_PATH.NW82.DAILY_RG]: {
-    title: 'DAILY RG',
-    icon: Assets.Icon.Gnb.main,
+    title: 'RG PATH',
+    icon: Assets.Icon.Gnb.readingPath,
   },
   [SITE_PATH.NW82.EB]: {
-    title: 'E-BOOK',
+    title: 'LIBRARY',
     icon: Assets.Icon.Gnb.ebooks,
   },
-  [SITE_PATH.NW82.PB]: {
-    title: 'P-BOOK QUIZ',
-    icon: Assets.Icon.Gnb.bookQuiz,
-  },
   [SITE_PATH.NW82.ACTIVITY]: {
-    title: 'MY ACTIVITY',
+    title: 'MY PAGE',
     icon: Assets.Icon.Gnb.myActivity,
   },
 } as const
@@ -93,6 +89,7 @@ export default function MainLayout({
   const { t } = useTranslation()
 
   const isDesktop = useIsDesktop()
+  const isPhone = useIsPhone()
 
   const { menu, target, country } = useCustomerConfiguration()
 
@@ -102,10 +99,13 @@ export default function MainLayout({
   let header: { title: string; icon: StaticImageData } | null = null
   if (pathname.endsWith(SITE_PATH.NW82.DAILY_RG)) {
     header = PAGE_CONFIG[SITE_PATH.NW82.DAILY_RG]
-  } else if (pathname.endsWith(SITE_PATH.NW82.EB)) {
+  } else if (
+    pathname.endsWith(SITE_PATH.NW82.EB) ||
+    pathname.includes(`${SITE_PATH.NW82.EB}/`) ||
+    pathname.endsWith(SITE_PATH.NW82.PB) ||
+    pathname.includes(`${SITE_PATH.NW82.PB}/`)
+  ) {
     header = PAGE_CONFIG[SITE_PATH.NW82.EB]
-  } else if (pathname.endsWith(SITE_PATH.NW82.PB)) {
-    header = PAGE_CONFIG[SITE_PATH.NW82.PB]
   } else if (pathname.endsWith(SITE_PATH.NW82.ACTIVITY)) {
     header = PAGE_CONFIG[SITE_PATH.NW82.ACTIVITY]
   }
@@ -555,6 +555,11 @@ export default function MainLayout({
                       image={myAvatar?.imageCircle || ''}
                       avatarName={myAvatar?.name || ''}
                       medal={medalName}
+                      levelName={
+                        isPhone
+                          ? dailyLearning.data?.settingLevelName || 'PK'
+                          : undefined
+                      }
                       onClick={() => setIsRightContainerOpen(true)}
                     />
                   </div>
@@ -707,18 +712,24 @@ function MenuItemAvatar({
   image,
   avatarName,
   medal,
+  levelName,
   onClick,
 }: {
   image: string
   avatarName: string
 
   medal?: 'titanium' | 'platinum' | 'gold' | 'silver' | 'bronze'
+  /** 모바일(폰)에서만 아바타 이미지와 겹쳐 표시 (예: KA, 1B) */
+  levelName?: string
   onClick?: () => void
 }) {
   const frameImage = medal ? Assets.HallOfFame.Profile[medal].src : undefined
   return (
-    <MenuItemStyle style={{ padding: 0 }} onClick={onClick}>
-      <div style={{ position: 'relative', width: 46, height: 46 }}>
+    <MenuItemStyle
+      className={levelName ? 'menu-item-avatar-with-level' : undefined}
+      style={{ padding: 0 }}
+      onClick={onClick}>
+      <div style={{ position: 'relative', width: 46, height: 46, flexShrink: 0 }}>
         {frameImage && (
           <Image
             src={frameImage}
@@ -744,8 +755,16 @@ function MenuItemAvatar({
             left: '50%',
             top: '50%',
             transform: 'translate(-50%, -50%)',
+            zIndex: 1,
           }}
         />
+        {levelName ? (
+          <span
+            className="menu-item-avatar-level-label"
+            title={levelName}>
+            {levelName}
+          </span>
+        ) : null}
       </div>
     </MenuItemStyle>
   )

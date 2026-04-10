@@ -45,9 +45,9 @@ export default function DailyRGSection({
     isActive && _progressColor ? _progressColor : 'var(--color-gray-strong)'
 
   return (
-    <DailyRGCourseContainerStyle ref={ref}>
+    <DailyRGCourseContainerStyle ref={ref} onClick={onSectionClick}>
       <DailyRGCourseStyle
-        bgColor={isCompleted ? '#FFCA2B' : bgColor}
+        bgColor={isCompleted ? '#ffbf00' : bgColor}
         isCurrent={isActive}
         isCompleted={isCompleted}>
         <ProgressBarContainerStyle>
@@ -81,7 +81,7 @@ export default function DailyRGSection({
             />
           )}
         </ProgressBarContainerStyle>
-        <BoxStyle className="menu-box" onClick={onSectionClick}>
+        <BoxStyle className="menu-box">
           {isActive || isCompleted ? (
             <Image src={Assets.Icon.menuWhite} alt="menu" />
           ) : (

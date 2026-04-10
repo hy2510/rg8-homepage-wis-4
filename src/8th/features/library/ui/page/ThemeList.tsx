@@ -26,6 +26,7 @@ export default function ThemeList({ booktype }: { booktype: string }) {
       <SubPageNavHeader
         title={`${t('t8th008')}`}
         parentPath={booktype === 'EB' ? SITE_PATH.NW82.EB : SITE_PATH.NW82.PB}
+        libraryBookType={booktype as 'EB' | 'PB'}
       />
       <BoxStyle
         display="grid"

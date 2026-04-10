@@ -25,6 +25,29 @@ interface LevelItemProps {
   fontColor?: string
 }
 
+function ProgressDonut({
+  completed,
+  total,
+}: {
+  completed: number
+  total: number
+}) {
+  const safeTotal = total > 0 ? total : 1
+  const percent = Math.min(100, Math.max(0, (completed / safeTotal) * 100))
+
+  return (
+    <div
+      className="progress-donut"
+      style={
+        {
+          '--progress': `${percent}%`,
+        } as React.CSSProperties
+      }>
+      <div className="progress-donut-inner">{Math.round(percent)}%</div>
+    </div>
+  )
+}
+
 export default function LevelItem({
   type,
   level,
@@ -92,6 +115,7 @@ function LevelStudyItem({
         fontColor={fontColor}
         isTransitioning={isTransitioning}>
         <div className="level-image-container">
+          <ProgressDonut completed={completed} total={total} />
           <Image
             src={currentImageUrl}
             alt="search-bar-icon"
@@ -118,7 +142,7 @@ function LevelStudyItem({
         <div className="study-count">
           <span>{completed}</span>
           <span>/{total}</span>
-          <span> {t('t8th247')}</span>
+          {/* <span> {t('t8th247')}</span> */}
         </div>
         {/* <div className="delete-button">
           <Image
@@ -152,6 +176,9 @@ function LevelPkItem({
         fontColor={fontColor}
         isTransitioning={isTransitioning}>
         <div className="thumbnail-container">
+          {type === 'study' && (
+            <ProgressDonut completed={completed} total={total} />
+          )}
           <Image
             src={imgSrc!}
             alt="level-image"
@@ -168,7 +195,7 @@ function LevelPkItem({
         <div className="study-count">
           <span>{completed}</span>
           <span>/{total}</span>
-          <span> Activities</span>
+          {/* <span> Activities</span> */}
         </div>
       </LevelPkItemStyle>
     </Link>

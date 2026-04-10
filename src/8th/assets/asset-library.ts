@@ -150,11 +150,13 @@ import ebooks from './images/icons/gnb/ebooks.png'
 import main from './images/icons/gnb/main.png'
 import more from './images/icons/gnb/more.png'
 import myActivity from './images/icons/gnb/my-activity.png'
+import readingPath from './images/icons/gnb/reading-path.png'
 import lockWhite from './images/icons/lock-white.svg'
 import lock from './images/icons/lock.svg'
 import menuGray from './images/icons/menu-gray.svg'
 import menuWhite from './images/icons/menu-white.svg'
 import minusBlue from './images/icons/minus-blue.png'
+import moreHorizontalGray from './images/icons/more-horizontal-gray.svg'
 import moreHorizontalWhite from './images/icons/more-horizontal-white.svg'
 import moreVerticalGray from './images/icons/more-vertical-gray.svg'
 import playRed from './images/icons/play-red.png'
@@ -209,6 +211,7 @@ import SightWord1Study from './images/thumbnails/pk-sight-word-1-study.jpg'
 import SightWord2Game from './images/thumbnails/pk-sight-word-2-game.png'
 import SightWord2Study from './images/thumbnails/pk-sight-word-2-study.jpg'
 import DailyRGCourseCompleted from './images/trophy.svg'
+import LoadingDodo from './images/welcome-dodo.png'
 
 export const Assets = {
   Image: {
@@ -224,6 +227,7 @@ export const Assets = {
     emptyResults: emptyResults,
     BookCoverNotAvailable: BookCoverNotAvailable,
     SchoolSubjectChooseOptionInfo: SchoolSubjectChooseOptionInfo,
+    LoadingDodo: LoadingDodo,
   },
   Icon: {
     arrowDownGray: arrowDownGray,
@@ -257,6 +261,7 @@ export const Assets = {
     menuWhite: menuWhite,
     minusBlue: minusBlue,
     moreHorizontalWhite: moreHorizontalWhite,
+    moreHorizontalGray: moreHorizontalGray,
     moreVerticalGray: moreVerticalGray,
     playRed: playRed,
     plusGreen: plusGreen,
@@ -271,6 +276,7 @@ export const Assets = {
       dubbing: dubbing,
       ebooks: ebooks,
       main: main,
+      readingPath: readingPath,
       more: more,
       myActivity: myActivity,
     },

@@ -287,7 +287,7 @@ export const LeftContainerStyle = styled.div<{ leftContainerGap?: number }>`
       top: 0;
       left: 0;
       width: 100%;
-      height: 70px;
+      min-height: 70px;
       z-index: 900;
       font-size: var(--font-size-large);
       color: var(--font-color-primary);
@@ -802,8 +802,10 @@ export const DropdownItemStyle = styled.div<{
   }
 
   .link-text {
-    font-size: 14px;
+    font-size: 1em;
     text-align: left;
+    font-family: var(--font-family-secondary);
+    font-weight: 700;
     color: var(--font-color-light-blue);
   }
 
@@ -1046,6 +1048,8 @@ export const MenuItemStyle = styled.div`
   ${labtopL(`
     flex-direction: column;
     position: relative;
+    gap: 4px;
+    padding: 6px;
   `)}
 
   &.is-active {
@@ -1063,10 +1067,35 @@ export const MenuItemStyle = styled.div`
   .menu-item-text {
     font-size: var(--font-size-medium);
     font-weight: 400;
+    text-align: center;
 
     ${labtopL(`
-      display: none;
+      // display: none;
+      font-size: 0.55em;
     `)}
+  }
+
+  &.menu-item-avatar-with-level .menu-item-avatar-level-label {
+    position: absolute;
+    left: 50%;
+    bottom: 0px;
+    transform: translateX(-50%);
+    z-index: 4;
+    font-size: 0.58rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: #fff;
+    max-width: 50px;
+    padding: 2px 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--font-family-secondary);
+    text-align: center;
+    pointer-events: none;
+    background: #3c4b62;
+    border-radius: 100px;
   }
 `
 
@@ -2393,8 +2422,8 @@ export const AwardBgStyle = styled.div`
 
 export const FooterMenuStyle = styled.div<{ isGnbBottom?: boolean }>`
   width: 100%;
-  height: 60px;
-  margin-bottom: ${({ isGnbBottom }) => (isGnbBottom ? '70px' : '0px')};
+  height: 50px;
+  margin-bottom: ${({ isGnbBottom }) => (isGnbBottom ? '80px' : '0px')};
   background-color: #fff;
   border-top: 1px solid var(--line-color-primary);
   display: flex;

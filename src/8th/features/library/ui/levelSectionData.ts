@@ -303,11 +303,13 @@ function isIncludeLevelGroup(
 
 export function makeLevelSectionTypeDodoABC(
   levels: LevelBook[],
+  locale?: string,
 ): LevelSectionType | undefined {
   const dodoAbcData = sortLevelSectionDodoABC(levels)
   if (dodoAbcData.length === 0) {
     return undefined
   }
+  const isKorean = locale ? locale.toLowerCase().startsWith('ko') : true
 
   const levelGroups = DODO_ABC_GROUP.map((group) => {
     return {
@@ -320,7 +322,7 @@ export function makeLevelSectionTypeDodoABC(
   }).filter((group) => group.items.length > 0)
 
   const data: LevelSectionType = {
-    section: 'Level PK',
+    section: isKorean ? 'PK · 기초 다지기' : 'PK',
     levels: [
       ...levelGroups.map((group) => {
         return {
@@ -411,6 +413,7 @@ export function makeLevelSectionType(
   group: 'Kto1' | '2to3' | '4to6',
   type: 'eb' | 'pb',
   levels: LevelBook[],
+  locale?: string,
 ): LevelSectionType | undefined {
   const targetLevels = levels.filter((level) =>
     isIncludeLevelGroup(group, level.levelName),
@@ -421,15 +424,16 @@ export function makeLevelSectionType(
   }
 
   let sectionTitle = ''
+  const isKorean = locale ? locale.toLowerCase().startsWith('ko') : true
   switch (group) {
     case 'Kto1':
-      sectionTitle = 'Level K to 1'
+      sectionTitle = isKorean ? 'K to 1 · 초등' : 'K to 1'
       break
     case '2to3':
-      sectionTitle = 'Level 2 to 3'
+      sectionTitle = isKorean ? '2 to 3 · 중등' : '2 to 3'
       break
     case '4to6':
-      sectionTitle = 'Level 4 to 6'
+      sectionTitle = isKorean ? '4 to 6 · 고등~성인' : '4 to 6'
       break
   }
 

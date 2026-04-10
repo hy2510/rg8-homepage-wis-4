@@ -102,6 +102,7 @@ function LibraryBookListDependency({
         parentPath={
           booktype === 'EB' ? SITE_PATH.NW82.EB_THEME : SITE_PATH.NW82.PB_THEME
         }
+        libraryBookType={booktype}
       />
       <LibraryBookList
         bookType={booktype}

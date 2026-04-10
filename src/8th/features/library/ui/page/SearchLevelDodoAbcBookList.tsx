@@ -94,7 +94,7 @@ function LibraryBookListDependency({
   return (
     <>
       <SubPageNavHeader
-        title={`DODO ABC`}
+        title="PK"
         subTitle={title}
         parentPath={SITE_PATH.NW82.EB}
       />

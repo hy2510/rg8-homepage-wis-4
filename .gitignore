@@ -1,0 +1,56 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# public
+public/study/*
+public/src/font/*
+public/src/html/*
+public/src/images/*
+public/src/lottie/*
+public/src/sample-images/*
+public/src/sounds/*
+public/src/videos/*
+
+# env
+.env*
+
+# etc
+.vscode/*
+public/src/8th/sample.png
+*/**/ComponentPreview.tsx
+*/**/component-preview.css.ts
+src/app/\[locale\]/8th/zmap/*
+docs/*

@@ -57,6 +57,7 @@ function LibraryBookListDependency({ booktype }: { booktype: 'EB' | 'PB' }) {
       <SubPageNavHeader
         title={`${t('t8th005')}`}
         parentPath={booktype === 'EB' ? SITE_PATH.NW82.EB : SITE_PATH.NW82.PB}
+        libraryBookType={booktype as 'EB' | 'PB'}
       />
       <LibraryBookList bookType={booktype} year={year} month={month} />
     </>

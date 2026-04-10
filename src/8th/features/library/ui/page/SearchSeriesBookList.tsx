@@ -34,9 +34,10 @@ import Pagenation from '@/8th/shared/ui/Pagenation'
 import { SubPageNavHeader } from '@/8th/shared/ui/SubPageNavHeader'
 import { convertEBPBFilter } from '@/8th/shared/utils/convert'
 import { openDownloadLink, openWindow } from '@/8th/shared/utils/open-window'
+import { peekLibrarySeriesNav } from '@/8th/features/library/ui/librarySeriesNavRestore'
 import SITE_PATH from '@/app/site-path'
 import useTranslation from '@/localization/client/useTranslations'
-import { useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 
 export default function SearchSeriesBookList({
   booktype,
@@ -95,11 +96,34 @@ function LibraryBookListDependency({
           student.data?.student?.libraryPBFindSortName || 'Round',
         )
 
+  const [seriesParentPath, setSeriesParentPath] = useState(
+    booktype === 'EB' ? SITE_PATH.NW82.EB : SITE_PATH.NW82.PB,
+  )
+
+  useLayoutEffect(() => {
+    const p = peekLibrarySeriesNav()
+    if (
+      p?.returnTarget === 'seriesList' &&
+      p.bookType === booktype
+    ) {
+      setSeriesParentPath(
+        booktype === 'EB'
+          ? SITE_PATH.NW82.EB_SERIES
+          : SITE_PATH.NW82.PB_SERIES,
+      )
+    } else {
+      setSeriesParentPath(
+        booktype === 'EB' ? SITE_PATH.NW82.EB : SITE_PATH.NW82.PB,
+      )
+    }
+  }, [booktype])
+
   return (
     <>
       <SubPageNavHeader
         title={`${t('t8th039')}`}
-        parentPath={booktype === 'EB' ? SITE_PATH.NW82.EB : SITE_PATH.NW82.PB}
+        parentPath={seriesParentPath}
+        libraryBookType={booktype}
       />
       <LibraryBookList
         bookType={booktype}

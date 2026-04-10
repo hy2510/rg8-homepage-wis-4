@@ -1,5 +1,7 @@
 'use client'
 
+import { Assets } from '@/8th/assets/asset-library'
+import Image from 'next/image'
 import React, { useContext, useEffect, useState } from 'react'
 import CurrencyFormat from '../currency-format'
 import { appendResources, createInstance, i18nRG } from './i18next-client'
@@ -48,7 +50,28 @@ export default function LanguagePackContextProvider(props: LanguagePackProps) {
   }, [language, namespace, res])
 
   if (loading) {
-    return <p>Context Loading ...</p>
+    return (
+      <p
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 9999,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+        }}>
+        <Image
+          src={Assets.Image.LoadingDodo}
+          alt="Loading"
+          width={150}
+          height={150}
+        />
+      </p>
+    )
   }
   return (
     <LanguagePackContext.Provider value={context}>

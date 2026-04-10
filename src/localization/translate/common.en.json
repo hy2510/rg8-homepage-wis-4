@@ -816,7 +816,7 @@
   "t8th006": "Movies",
   "t8th007": "Workbook Units",
   "t8th008": "Themes",
-  "t8th009": "No books found.",
+  "t8th009": "No search results found.",
   "t8th010": "Added to To-Do.",
   "t8th011": "Added to Favorites.",
   "t8th012": "Status",
@@ -1130,5 +1130,8 @@
   "t8th320": "Homepage",
   "t8th321": "RG News",
   "t8th322": "Customer Support",
-  "t8th323": "You’ve reached level {{txt1}}. \nWould you like to go back to level {{txt2}}?"
+  "t8th323": "You’ve reached level {{txt1}}. \nWould you like to go back to level {{txt2}}?",
+  "t8th324": "Enter a series level or title.",
+  "t8th325": "E-Book",
+  "t8th326": "P-Book Quiz"
 }

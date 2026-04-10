@@ -1692,12 +1692,12 @@ export const DailyRGBookItemStyle = styled.div<{
 export const DailyRGCourseContainerStyle = styled.div`
   padding-top: 20px;
   position: sticky;
-  top: 0;
+  top: 60px;
   z-index: 800;
   background-color: #fff;
 
   ${labtopS(`
-    top: 65px;
+    top: 120px;
   `)}
 
   &::before {
@@ -1723,6 +1723,7 @@ export const DailyRGCourseStyle = styled.div<{
   progressColor?: string
   isCompleted?: boolean
 }>`
+  cursor: pointer;
   overflow: hidden;
   width: 100%;
   min-height: 77px;
@@ -1848,6 +1849,119 @@ export const DailyRGLevelStyle = styled.div`
     padding-top: 5px;
   `)}
 `
+
+export const DailyRGSubTextStyle = styled.div<{ isFollowText?: boolean }>`
+  font-size: ${({ isFollowText }) =>
+    isFollowText ? 'var(--font-size-large)' : 'var(--font-size-xlarge)'};
+  font-family: var(--font-family-secondary);
+  font-weight: ${({ isFollowText }) => (isFollowText ? '500' : '700')};
+  padding-left: 10px;
+  padding-top: ${({ isFollowText }) => (isFollowText ? '0' : '10px')};
+  color: ${({ isFollowText }) =>
+    isFollowText ? 'var(--font-color-secondary)' : 'var(--font-color-primary)'};
+
+  ${labtopS(`
+    padding-top: 0;
+  `)}
+`
+
+export const DailyRGNavBarStyle = styled.div`
+  position: sticky;
+  top: -1px;
+  z-index: 899;
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 20px;
+  gap: 0;
+  border-top: 1px solid var(--line-color-primary);
+  border-bottom: 1px solid var(--line-color-primary);
+
+  ${labtopS(`
+    top: 69px;
+  `)}
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -20px;
+    right: -20px;
+    bottom: 0;
+    background-color: #fff;
+    z-index: -1;
+
+    ${labtopS(`
+      left: -10px;
+      right: -10px;
+    `)}
+  }
+
+  .level-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 30px;
+
+    .level-item {
+      cursor: pointer;
+      font-size: var(--font-size-medium);
+      color: var(--font-color-secondary);
+
+      &.current {
+        color: var(--font-color-light-blue);
+      }
+    }
+  }
+
+  .more-button {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+
+    .more-button-trigger {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+    }
+
+    img {
+      display: block;
+    }
+  }
+`
+
+export const GoToNextLevelButtonStyle = styled.div`
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  font-size: var(--font-size-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background-color: var(--color-gray-light);
+  padding: 20px 10px;
+  border-radius: 15px;
+
+  img {
+    display: block;
+  }
+`
+
 export const QuickJumpButtonStyle = styled.button<{ isVisible: boolean }>`
   cursor: pointer;
   position: fixed;
@@ -2571,6 +2685,39 @@ export const LevelItemStyle = styled.div<{
     background-position: top 5px left 5px;
     background-repeat: no-repeat;
 
+    .progress-donut {
+      --progress: 0%;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      z-index: 4;
+      width: 40px;
+      height: 40px;
+      border: 1.5px solid #fff;
+      border-radius: 50%;
+      background: conic-gradient(
+        ${({ bgColor }) => bgColor} var(--progress),
+        #fff 0
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .progress-donut-inner {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: #fff;
+        color: ${({ bgColor }) => bgColor};
+        font-family: var(--font-family-secondary);
+        font-size: 0.75em;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
     .book-cover {
       position: absolute;
       left: 20px;
@@ -2692,6 +2839,37 @@ export const LevelPkItemStyle = styled.div<{
     display: flex;
     align-items: flex-start;
     justify-content: center;
+
+    .progress-donut {
+      --progress: 0%;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 4;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: conic-gradient(
+        ${({ bgColor }) => bgColor} var(--progress),
+        #fff 0
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .progress-donut-inner {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background-color: #fff;
+        color: ${({ bgColor }) => bgColor};
+        font-size: 10px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
 
     ${labtopS(`
       height: 100%;
@@ -2839,14 +3017,18 @@ export const LevelSectionStyle = styled.div`
       background-color: #edfafe;
 
       .accordion-title {
+        font-family: var(--font-family-secondary);
+        font-weight: 800;
         color: var(--font-color-light-blue);
+        font-size: var(--font-size-large);
       }
     }
 
     .accordion-title {
+      font-family: var(--font-family-secondary);
+      font-weight: 800;
       color: var(--font-color-secondary);
-      font-size: 1em;
-      font-weight: 500;
+      font-size: var(--font-size-large);
     }
 
     .arrow {
@@ -2900,6 +3082,25 @@ export const LevelSectionStyle = styled.div`
       grid-template-columns: repeat(2, 1fr);
       gap: 15px 5px;
     `)}
+  }
+
+  .section-tabs {
+    width: fit-content;
+    background-color: #fff;
+  }
+
+  .section-tab {
+    cursor: pointer;
+    border: none;
+    background-color: var(--color-gray-light);
+    border-radius: 100px;
+    padding: 12px 20px;
+    color: var(--font-color-secondary);
+  }
+
+  .section-tab.active {
+    background-color: var(--font-color-primary);
+    color: #fff;
   }
 
   .series-pagination-container {
@@ -2992,6 +3193,27 @@ export const RecentlyViewedStyle = styled.div`
       opacity: 1;
       pointer-events: auto;
     }
+
+    &.mobile-slider {
+      overflow-x: auto;
+      overflow-y: hidden;
+      flex-wrap: nowrap;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+
+      .slider-item {
+        flex: 0 0 72%;
+        min-width: 180px;
+        scroll-snap-align: start;
+      }
+    }
   }
 `
 
@@ -3002,6 +3224,17 @@ export const SearchBarStyle = styled.div`
   border-radius: 100px;
   padding: 10px 20px;
   padding-right: 0;
+
+  /* 검색 버튼 없이 인풋만 쓸 때 전체 너비 사용 */
+  &.input-only {
+    padding-right: 20px;
+
+    .search-input {
+      width: 100%;
+      min-width: 0;
+      flex: 1;
+    }
+  }
 
   .search-option {
     cursor: pointer;
@@ -3043,6 +3276,55 @@ export const SearchBarStyle = styled.div`
   }
 `
 
+export const LibraryFinderTabBarStyle = styled.div`
+  width: 100%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  margin-bottom: 16px;
+
+  .tabs {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+      width: 100%;
+      height: 1px;
+      background: var(--line-color-primary);
+    }
+  }
+
+  .tab {
+    font-family: var(--font-family-secondary);
+    font-weight: 700;
+    font-size: var(--font-size-large);
+    padding: 15px 30px;
+    border-radius: 15px 15px 0 0;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+
+    &.inactive {
+      color: #a0aec0;
+      background: transparent;
+    }
+
+    &.active {
+      color: #00b4d8;
+      background: #fff;
+      border: 1px solid var(--line-color-primary);
+      border-bottom: 1px solid #fff;
+    }
+  }
+`
+
 export const SeriesItemStyle = styled.div<{
   bgColor: string
 }>`
@@ -3053,6 +3335,31 @@ export const SeriesItemStyle = styled.div<{
   justify-content: flex-start;
   gap: 15px;
   position: relative;
+
+  /* scrollIntoView(block: start) 시 상단 고정 영역과 겹침 완화 */
+  &[id^='library-series-'] {
+    scroll-margin-top: 100px;
+  }
+
+  &.library-series-restore-flash .series-image-container {
+    animation: library-series-restore-border-glow 1.5s ease-in-out infinite;
+  }
+
+  @keyframes library-series-restore-border-glow {
+    0%,
+    100% {
+      box-shadow:
+        inset 0 0 0 2px rgba(255, 255, 255, 0.85),
+        0 0 0 2px rgba(220, 38, 38, 0.55),
+        0 0 12px rgba(239, 68, 68, 0.4);
+    }
+    50% {
+      box-shadow:
+        inset 0 0 0 2px rgba(255, 255, 255, 1),
+        0 0 0 4px rgba(220, 38, 38, 1),
+        0 0 28px rgba(248, 113, 113, 0.85);
+    }
+  }
 
   .series-image-container {
     width: 100%;
@@ -3298,6 +3605,10 @@ export const ChallengeBoardProgressItemStyle = styled.div`
 
       &.red {
         background-color: var(--color-red-medium);
+      }
+
+      &.green {
+        background-color: #35c86a;
       }
 
       &.transparent {

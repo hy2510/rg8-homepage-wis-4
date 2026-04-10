@@ -95,6 +95,15 @@ export default function GlobalNavBar() {
         }),
     })
   }
+
+  // 랭킹 메뉴 추가
+  if (true) {
+    dropdownItems.push({
+      text: t('t8th229'),
+      onClick: () => router.push(SITE_PATH.NW82.RANKING),
+    })
+  }
+
   // 이용 가이드 보기 안내 메뉴 추가
   if (true) {
     dropdownItems.push({
@@ -124,8 +133,8 @@ export default function GlobalNavBar() {
       <div className="menu-container">
         {menu.dailyRg.open && (
           <MenuItem
-            icon={Assets.Icon.Gnb.main}
-            text="DAILY RG"
+            icon={Assets.Icon.Gnb.readingPath}
+            text="RG PATH"
             isActive={pathname.includes(SITE_PATH.NW82.DAILY_RG)}
             linkUrl={SITE_PATH.NW82.DAILY_RG}
           />
@@ -134,25 +143,28 @@ export default function GlobalNavBar() {
         {menu.eb.open && (
           <MenuItem
             icon={Assets.Icon.Gnb.ebooks}
-            text="E-BOOK"
-            isActive={pathname.includes(SITE_PATH.NW82.EB)}
+            text="LIBRARY"
+            isActive={
+              pathname.includes(SITE_PATH.NW82.EB) ||
+              pathname.includes(SITE_PATH.NW82.PB)
+            }
             linkUrl={SITE_PATH.NW82.EB}
           />
         )}
 
-        {menu.pb.open && (
+        {/* {menu.pb.open && (
           <MenuItem
             icon={Assets.Icon.Gnb.bookQuiz}
             text="P-BOOK QUIZ"
             isActive={pathname.includes(SITE_PATH.NW82.PB)}
             linkUrl={SITE_PATH.NW82.PB}
           />
-        )}
+        )} */}
 
         {menu.activity.open && (
           <MenuItem
             icon={Assets.Icon.Gnb.myActivity}
-            text="MY ACTIVITY"
+            text="MY PAGE"
             isActive={pathname.includes(SITE_PATH.NW82.ACTIVITY)}
             linkUrl={SITE_PATH.NW82.ACTIVITY}
           />

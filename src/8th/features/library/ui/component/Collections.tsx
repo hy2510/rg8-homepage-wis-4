@@ -121,8 +121,8 @@ function CollectionList({
     [
       'NewBooks',
       'Movie',
-      'Theme',
       'Series',
+      'Theme',
       'Workbook',
       'SchoolSubjects',
     ] as CollectionItem[]

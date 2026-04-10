@@ -51,6 +51,11 @@ export default function ChallengeBoard({
   isDefaultExpend?: boolean
 }) {
   const [isExpend, setExpend] = useState(isDefaultExpend || false)
+
+  useEffect(() => {
+    setExpend(isDefaultExpend || false)
+  }, [isDefaultExpend])
+
   const remainingDays = DateUtils.dayDistance(
     new Date(),
     DateUtils.createDate(endDate),
@@ -284,6 +289,12 @@ function ChallengeBoardExpend({
             goalValue={goalDay}
             maxValue={maxEventDay}
           />
+          <ProgressItem
+            progressType="remaining-day"
+            currentValue={Math.max(remainingDays, 0)}
+            goalValue={maxEventDay}
+            maxValue={maxEventDay}
+          />
         </BoxStyle>
         {eventFail && (
           <TextStyle
@@ -306,7 +317,7 @@ function ProgressItem({
   goalValue,
   maxValue,
 }: {
-  progressType: 'study-day' | 'earned-point'
+  progressType: 'study-day' | 'earned-point' | 'remaining-day'
   currentValue: number
   goalValue: number
   maxValue: number
@@ -315,10 +326,13 @@ function ProgressItem({
   const { t } = useTranslation()
 
   const [isVisible, setIsVisible] = useState(false)
+  const elapsedDays = Math.max(maxValue - currentValue, 0)
+  const progressBaseValue =
+    progressType === 'remaining-day' ? elapsedDays : currentValue
 
   // 현재 진행률 계산
   const progressPercentage = NumberUtils.toRgDecimalPoint(
-    NumberUtils.getHundredPercentage(currentValue, goalValue, {
+    NumberUtils.getHundredPercentage(progressBaseValue, goalValue, {
       isInteger: false,
       limitZeroToHundred: false,
     }),
@@ -352,6 +366,11 @@ function ProgressItem({
     )
     fillColor = 'red'
     subText = `${t('t8th279', { num: progressPercentage })}${t('t8th280', { num: goalValue })}`
+  } else if (progressType === 'remaining-day') {
+    title = '종료일까지'
+    titleText = `${elapsedDays}/${maxValue}일`
+    fillColor = 'green'
+    subText = `${elapsedDays}일 경과`
   } else {
     title = t('t8th277')
     titleText = t('t8th283', { txt: `${currentValue}/${goalValue}` }).replace(

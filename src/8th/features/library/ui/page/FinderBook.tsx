@@ -31,21 +31,37 @@ import {
   useStudentDailyLearning,
   useTodayStudyLearning,
 } from '@/8th/features/student/service/learning-query'
+import {
+  useStudentLocalConfig,
+  useUpdateStudentLocalConfig,
+} from '@/8th/features/student/service/setting-query'
+import { useStudent } from '@/8th/features/student/service/student-query'
 import { useTodoList } from '@/8th/features/todo/service/todo-query'
-import { useCustomerConfiguration } from '@/8th/shared/context/CustomerContext'
+import {
+  useCustomerConfiguration,
+  useCustomerInfo,
+} from '@/8th/shared/context/CustomerContext'
+import { LibraryFinderTabBarStyle } from '@/8th/shared/styled/FeaturesStyled'
+import SITE_PATH from '@/app/site-path'
+import useTranslation from '@/localization/client/useTranslations'
 import DateUtils from '@/util/date-utils'
 import LevelUtils from '@/util/level-utils'
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import { useMemo } from 'react'
 
 export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
+  // @Language 'common'
+  const { t } = useTranslation()
   const { menu, setting } = useCustomerConfiguration()
+  const params = useParams<{ locale: string }>()
+  const locale = (params?.locale || '').toLowerCase()
 
-  // TODO: 독서왕 자동으로 펼침 기능 주석처리, 협의 필요
-  // const student = useStudent()
-  // const customerId = useCustomerInfo()?.customerId || ''
-  // const studentId = student.data?.student?.studentId || ''
-  // const userConfig = useStudentLocalConfig({ customerId, studentId })
-  // const updateUserConfig = useUpdateStudentLocalConfig()
+  const student = useStudent()
+  const customerId = useCustomerInfo()?.customerId || ''
+  const studentId = student.data?.student?.studentId || ''
+  const userConfig = useStudentLocalConfig({ customerId, studentId })
+  const updateUserConfig = useUpdateStudentLocalConfig()
 
   const userSetting = useStudentDailyLearning()
   const todayLearning = useTodayStudyLearning()
@@ -115,7 +131,7 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
 
     if (booktype === 'eb') {
       const dodoAbcData = isOpenDodoAbc
-        ? makeLevelSectionTypeDodoABC(levels.data?.dodoABC || [])
+        ? makeLevelSectionTypeDodoABC(levels.data?.dodoABC || [], locale)
         : undefined
       const pkData = isOpenPreKClassic
         ? makeLevelSectionTypePK(levels.data?.preK || [])
@@ -136,7 +152,7 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
 
       const ebData = levels.data?.eb || []
 
-      const lvKTo1Data = makeLevelSectionType('Kto1', 'eb', ebData)
+      const lvKTo1Data = makeLevelSectionType('Kto1', 'eb', ebData, locale)
       if (lvKTo1Data) {
         const seriesData = makeLevelSectionSeries(
           'eb',
@@ -152,7 +168,7 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
           containLevelGroup = lvKTo1Data.section
         }
       }
-      const lv2To3Data = makeLevelSectionType('2to3', 'eb', ebData)
+      const lv2To3Data = makeLevelSectionType('2to3', 'eb', ebData, locale)
       if (lv2To3Data) {
         const seriesData = makeLevelSectionSeries(
           'eb',
@@ -168,7 +184,7 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
           containLevelGroup = lv2To3Data.section
         }
       }
-      const lv4To6Data = makeLevelSectionType('4to6', 'eb', ebData)
+      const lv4To6Data = makeLevelSectionType('4to6', 'eb', ebData, locale)
       if (lv4To6Data) {
         const seriesData = makeLevelSectionSeries(
           'eb',
@@ -226,7 +242,7 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
     } else if (booktype === 'pb') {
       const pbData = levels.data?.pb || []
 
-      const lvKTo1Data = makeLevelSectionType('Kto1', 'pb', pbData)
+      const lvKTo1Data = makeLevelSectionType('Kto1', 'pb', pbData, locale)
       if (lvKTo1Data) {
         const seriesData = makeLevelSectionSeries(
           'pb',
@@ -242,7 +258,7 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
           containLevelGroup = lvKTo1Data.section
         }
       }
-      const lv2To3Data = makeLevelSectionType('2to3', 'pb', pbData)
+      const lv2To3Data = makeLevelSectionType('2to3', 'pb', pbData, locale)
       if (lv2To3Data) {
         const seriesData = makeLevelSectionSeries(
           'pb',
@@ -258,7 +274,7 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
           containLevelGroup = lv2To3Data.section
         }
       }
-      const lv4To6Data = makeLevelSectionType('4to6', 'pb', pbData)
+      const lv4To6Data = makeLevelSectionType('4to6', 'pb', pbData, locale)
       if (lv4To6Data) {
         const seriesData = makeLevelSectionSeries(
           'pb',
@@ -406,6 +422,7 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
     }
   }, [
     booktype,
+    locale,
     levels.data,
     seriesCategory.data,
     userSetting.data,
@@ -443,9 +460,8 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
   if (menu[booktype].collections.themes.open) {
     collectionsList.push('Theme')
   }
-  if (menu[booktype].collections.series.open) {
-    collectionsList.push('Series')
-  }
+  // Series 노출
+  collectionsList.push('Series')
   if (booktype === 'eb' ? menu.eb.collections.movies.open : undefined) {
     collectionsList.push('Movie')
   }
@@ -469,15 +485,39 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
           isTodayStudy={isTodayStudy}
           prizeList={eventPrizeList.data?.list || []}
           onPrizeChange={onReadingKingPrizeChange}
-          // onExpendChange={(isExpend) => {
-          //   updateUserConfig({
-          //     customerId,
-          //     studentId,
-          //     mode: isExpend ? 'challenge' : 'level',
-          //   })
-          // }}
-          // isDefaultExpend={userConfig.mode === 'challenge'}
+          onExpendChange={(isExpend) => {
+            updateUserConfig({
+              customerId,
+              studentId,
+              mode: isExpend ? 'challenge' : 'level',
+            })
+          }}
+          isDefaultExpend={userConfig.mode === 'challenge'}
         />
+      )}
+      {(menu.eb.open || menu.pb.open) && (
+        <LibraryFinderTabBarStyle>
+          <div className="tabs">
+            {menu.eb.open && (
+              <Link
+                href={SITE_PATH.NW82.EB}
+                className={`tab ${booktype === 'eb' ? 'active' : 'inactive'}`}
+                aria-current={booktype === 'eb' ? 'page' : undefined}
+                scroll={false}>
+                {t('t8th325')}
+              </Link>
+            )}
+            {menu.pb.open && (
+              <Link
+                href={SITE_PATH.NW82.PB}
+                className={`tab ${booktype === 'pb' ? 'active' : 'inactive'}`}
+                aria-current={booktype === 'pb' ? 'page' : undefined}
+                scroll={false}>
+                {t('t8th326')}
+              </Link>
+            )}
+          </div>
+        </LibraryFinderTabBarStyle>
       )}
       {menu[booktype].search.open && <SearchBar booktype={booktype} />}
       {menu[booktype].continue.open && findBookData.continueSection && (
@@ -487,6 +527,7 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
         <LevelSection
           levelSection={findBookData.sectionData}
           defaultLevel={findBookData.defaultOpenSection}
+          libraryBookType={booktype === 'eb' ? 'EB' : 'PB'}
         />
       )}
       {menu[booktype].collections.open && (
