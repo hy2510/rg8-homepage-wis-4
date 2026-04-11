@@ -7,15 +7,15 @@ import { BoxStyle, Divide, Gap } from '@/8th/shared/ui/Misc'
 import useTranslation from '@/localization/client/useTranslations'
 import Image from 'next/image'
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { LevelSectionType, SectionSeriesDataType } from '../levelSectionData'
 import {
+  LibrarySeriesNavPayload,
   clearLibrarySeriesNav,
   flashLibrarySeriesRestoreElement,
   librarySeriesScrollElementId,
-  LibrarySeriesNavPayload,
   peekLibrarySeriesNav,
   rememberLibrarySeriesNav,
 } from '../librarySeriesNavRestore'
-import { LevelSectionType, SectionSeriesDataType } from '../levelSectionData'
 import LevelItem from './LevelSectionLevelItem'
 import SeriesItem from './LevelSectionSeriesItem'
 
@@ -43,8 +43,9 @@ function resolveSectionForSeriesRestore(
       return found.section
     }
   }
-  return levelSection.find((s) => sectionContainsSeriesTitle(s, payload.seriesTitle))
-    ?.section
+  return levelSection.find((s) =>
+    sectionContainsSeriesTitle(s, payload.seriesTitle),
+  )?.section
 }
 
 export default function LevelSection({
@@ -141,13 +142,13 @@ export default function LevelSection({
   return (
     <LevelSectionStyle ref={containerRef}>
       <BoxStyle className="title" display="flex" alignItems="center" gap={10}>
-        <Image
+        {/* <Image
           src={Assets.Icon.Study.leveledReading}
           alt="leveled-reading"
           width={28}
           height={28}
-        />
-        <span>{t('t8th003')}</span>
+        /> */}
+        <span>· {t('t8th003')}</span>
       </BoxStyle>
       <BoxStyle
         className="accordion-container"
@@ -203,9 +204,7 @@ function SectionTabContent({
   )
 
   useEffect(() => {
-    setActiveTab(
-      preferSeriesTab ? 'series' : hasLevels ? 'level' : 'series',
-    )
+    setActiveTab(preferSeriesTab ? 'series' : hasLevels ? 'level' : 'series')
   }, [section.section, hasLevels, preferSeriesTab])
 
   const showTabs = hasLevels && hasSeries
@@ -220,12 +219,12 @@ function SectionTabContent({
             <button
               className={`section-tab ${activeTab === 'level' ? 'active' : ''}`}
               onClick={() => setActiveTab('level')}>
-              by Level
+              Level
             </button>
             <button
               className={`section-tab ${activeTab === 'series' ? 'active' : ''}`}
               onClick={() => setActiveTab('series')}>
-              by Series
+              Series
             </button>
           </BoxStyle>
         </>
@@ -338,8 +337,7 @@ function LevelSectionBody({
   const containClassName =
     type === 'level' ? 'level-container' : 'series-container'
 
-  const groupLabel =
-    title && title !== 'none' ? title : undefined
+  const groupLabel = title && title !== 'none' ? title : undefined
   const showDivide = showPkGroupDivider && !!groupLabel
 
   return (

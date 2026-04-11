@@ -521,7 +521,10 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
       )}
       {menu[booktype].search.open && <SearchBar booktype={booktype} />}
       {menu[booktype].continue.open && findBookData.continueSection && (
-        <ContinueViewed continueSection={findBookData.continueSection} />
+        <ContinueViewed
+          continueSection={findBookData.continueSection}
+          booktype={booktype}
+        />
       )}
       {menu[booktype].readingLevel.open && (
         <LevelSection

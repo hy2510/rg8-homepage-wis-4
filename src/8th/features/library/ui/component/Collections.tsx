@@ -89,13 +89,13 @@ export default function Collections({
   return (
     <CollectionsStyled>
       <BoxStyle className="title" display="flex" gap={10}>
-        <Image
+        {/* <Image
           alt="collections"
           src={Assets.Icon.Study.collections}
           width={28}
           height={28}
-        />
-        <span>{t('t8th004')}</span>
+        /> */}
+        <span>· {t('t8th004')}</span>
       </BoxStyle>
       <BoxStyle
         display="grid"

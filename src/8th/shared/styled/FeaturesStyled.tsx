@@ -3181,6 +3181,25 @@ export const RecentlyViewedStyle = styled.div`
     gap: 20px;
   `)}
 
+  .section-tabs {
+    width: fit-content;
+    background-color: #fff;
+  }
+
+  .section-tab {
+    cursor: pointer;
+    border: none;
+    background-color: var(--color-gray-light);
+    border-radius: 100px;
+    padding: 12px 20px;
+    color: var(--font-color-secondary);
+  }
+
+  .section-tab.active {
+    background-color: var(--font-color-primary);
+    color: #fff;
+  }
+
   .list {
     transition: opacity 0.3s ease-in-out;
 
@@ -3208,10 +3227,19 @@ export const RecentlyViewedStyle = styled.div`
       scrollbar-width: none;
       -ms-overflow-style: none;
 
+      &.todo-books-slider {
+        padding-top: 5px;
+      }
+
       .slider-item {
         flex: 0 0 72%;
         min-width: 180px;
         scroll-snap-align: start;
+      }
+
+      &.todo-books-slider .slider-item {
+        flex: 0 0 36%;
+        min-width: 90px;
       }
     }
   }
