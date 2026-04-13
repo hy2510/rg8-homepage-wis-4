@@ -1,5 +1,6 @@
 'use client'
 
+import { Assets } from '@/8th/assets/asset-library'
 import { StudentInfoCardStyle } from '@/8th/shared/styled/FeaturesStyled'
 import { BoxStyle } from '@/8th/shared/ui/Misc'
 import SITE_PATH from '@/app/site-path'
@@ -18,24 +19,24 @@ interface StudentInfoCardProps {
   avatar: string
   readingUnit: string
   isOpenSetting: boolean
-  isOpenAccountInfo: boolean
   customerGroupName?: string
+  /** `menu.account.studentInfo.studyAvaliableDay.open`일 때만 전달 (AccountInfo의 StudyStatusView와 동일하게 `studyEndDay` 사용) */
+  remainingStudyDays?: number
 }
 
 export default function StudentInfoCard({
   name,
   loginId,
-  signUpDate,
   avatar,
   readingUnit,
   customerGroupName,
   isOpenSetting,
-  isOpenAccountInfo,
+  remainingStudyDays,
 }: StudentInfoCardProps) {
   // @Language 'common'
   const { t } = useTranslation()
 
-  return (
+  const card = (
     <StudentInfoCardStyle>
       <BoxStyle className="character-container">
         <Image
@@ -61,23 +62,47 @@ export default function StudentInfoCard({
             flexDirection="column"
             alignItems="flex-start">
             <div className="user-id">{loginId}</div>
+            {remainingStudyDays !== undefined && (
+              <div className="study-remaining-period">
+                {t('t8th093')}
+                {t('t8th049', { num: remainingStudyDays })}
+              </div>
+            )}
             {/* <div className="sign-up-date">{signUpDate}</div> */}
             <div className="customer-group-name">{customerGroupName}</div>
           </BoxStyle>
         </BoxStyle>
-        <BoxStyle className="buttons">
-          {isOpenSetting && (
-            <Link href={SITE_PATH.NW82.ACCOUNTINFO_SETTING} target="_self">
-              {t('t8th080')}
-            </Link>
-          )}
-          {isOpenAccountInfo && (
-            <Link href={SITE_PATH.NW82.ACCOUNTINFO} target="_self">
-              {t('t8th081')}
-            </Link>
-          )}
-        </BoxStyle>
       </BoxStyle>
+      {isOpenSetting && (
+        <span className="settings-gear" aria-hidden>
+          <Image
+            src={Assets.Icon.SettingsGray}
+            alt=""
+            width={22}
+            height={22}
+          />
+        </span>
+      )}
     </StudentInfoCardStyle>
   )
+
+  if (isOpenSetting) {
+    return (
+      <Link
+        href={SITE_PATH.NW82.ACCOUNTINFO_SETTING}
+        target="_self"
+        aria-label={t('t8th080')}
+        style={{
+          display: 'block',
+          width: '100%',
+          textDecoration: 'none',
+          color: 'inherit',
+          cursor: 'pointer',
+        }}>
+        {card}
+      </Link>
+    )
+  }
+
+  return card
 }

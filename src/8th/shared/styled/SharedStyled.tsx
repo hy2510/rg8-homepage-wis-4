@@ -1075,7 +1075,13 @@ export const MenuItemStyle = styled.div`
     `)}
   }
 
-  &.menu-item-avatar-with-level .menu-item-avatar-level-label {
+  &.menu-item-streak-disabled {
+    cursor: default;
+    pointer-events: none;
+  }
+
+  &.menu-item-avatar-with-level .menu-item-avatar-level-label,
+  &.menu-item-streak-with-count .menu-item-streak-count-label {
     position: absolute;
     left: 50%;
     bottom: 0px;

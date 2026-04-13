@@ -12,6 +12,7 @@ import {
   useUpdateStudentLocalConfig,
 } from '@/8th/features/student/service/setting-query'
 import { useStudent } from '@/8th/features/student/service/student-query'
+import AccountSectionTabBar from '@/8th/features/student/ui/component/AccountSectionTabBar'
 import SettingCheckSelector from '@/8th/features/student/ui/component/SettingCheckSelector'
 import SettingHeader from '@/8th/features/student/ui/component/SettingHeader'
 import SettingImageSelector from '@/8th/features/student/ui/component/SettingImageSelector'
@@ -101,9 +102,10 @@ export default function AccountSetting() {
   return (
     <>
       <SubPageNavHeader
-        title={t('t8th082')}
+        title="Setting"
         parentPath={SITE_PATH.NW82.ACTIVITY}
       />
+      <AccountSectionTabBar active="setting" />
       <BoxStyle>
         {isOpenHomeScreen && (
           <MainScreenSetting

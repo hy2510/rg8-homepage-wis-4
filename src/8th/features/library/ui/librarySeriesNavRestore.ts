@@ -45,22 +45,24 @@ export function librarySeriesScrollElementId(seriesTitle: string): string {
   }
 }
 
-export const LIBRARY_SERIES_RESTORE_FLASH_CLASS = 'library-series-restore-flash'
+/** 회색 처리에서 제외할 대상(애니메이션 없음) — `rg-8th.css` dim 규칙과 함께 사용 */
+export const LIBRARY_SERIES_RESTORE_SELECTED_CLASS =
+  'library-series-restore-selected'
 
 export const LIBRARY_SERIES_RESTORE_DIM_BODY_CLASS =
   'library-series-restore-dim-others'
 
-const RESTORE_FLASH_MS = 4000
+const RESTORE_DIM_MS = 1500
 
-/** 복귀 후 썸네일 영역 보더 반짝임 (SeriesItemStyle 루트에 id가 있어야 함) */
+/** 복귀 후 나머지 시리즈 썸네일만 회색 처리; 대상 항목은 그대로 유지 */
 export function flashLibrarySeriesRestoreElement(seriesTitle: string) {
   const id = librarySeriesScrollElementId(seriesTitle)
   const el = document.getElementById(id)
   if (!el) return
   document.body.classList.add(LIBRARY_SERIES_RESTORE_DIM_BODY_CLASS)
-  el.classList.add(LIBRARY_SERIES_RESTORE_FLASH_CLASS)
+  el.classList.add(LIBRARY_SERIES_RESTORE_SELECTED_CLASS)
   window.setTimeout(() => {
-    el.classList.remove(LIBRARY_SERIES_RESTORE_FLASH_CLASS)
+    el.classList.remove(LIBRARY_SERIES_RESTORE_SELECTED_CLASS)
     document.body.classList.remove(LIBRARY_SERIES_RESTORE_DIM_BODY_CLASS)
-  }, RESTORE_FLASH_MS)
+  }, RESTORE_DIM_MS)
 }

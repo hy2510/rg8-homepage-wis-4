@@ -427,13 +427,13 @@ export function makeLevelSectionType(
   const isKorean = locale ? locale.toLowerCase().startsWith('ko') : true
   switch (group) {
     case 'Kto1':
-      sectionTitle = isKorean ? 'K to 1 · 초등' : 'K to 1'
+      sectionTitle = isKorean ? 'K~1 · 초등' : 'K to 1'
       break
     case '2to3':
-      sectionTitle = isKorean ? '2 to 3 · 중등' : '2 to 3'
+      sectionTitle = isKorean ? '2~3 · 중등~고등' : '2 to 3'
       break
     case '4to6':
-      sectionTitle = isKorean ? '4 to 6 · 고등~성인' : '4 to 6'
+      sectionTitle = isKorean ? '4~6 · 고등~성인' : '4 to 6'
       break
   }
 

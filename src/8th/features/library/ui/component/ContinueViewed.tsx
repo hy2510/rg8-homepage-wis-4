@@ -21,7 +21,6 @@ import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { LevelSectionType } from '../levelSectionData'
 import LevelItem from './LevelSectionLevelItem'
-import SeriesItem from './LevelSectionSeriesItem'
 
 const continueViewedTabStorageKey = (booktype: 'eb' | 'pb') =>
   `8th.library.continueViewedTab.${booktype}`
@@ -82,12 +81,13 @@ export default function ContinueViewed({
           .flatMap((group) => group.items)
       : []
 
-  const seriesItems =
-    continueSection.series && continueSection.series.length > 0
-      ? continueSection.series
-          .filter((series) => series.items.length > 0)
-          .flatMap((group) => group.items)
-      : []
+  // 시리즈 항목 숨김 (주석 처리)
+  // const seriesItems =
+  //   continueSection.series && continueSection.series.length > 0
+  //     ? continueSection.series
+  //         .filter((series) => series.items.length > 0)
+  //         .flatMap((group) => group.items)
+  //     : []
 
   const todoItems =
     continueSection.todos && continueSection.todos.length > 0
@@ -98,7 +98,7 @@ export default function ContinueViewed({
 
   const continueItems = [
     ...levelItems.map((item) => ({ type: 'level' as const, item })),
-    ...seriesItems.map((item) => ({ type: 'series' as const, item })),
+    // ...seriesItems.map((item) => ({ type: 'series' as const, item })),
     ...todoItems.map((item) => ({ type: 'todo' as const, item })),
   ].slice(0, 3)
 
@@ -164,26 +164,27 @@ export default function ContinueViewed({
           gridTemplateColumns={isPhone ? undefined : 'repeat(3, 1fr)'}
           gap={10}>
           {continueItems.map((entry, index) => {
-            if (entry.type === 'series') {
-              const series = entry.item
-              return (
-                <div
-                  key={`${entry.type}-${series.title}-${index}`}
-                  className={isPhone ? 'slider-item' : ''}>
-                  <SeriesItem
-                    level={
-                      series.minLevel === series.maxLevel
-                        ? series.minLevel
-                        : `${series.minLevel}~${series.maxLevel}`
-                    }
-                    title={series.title}
-                    imgSrc={series.imgSrc}
-                    bgColor={series.color}
-                    href={series.href}
-                  />
-                </div>
-              )
-            }
+            // 시리즈 카드 (주석 처리)
+            // if (entry.type === 'series') {
+            //   const series = entry.item
+            //   return (
+            //     <div
+            //       key={`${entry.type}-${series.title}-${index}`}
+            //       className={isPhone ? 'slider-item' : ''}>
+            //       <SeriesItem
+            //         level={
+            //           series.minLevel === series.maxLevel
+            //             ? series.minLevel
+            //             : `${series.minLevel}~${series.maxLevel}`
+            //         }
+            //         title={series.title}
+            //         imgSrc={series.imgSrc}
+            //         bgColor={series.color}
+            //         href={series.href}
+            //       />
+            //     </div>
+            //   )
+            // }
 
             const level = entry.item
             return (

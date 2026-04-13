@@ -1065,7 +1065,7 @@
   "t8th255": "Days",
   "t8th256": "Great job! {{num}}-Day Streak!",
   "t8th257": "Keep your study streak going!",
-  "t8th258": "{{num}} Days",
+  "t8th258": "Day {{num}}",
   "t8th259": "Level Test History",
   "t8th260": "You can view your level test history and results here. After your second test, you can retake it after 180 days. Only the latest report can be printed.",
   "t8th261": "Level Test Result · {{txt}}",

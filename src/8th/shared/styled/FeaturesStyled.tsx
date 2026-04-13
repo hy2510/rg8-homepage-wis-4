@@ -1,7 +1,7 @@
 'use client'
 
 import { Assets } from '@/8th/assets/asset-library'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { labtopL, labtopS, phone, tabletS } from './StyleUtils'
 
 // CSS Property for smooth gradient animation
@@ -462,18 +462,50 @@ export const ReadingUnitCardStyle = styled.div`
   }
 `
 
+/** 연속학습 카드 본문(레거시 클래식 + StreakStatusStyle 공통) */
+const streakProgressTextShared = css`
+  .streak-progress-text {
+    width: 100%;
+    color: var(--font-color-secondary);
+    font-family: var(--font-family-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+
+    &.streak-progress-text--days {
+      font-size: var(--font-size-large);
+      font-weight: 700;
+    }
+
+    &.active {
+      color: var(--color-red-medium);
+    }
+
+    span {
+      color: var(--font-color-secondary);
+    }
+  }
+`
+
 export const StreakCardStyle = styled.div`
   width: 100%;
+  ${streakProgressTextShared}
 `
 
 export const StreakStatusStyle = styled.div`
   width: 100%;
-  height: 100px;
+  min-height: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 20px;
+
+  &.streak-status-centered {
+    justify-content: center;
+    gap: 8px;
+  }
 
   .streak-status-ready {
     display: flex;
@@ -546,22 +578,7 @@ export const StreakStatusStyle = styled.div`
     }
   }
 
-  .streak-progress-text {
-    width: 100%;
-    font-size: var(--font-size-small);
-    color: var(--font-color-secondary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &.active {
-      color: var(--color-red-medium);
-    }
-
-    span {
-      color: var(--font-color-secondary);
-    }
-  }
+  ${streakProgressTextShared}
 `
 
 export const StreakItemStyle = styled.div<{ streakDays: string }>`
@@ -3306,8 +3323,6 @@ export const SearchBarStyle = styled.div`
 
 export const LibraryFinderTabBarStyle = styled.div`
   width: 100%;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  margin-bottom: 16px;
 
   .tabs {
     display: flex;
@@ -3367,26 +3382,6 @@ export const SeriesItemStyle = styled.div<{
   /* scrollIntoView(block: start) 시 상단 고정 영역과 겹침 완화 */
   &[id^='library-series-'] {
     scroll-margin-top: 100px;
-  }
-
-  &.library-series-restore-flash .series-image-container {
-    animation: library-series-restore-border-glow 1.5s ease-in-out infinite;
-  }
-
-  @keyframes library-series-restore-border-glow {
-    0%,
-    100% {
-      box-shadow:
-        inset 0 0 0 2px rgba(255, 255, 255, 0.85),
-        0 0 0 2px rgba(220, 38, 38, 0.55),
-        0 0 12px rgba(239, 68, 68, 0.4);
-    }
-    50% {
-      box-shadow:
-        inset 0 0 0 2px rgba(255, 255, 255, 1),
-        0 0 0 4px rgba(220, 38, 38, 1),
-        0 0 28px rgba(248, 113, 113, 0.85);
-    }
   }
 
   .series-image-container {
@@ -4363,8 +4358,8 @@ export const StudentInfoCardStyle = styled.div`
 
     ${tabletS(`
       width: 100%;
-      padding: 20px 0;
-      padding-bottom: 30px;
+      padding: 10px 0;
+      // padding-bottom: 30px;
       margin: 0 auto;
       align-items: center;
       background-color: #fff;
@@ -4394,7 +4389,8 @@ export const StudentInfoCardStyle = styled.div`
 
     .user-id,
     .sign-up-date,
-    .customer-group-name {
+    .customer-group-name,
+    .study-remaining-period {
       font-family: var(--font-family-secondary);
       font-weight: 700;
       font-size: var(--font-size-small);
@@ -4410,16 +4406,20 @@ export const StudentInfoCardStyle = styled.div`
         margin-bottom: 0;
       }
     }
+  }
 
-    .buttons {
-      display: flex;
-      gap: 20px;
+  .settings-gear {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 4;
+    line-height: 0;
+    pointer-events: none;
 
-      a {
-        font-size: var(--font-size-medium);
-        color: var(--font-color-light-blue);
-      }
-    }
+    ${tabletS(`
+      top: 15px;
+      right: 15px;
+    `)}
   }
 `
 

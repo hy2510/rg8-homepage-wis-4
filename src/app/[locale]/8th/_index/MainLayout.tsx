@@ -4,10 +4,9 @@ import { Assets } from '@/8th/assets/asset-library'
 import { useLevelMasters } from '@/8th/features/achieve/service/achieve-query'
 import DailyGoalCard from '@/8th/features/achieve/ui/component/DailyGoalCard'
 import ReadingUnitCard from '@/8th/features/achieve/ui/component/ReadingUnitCard'
-import StreakCard, {
-  StreakCardClassic,
-} from '@/8th/features/achieve/ui/component/StreakCard'
+import StreakCard from '@/8th/features/achieve/ui/component/StreakCard'
 import CalendarModal from '@/8th/features/achieve/ui/modal/CalendarModal'
+import StreakModal from '@/8th/features/achieve/ui/modal/StreakModal'
 import { useSearchFavoriteBook } from '@/8th/features/library/service/search-query'
 import { usePointRank } from '@/8th/features/rank/service/rank-query'
 import { useHistoryReadingInfinite } from '@/8th/features/review/service/history-query'
@@ -34,7 +33,7 @@ import {
   useCustomerConfiguration,
   useCustomerInfo,
 } from '@/8th/shared/context/CustomerContext'
-import { useIsDesktop, useIsPhone } from '@/8th/shared/context/ScreenModeContext'
+import { useIsDesktop } from '@/8th/shared/context/ScreenModeContext'
 import { useLockBodyScroll } from '@/8th/shared/context/ScrollLockContext'
 import useConnectRefreshToken from '@/8th/shared/hook/useConnectRefreshToken'
 import {
@@ -89,7 +88,8 @@ export default function MainLayout({
   const { t } = useTranslation()
 
   const isDesktop = useIsDesktop()
-  const isPhone = useIsPhone()
+  /** 뷰포트 1200px 이하(phone / tablet-small / tablet-large). CSS labtopS·ScreenMode 기준과 동일 */
+  const isCompactTopBar = !isDesktop
 
   const { menu, target, country } = useCustomerConfiguration()
 
@@ -124,6 +124,7 @@ export default function MainLayout({
   }
 
   const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false)
+  const [isStreakModalOpen, setIsStreakModalOpen] = useState(false)
   const [isRightContainerOpen, setIsRightContainerOpen] = useState(false)
 
   /// right container
@@ -551,12 +552,26 @@ export default function MainLayout({
                         onClick={() => setIsCalendarModalOpen(true)}
                       />
                     )}
+                    {isCompactTopBar && menu.streak.open && (
+                      <MenuItemStreak
+                        isTodayStudy={isTodayStudy}
+                        streakCount={
+                          isStreakLegacyMode ? streakDay6th : streakDay
+                        }
+                        disabled={isStreakLegacyMode}
+                        onClick={
+                          isStreakLegacyMode
+                            ? undefined
+                            : () => setIsStreakModalOpen(true)
+                        }
+                      />
+                    )}
                     <MenuItemAvatar
                       image={myAvatar?.imageCircle || ''}
                       avatarName={myAvatar?.name || ''}
                       medal={medalName}
                       levelName={
-                        isPhone
+                        isCompactTopBar
                           ? dailyLearning.data?.settingLevelName || 'PK'
                           : undefined
                       }
@@ -611,13 +626,12 @@ export default function MainLayout({
                   setIsRightContainerOpen(false)
                 }}
               />
-              {isStreakLegacyMode ? (
-                <StreakCardClassic
+              {isDesktop && (
+                <StreakCard
                   isTodayStudy={isTodayStudy}
-                  streakDay={streakDay6th}
+                  streakDay={isStreakLegacyMode ? streakDay6th : streakDay}
+                  titleOpensModal={!isStreakLegacyMode}
                 />
-              ) : (
-                <StreakCard isTodayStudy={isTodayStudy} streakDay={streakDay} />
               )}
               <DailyGoalCard
                 studentId={student.data?.student?.studentId || ''}
@@ -662,6 +676,9 @@ export default function MainLayout({
           {isCalendarModalOpen && (
             <CalendarModal onCloseModal={() => setIsCalendarModalOpen(false)} />
           )}
+          {isStreakModalOpen && (
+            <StreakModal onClose={() => setIsStreakModalOpen(false)} />
+          )}
         </ContentsWrapperStyle>
         <FooterMenu menuLinks={footerMenuLinks} footerRef={footerRef} />
       </BodyContainerStyle>
@@ -703,6 +720,54 @@ function MenuItemCalendar({ onClick }: { onClick?: () => void }) {
             {dayNumber}
           </span>
         </div>
+      </div>
+    </MenuItemStyle>
+  )
+}
+
+function MenuItemStreak({
+  isTodayStudy,
+  streakCount,
+  onClick,
+  disabled = false,
+}: {
+  isTodayStudy: boolean
+  streakCount: number
+  onClick?: () => void
+  /** 레거시(6th) 연속 표기 시 모달 등 상호작용 비활성 */
+  disabled?: boolean
+}) {
+  const streakIconSrc = isTodayStudy
+    ? Assets.Icon.Side.streakDone
+    : streakCount > 0
+      ? Assets.Icon.Side.streakReadyPending
+      : Assets.Icon.Side.streakGone
+
+  return (
+    <MenuItemStyle
+      className={`menu-item-streak-with-count${disabled ? ' menu-item-streak-disabled' : ''}`}
+      style={{ padding: 0 }}
+      onClick={disabled ? undefined : onClick}
+      aria-disabled={disabled || undefined}>
+      <div style={{ position: 'relative', width: 46, height: 46, flexShrink: 0 }}>
+        <Image
+          src={streakIconSrc}
+          alt="streak"
+          width={34}
+          height={34}
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 1,
+          }}
+        />
+        <span
+          className="menu-item-streak-count-label"
+          title={String(streakCount)}>
+          {streakCount}
+        </span>
       </div>
     </MenuItemStyle>
   )

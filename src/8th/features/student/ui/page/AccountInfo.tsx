@@ -14,6 +14,7 @@ import {
   useStudent,
   useStudentHistoryList,
 } from '@/8th/features/student/service/student-query'
+import AccountSectionTabBar from '@/8th/features/student/ui/component/AccountSectionTabBar'
 import ExtraOptionLayoutItem from '@/8th/features/student/ui/component/ExtraOptionLayoutItem'
 import StudentEditInputPassword from '@/8th/features/student/ui/component/StudentEditInputPassword'
 import StudentEditInputPhoneNumber from '@/8th/features/student/ui/component/StudentEditInputPhone'
@@ -32,6 +33,7 @@ import {
   isValidateStudentName,
   isValidateStudentNameKr,
 } from '@/8th/shared/utils/validation'
+import { isUnlimitedStudyPeriod } from '@/8th/shared/utils/student-study-period'
 import SITE_PATH from '@/app/site-path'
 import useTranslation from '@/localization/client/useTranslations'
 import DateUtils from '@/util/date-utils'
@@ -160,21 +162,26 @@ export default function AccountInfo() {
   return (
     <>
       <SubPageNavHeader
-        title={t('t8th081')}
+        title="Setting"
         parentPath={SITE_PATH.NW82.ACTIVITY}
       />
+      <AccountSectionTabBar active="account" />
       <BoxStyle
         display="flex"
         flexDirection="column"
         alignItems="flex-start"
         gap={20}>
-        {menu.account.studentInfo.studyAvaliableDay.open && (
-          <StudyStatusView
-            remainingStudyPeriod={data?.student?.studyEndDay || 0}
-            endStudyDate={studyEndDate}
-            paymentUrl={paymentUrl}
-          />
-        )}
+        {menu.account.studentInfo.studyAvaliableDay.open &&
+          !isUnlimitedStudyPeriod(
+            data?.student?.studyEndDay || 0,
+            data?.student?.studyEndDate,
+          ) && (
+            <StudyStatusView
+              remainingStudyPeriod={data?.student?.studyEndDay || 0}
+              endStudyDate={studyEndDate}
+              paymentUrl={paymentUrl}
+            />
+          )}
         {menu.account.studentInfo.studentName.open && (
           <StudentName
             isKorea={country === 'kr'}

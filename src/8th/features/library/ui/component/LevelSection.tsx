@@ -119,7 +119,7 @@ export default function LevelSection({
     const scrollId = librarySeriesScrollElementId(seriesRestore.seriesTitle)
     const t = window.setTimeout(() => {
       document.getElementById(scrollId)?.scrollIntoView({
-        behavior: 'smooth',
+        behavior: 'auto',
         block: 'start',
         inline: 'nearest',
       })
@@ -180,8 +180,8 @@ export default function LevelSection({
 function SectionTabContent({
   section,
   gapSize,
-  seriesRestore,
-  levelSection,
+  seriesRestore: _seriesRestore,
+  levelSection: _levelSection,
   libraryBookType,
 }: {
   section: LevelSectionType
@@ -191,27 +191,13 @@ function SectionTabContent({
   libraryBookType?: 'EB' | 'PB'
 }) {
   const hasLevels = section.levels.length > 0
-  const hasSeries = !!section.series && section.series.length > 0
+  // const hasSeries = !!section.series && section.series.length > 0
 
-  const preferSeriesTab =
-    !!seriesRestore &&
-    !!hasSeries &&
-    resolveSectionForSeriesRestore(levelSection, seriesRestore) ===
-      section.section
-
-  const [activeTab, setActiveTab] = useState<'level' | 'series'>(
-    preferSeriesTab ? 'series' : hasLevels ? 'level' : 'series',
-  )
-
-  useEffect(() => {
-    setActiveTab(preferSeriesTab ? 'series' : hasLevels ? 'level' : 'series')
-  }, [section.section, hasLevels, preferSeriesTab])
-
-  const showTabs = hasLevels && hasSeries
   const showPkGroupDivider = isDodoAbcPkSection(section.section)
 
   return (
     <>
+      {/* Level / Series 탭 UI (주석 처리). 복원 시: showTabs = hasLevels && hasSeries, activeTab state + 아래 조건을 (!showTabs || activeTab === 'level'|'series') 형태로.
       {showTabs && (
         <>
           <Gap size={gapSize} />
@@ -229,9 +215,9 @@ function SectionTabContent({
           </BoxStyle>
         </>
       )}
+      */}
 
-      {(!showTabs || activeTab === 'level') &&
-        hasLevels &&
+      {hasLevels &&
         section.levels.map((group, index) => {
           return (
             <LevelSectionBody
@@ -260,8 +246,8 @@ function SectionTabContent({
           )
         })}
 
-      {(!showTabs || activeTab === 'series') &&
-        hasSeries &&
+      {/* 시리즈 리스트 (주석 처리)
+      {hasSeries &&
         section.series!.map((group, idx) => {
           return (
             <SeriesSectionBody
@@ -273,6 +259,7 @@ function SectionTabContent({
             />
           )
         })}
+      */}
     </>
   )
 }

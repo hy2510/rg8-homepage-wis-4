@@ -12,7 +12,7 @@ import {
 import { BoxStyle, TextStyle } from '@/8th/shared/ui/Misc'
 import useTranslation from '@/localization/client/useTranslations'
 import Image from 'next/image'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import StreakModal from '../modal/StreakModal'
 
 const MAX_STREAK_DAY = 300
@@ -21,56 +21,17 @@ const STREAK_DAY_STEP = 20
 type StreakStatus = 'zero' | 'progress' | 'award'
 
 /**
- * 연속학습 카드 클래식 버전 컴포넌트
- */
-export function StreakCardClassic({
-  isTodayStudy,
-  streakDay,
-}: {
-  isTodayStudy: boolean
-  streakDay: number
-}) {
-  // @language 'common'
-  const { t } = useTranslation()
-
-  return (
-    <WidgetBoxStyle height="168px">
-      <StreakCardStyle>
-        <CommonTitleStyle noLink>{t('t8th253')}</CommonTitleStyle>
-        <BoxStyle
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-          gap={5}
-          padding="10px">
-          <Image
-            src={Assets.Icon.Side.streakFire}
-            style={{
-              filter: isTodayStudy
-                ? 'none'
-                : 'grayscale(100%) brightness(1.6) contrast(1.8)',
-            }}
-            alt=""
-            width={50}
-            height={50}
-          />
-          <TextStyle fontSize="xlarge">{`${t('t8th258', { num: streakDay })}`}</TextStyle>
-        </BoxStyle>
-      </StreakCardStyle>
-    </WidgetBoxStyle>
-  )
-}
-
-/**
  * 연속학습 카드 컴포넌트
+ * @param titleOpensModal false면 제목 클릭 시 모달 미표시(6th 연속 표기 등 레거시 전용)
  */
 export default function StreakCard({
   isTodayStudy,
   streakDay,
+  titleOpensModal = true,
 }: {
   isTodayStudy: boolean
   streakDay: number
+  titleOpensModal?: boolean
 }) {
   //@language 'common'
   const { t } = useTranslation()
@@ -94,7 +55,10 @@ export default function StreakCard({
       <WidgetBoxStyle height="168px" getAward={streakStatus === 'award'}>
         <StreakCardStyle>
           <CommonTitleStyle
-            onClick={() => setIsModalOpen(true)}
+            noLink={!titleOpensModal}
+            onClick={
+              titleOpensModal ? () => setIsModalOpen(true) : undefined
+            }
             getAward={awardDay === streakDay}>
             {t('t8th253')}
           </CommonTitleStyle>
@@ -102,7 +66,6 @@ export default function StreakCard({
           {streakStatus === 'progress' && (
             <StreakStatusProgress
               streakDay={streakDay}
-              awardDay={awardDay}
               isTodayStudy={isTodayStudy}
             />
           )}
@@ -118,7 +81,9 @@ export default function StreakCard({
           </>
         )}
       </WidgetBoxStyle>
-      {isModalOpen && <StreakModal onClose={() => setIsModalOpen(false)} />}
+      {titleOpensModal && isModalOpen && (
+        <StreakModal onClose={() => setIsModalOpen(false)} />
+      )}
     </>
   )
 }
@@ -184,7 +149,7 @@ function StreakStatusReady() {
     <StreakStatusStyle>
       <div className="streak-status-ready">
         <Image
-          src={Assets.Icon.Side.streakReady}
+          src={Assets.Icon.Side.streakGone}
           alt=""
           width={50}
           height={50}
@@ -198,77 +163,25 @@ function StreakStatusReady() {
 
 function StreakStatusProgress({
   streakDay,
-  awardDay,
   isTodayStudy,
 }: {
   streakDay: number
-  awardDay: number
   isTodayStudy: boolean
 }) {
   // @language 'common'
   const { t } = useTranslation()
 
-  const [progressValue, setProgressValue] = useState(0)
-
-  useEffect(() => {
-    setProgressValue(0)
-    const id = setTimeout(() => {
-      const progressWidth = Math.max(
-        0,
-        Math.min(100, ((streakDay - awardDay + 20) / 20) * 100),
-      )
-
-      setProgressValue(progressWidth)
-    }, 1000)
-    return () => clearTimeout(id)
-  }, [streakDay, awardDay])
-
-  let commentText = ''
-  if (isTodayStudy) {
-    commentText = t('t8th284')
-  } else if (awardDay % STREAK_DAY_STEP !== 0) {
-    commentText = t('t8th285')
-  } else {
-    commentText = t('t8th257')
-  }
+  const streakIconSrc = isTodayStudy
+    ? Assets.Icon.Side.streakDone
+    : Assets.Icon.Side.streakReadyPending
 
   return (
-    <StreakStatusStyle>
-      <BoxStyle
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        gap={10}
-        width="100%">
-        <TextStyle
-          fontSize="small"
-          fontColor="secondary"
-          fontFamily="sans"
-          margin="0 0 20px 0"
-          width="100%">
-          {commentText}
-        </TextStyle>
-        <div className={`streak-progress ${isTodayStudy ? 'active' : ''}`}>
-          <div
-            className={`streak-progress-fill ${isTodayStudy ? 'active' : ''}`}
-            style={{ width: `${progressValue}%` }}>
-            <Image
-              src={Assets.Icon.Side.streakFire}
-              alt=""
-              width={50}
-              height={50}
-              className="streak-fire-icon"
-              style={{ transition: `width 1.5s ease-in-out` }}
-            />
-          </div>
-        </div>
-        <div className={`streak-progress-text ${isTodayStudy ? 'active' : ''}`}>
-          {streakDay}
-          <span>
-            /{awardDay} {t('t8th255')}
-          </span>
-        </div>
-      </BoxStyle>
+    <StreakStatusStyle className="streak-status-centered">
+      <Image src={streakIconSrc} alt="" width={50} height={50} />
+      <div
+        className={`streak-progress-text streak-progress-text--days ${isTodayStudy ? 'active' : ''}`}>
+        {t('t8th258', { num: streakDay })}
+      </div>
     </StreakStatusStyle>
   )
 }

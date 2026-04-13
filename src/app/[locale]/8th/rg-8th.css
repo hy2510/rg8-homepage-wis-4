@@ -204,10 +204,8 @@ input::placeholder {
   color: var(--gray1);
 }
 
-/* 시리즈 복귀 하이라이트 중: 선택 항목 제외 썸네일 흐리게(회색) */
-body.library-series-restore-dim-others [id^='library-series-']:not(.library-series-restore-flash) {
+/* 시리즈 복귀: 선택 항목(.library-series-restore-selected) 제외 썸네일만 회색 */
+body.library-series-restore-dim-others
+  [id^='library-series-']:not(.library-series-restore-selected) {
   filter: grayscale(1) brightness(0.9) opacity(0.52);
-  transition:
-    filter 0.35s ease,
-    opacity 0.35s ease;
 }

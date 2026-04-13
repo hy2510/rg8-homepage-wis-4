@@ -131,7 +131,7 @@ export default function SeriesList({ booktype }: { booktype: string }) {
     const scrollId = librarySeriesScrollElementId(seriesScrollTitle)
     const t = window.setTimeout(() => {
       document.getElementById(scrollId)?.scrollIntoView({
-        behavior: 'smooth',
+        behavior: 'auto',
         block: 'start',
         inline: 'nearest',
       })

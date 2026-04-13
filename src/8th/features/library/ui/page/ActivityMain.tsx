@@ -36,6 +36,7 @@ import { RecentReviewListStyle } from '@/8th/shared/styled/FeaturesStyled'
 import { RoundedFullButton } from '@/8th/shared/ui/Buttons'
 import { BoxStyle, TextStyle } from '@/8th/shared/ui/Misc'
 import { openWindow } from '@/8th/shared/utils/open-window'
+import { isUnlimitedStudyPeriod } from '@/8th/shared/utils/student-study-period'
 import SITE_PATH from '@/app/site-path'
 import useTranslation from '@/localization/client/useTranslations'
 import DateUtils from '@/util/date-utils'
@@ -126,6 +127,16 @@ export default function ActivityMain() {
     ? ranking.data?.user?.totalRank || 0
     : -1
 
+  const remainingStudyDaysForCard =
+    menu.account.studentInfo.studyAvaliableDay.open && student.data
+      ? isUnlimitedStudyPeriod(
+          student.data.student.studyEndDay ?? 0,
+          student.data.student.studyEndDate,
+        )
+        ? undefined
+        : (student.data.student.studyEndDay ?? 0)
+      : undefined
+
   return (
     <>
       <div style={{ order: 1 }}>
@@ -137,7 +148,7 @@ export default function ActivityMain() {
             avatar={myAvatar}
             readingUnit={readingUnitImage}
             isOpenSetting={menu.account.setting.open}
-            isOpenAccountInfo={menu.account.studentInfo.open}
+            remainingStudyDays={remainingStudyDaysForCard}
           />
         )}
       </div>
