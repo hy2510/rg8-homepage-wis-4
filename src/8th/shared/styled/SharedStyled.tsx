@@ -1870,6 +1870,10 @@ export const PagenationStyle = styled.div`
   justify-content: center;
   align-items: center;
   gap: 20px;
+
+  ${phone(`
+    gap: 10px;
+  `)}
 `
 
 export const PagenationItemStyle = styled.div`

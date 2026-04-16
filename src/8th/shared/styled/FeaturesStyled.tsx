@@ -2342,6 +2342,7 @@ export const BookItemStyle = styled.div<{ level: string }>`
 
     .book-cover-wrapper {
       position: relative;
+      width: 100%;
 
       .book-cover {
         display: block;
@@ -2485,6 +2486,12 @@ export const BookItemStyle = styled.div<{ level: string }>`
       text-align: left;
       padding-left: 5px;
       width: 100%;
+      min-width: 0;
+      min-height: 60px;
+
+      ${phone(`
+        min-height: 55px;
+      `)}
 
       .title {
         font-family: var(--font-family-rg-b);
@@ -2493,6 +2500,13 @@ export const BookItemStyle = styled.div<{ level: string }>`
         font-size: 0.85em;
         color: var(--font-color-primary);
         margin: 5px 0;
+        line-height: 1.35;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow-wrap: break-word;
+        word-break: break-word;
 
         ${phone(`
           font-weight: 600;
@@ -2598,7 +2612,7 @@ export const BookListDateGroupStyle = styled.div<{ isTodoList?: boolean }>`
 export const BookListStyle = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  align-items: flex-start;
+  align-items: flex-end;
   gap: 20px 10px;
 
   ${labtopS(`

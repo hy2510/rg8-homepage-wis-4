@@ -19,6 +19,9 @@ import NumberUtils from '@/util/number-utils'
 import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 
+/** 학습일수 프로그레스 바 채움 폭만 이 일수를 분모로 계산 (회색 달성율 문구는 goalDay 기준 유지) */
+const STUDY_DAY_PROGRESS_BAR_DENOMINATOR = 90
+
 // 메인 컴포넌트
 export default function ChallengeBoard({
   title,
@@ -330,13 +333,27 @@ function ProgressItem({
   const progressBaseValue =
     progressType === 'remaining-day' ? elapsedDays : currentValue
 
-  // 현재 진행률 계산
+  // 현재 진행률 (목표일·달성율 문구 등 — study-day는 goalValue(예: 80일) 기준)
   const progressPercentage = NumberUtils.toRgDecimalPoint(
     NumberUtils.getHundredPercentage(progressBaseValue, goalValue, {
       isInteger: false,
       limitZeroToHundred: false,
     }),
   )
+  // study-day 바 채움만 90일 기준 비율
+  const progressBarFillPercentage =
+    progressType === 'study-day'
+      ? NumberUtils.toRgDecimalPoint(
+          NumberUtils.getHundredPercentage(
+            progressBaseValue,
+            STUDY_DAY_PROGRESS_BAR_DENOMINATOR,
+            {
+              isInteger: false,
+              limitZeroToHundred: false,
+            },
+          ),
+        )
+      : progressPercentage
   // 목표 길이 계산 (goalValue 기준)
   const goalLengthPercentage = NumberUtils.toRgDecimalPoint(
     NumberUtils.getHundredPercentage(goalValue, maxValue!, {
@@ -391,7 +408,9 @@ function ProgressItem({
         <div
           className={`progress-bar-fill ${fillColor}`}
           style={{
-            width: isVisible ? `${Math.min(progressPercentage, 100)}%` : '0%',
+            width: isVisible
+              ? `${Math.min(progressBarFillPercentage, 100)}%`
+              : '0%',
           }}></div>
         {goalValue !== maxValue && (
           <div
