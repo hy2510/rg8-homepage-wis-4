@@ -181,14 +181,14 @@ function RankingStudentList({
   return (
     <>
       <div>
-        <TextStyle
+        {/* <TextStyle
           fontFamily="sans"
           fontSize="small"
           fontColor="secondary"
           textAlign="right"
           margin="0 20px 10px auto">
           {`· ${t('t8th250')} · ${t('t8th247')} · ${t('t8th248')}`}
-        </TextStyle>
+        </TextStyle> */}
         {me && (
           <RankChallengeItem
             rank={me.rank}

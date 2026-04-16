@@ -112,17 +112,24 @@ export default function RankMonthlyItem({
           width="40%">
           <BoxStyle
             display="flex"
-            flexWrap="wrap"
-            alignItems="center"
-            justifyContent="flex-end"
+            flexDirection="column"
+            alignItems="flex-end"
+            justifyContent="center"
             gap={5}
             padding="0 10px">
             <TextStyle
               fontColor="primary"
               fontFamily="sans"
-              fontSize="medium"
+              fontSize="small"
               textAlign="right">
-              {`${book}, +${point}P`}
+              {`Reads · ${book}`}
+            </TextStyle>
+            <TextStyle
+              fontColor="primary"
+              fontFamily="sans"
+              fontSize="small"
+              textAlign="right">
+              {`Points · ${point}P`}
             </TextStyle>
           </BoxStyle>
         </BoxStyle>

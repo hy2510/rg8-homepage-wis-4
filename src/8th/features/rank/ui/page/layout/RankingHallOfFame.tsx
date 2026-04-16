@@ -69,14 +69,14 @@ export default function RankingHallOfFame() {
     <>
       <RankHallOfFameHeader />
       <div>
-        <TextStyle
+        {/* <TextStyle
           fontFamily="sans"
           fontSize="small"
           fontColor="secondary"
           textAlign="right"
           margin="0 20px 10px auto">
           {`· ${t('t8th247')} · ${t('t8th248')} · ${t('t8th246')}`}
-        </TextStyle>
+        </TextStyle> */}
         {me && (
           <RankHallOfFameItem
             rank={me.rank}

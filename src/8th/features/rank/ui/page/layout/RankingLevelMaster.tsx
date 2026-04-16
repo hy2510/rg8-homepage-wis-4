@@ -68,14 +68,14 @@ export default function RankingLevelMaster() {
     <>
       <RankLevelMasterHeader />
       <div>
-        <TextStyle
+        {/* <TextStyle
           fontFamily="sans"
           fontSize="small"
           fontColor="secondary"
           textAlign="right"
           margin="0 20px 10px auto">
           {`· ${t('t8th286')} · ${t('t8th246')}`}
-        </TextStyle>
+        </TextStyle> */}
         {list.map((item, i) => (
           <RankLevelMasterItem
             key={`level-master-${item.number}_${i}`}

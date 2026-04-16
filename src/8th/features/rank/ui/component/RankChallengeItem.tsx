@@ -111,13 +111,33 @@ export default function RankChallengeItem({
           alignItems="flex-end"
           gap={5}
           width="40%">
-          <BoxStyle display="flex" alignItems="center" gap={5} padding="0 10px">
+          <BoxStyle
+            display="flex"
+            flexDirection="column"
+            alignItems="flex-end"
+            justifyContent="center"
+            gap={5}
+            padding="0 10px">
             <TextStyle
               fontColor="primary"
               fontFamily="sans"
-              fontSize="medium"
+              fontSize="small"
               textAlign="right">
-              {`${studyDays} days, ${book}, +${point}P`}
+              {`Days · ${studyDays}`}
+            </TextStyle>
+            <TextStyle
+              fontColor="primary"
+              fontFamily="sans"
+              fontSize="small"
+              textAlign="right">
+              {`Reads · ${book}`}
+            </TextStyle>
+            <TextStyle
+              fontColor="primary"
+              fontFamily="sans"
+              fontSize="small"
+              textAlign="right">
+              {`Points · ${point}P`}
             </TextStyle>
           </BoxStyle>
         </BoxStyle>

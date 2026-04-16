@@ -65,7 +65,7 @@ export default function RankChallengeGroupItem({
               </TextStyle>
             )}
           </BoxStyle>
-          <div style={{ width: '0px', height: '50px' }} />
+          {/* <div style={{ width: '0px', height: '50px' }} /> */}
           <BoxStyle
             display="flex"
             flexDirection="column"
@@ -74,7 +74,7 @@ export default function RankChallengeGroupItem({
             {isMe ? (
               <TextStyle
                 fontSize="medium"
-                fontFamily={'round'}
+                fontFamily={'sans'}
                 fontWeight={700}
                 fontColor={'lightBlue'}>
                 {name}
@@ -94,9 +94,9 @@ export default function RankChallengeGroupItem({
           display="flex"
           flexDirection="column"
           justifyContent="center"
-          alignItems="flex-end"
+          alignItems="center"
           gap={5}>
-          {isMe && (
+          {/* {isMe && (
             <BoxStyle
               display="flex"
               alignItems="center"
@@ -106,13 +106,37 @@ export default function RankChallengeGroupItem({
                 fontFamily="sans"
                 fontSize="small"
                 fontColor="secondary">
-                {`${t('t8th251')}, ${t('t8th247')}, ${t('t8th248')}`}
+                {`${t('t8th251')} · ${t('t8th247')} · ${t('t8th248')}`}
               </TextStyle>
             </BoxStyle>
-          )}
-          <BoxStyle display="flex" alignItems="center" gap={5} padding="0 10px">
-            <TextStyle fontColor="primary" fontFamily="sans">
-              {`${averagePoint}P, ${book}, +${point}P`}
+          )} */}
+          <BoxStyle
+            display="flex"
+            flexDirection="column"
+            alignItems="flex-end"
+            justifyContent="center"
+            gap={5}
+            padding="0 10px">
+            <TextStyle
+              fontColor="primary"
+              fontFamily="sans"
+              fontSize="small"
+              textAlign="right">
+              {`Avg. ${averagePoint}P`}
+            </TextStyle>
+            <TextStyle
+              fontColor="primary"
+              fontFamily="sans"
+              fontSize="small"
+              textAlign="right">
+              {`${book} Reads`}
+            </TextStyle>
+            <TextStyle
+              fontColor="primary"
+              fontFamily="sans"
+              fontSize="small"
+              textAlign="right">
+              {`+${point}P`}
             </TextStyle>
           </BoxStyle>
         </BoxStyle>
