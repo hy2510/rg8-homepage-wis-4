@@ -117,11 +117,13 @@ export default function DailyRGBookItem({
           </div>
           <div>
             {isPhone ? (
-              <ResourceDownloadButton
-                isMobile
-                expendMenu={expendMenu}
-                onExpendMenuClick={onExpendMenuClick}
-              />
+              <>
+                {/* <ResourceDownloadButton
+                  isMobile
+                  expendMenu={expendMenu}
+                  onExpendMenuClick={onExpendMenuClick}
+                /> */}
+              </>
             ) : (
               <>
                 {isCurrent && (
@@ -143,12 +145,13 @@ export default function DailyRGBookItem({
           )}
         </div>
       ) : (
-        <div>
-          <ResourceDownloadButton
-            expendMenu={expendMenu}
-            onExpendMenuClick={onExpendMenuClick}
-          />
-        </div>
+        // <div>
+        //   <ResourceDownloadButton
+        //     expendMenu={expendMenu}
+        //     onExpendMenuClick={onExpendMenuClick}
+        //   />
+        // </div>
+        <></>
       )}
     </DailyRGBookItemStyle>
   )

@@ -1649,7 +1649,7 @@ export const DailyRGBookItemStyle = styled.div<{
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      padding: 10px;
+      // padding: 10px;
       gap: 0;
     `)}
 
@@ -1663,8 +1663,8 @@ export const DailyRGBookItemStyle = styled.div<{
       max-width: 380px;
 
       ${phone(`
-        padding: 10px;
-        padding-right: 0;
+        // padding: 10px;
+        padding-right: 10px;
       `)}
 
       .title {
@@ -1893,6 +1893,7 @@ export const DailyRGNavBarStyle = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 10px 20px;
+  padding-right: 15px;
   gap: 0;
   border-top: 1px solid var(--line-color-primary);
   border-bottom: 1px solid var(--line-color-primary);
