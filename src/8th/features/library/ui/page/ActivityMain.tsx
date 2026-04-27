@@ -12,6 +12,10 @@ import {
   useExportVocabulary,
   useExportWorksheet,
 } from '@/8th/features/export/service/export-query'
+import {
+  useAddFavorite,
+  useDeleteFavorite,
+} from '@/8th/features/library/service/library-query'
 import PrintVocabularyModal from '@/8th/features/library/ui/modal/PrintVocabularyModal'
 import { usePointRank } from '@/8th/features/rank/service/rank-query'
 import RankCard from '@/8th/features/rank/ui/component/RankCard'
@@ -36,16 +40,24 @@ import { RecentReviewListStyle } from '@/8th/shared/styled/FeaturesStyled'
 import { RoundedFullButton } from '@/8th/shared/ui/Buttons'
 import { BoxStyle, TextStyle } from '@/8th/shared/ui/Misc'
 import { openWindow } from '@/8th/shared/utils/open-window'
-import { isUnlimitedStudyPeriod } from '@/8th/shared/utils/student-study-period'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import DateUtils from '@/util/date-utils'
 import NumberUtils from '@/util/number-utils'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export default function ActivityMain() {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('나의 활동 화면 진입', {
+      version: '8th',
+      section_name: 'My Activity',
+    })
+  }, [maketingEventTracker])
+
   const { menu, setting } = useCustomerConfiguration()
 
   // @Language 'common'
@@ -127,15 +139,12 @@ export default function ActivityMain() {
     ? ranking.data?.user?.totalRank || 0
     : -1
 
-  const remainingStudyDaysForCard =
-    menu.account.studentInfo.studyAvaliableDay.open && student.data
-      ? isUnlimitedStudyPeriod(
-          student.data.student.studyEndDay ?? 0,
-          student.data.student.studyEndDate,
-        )
-        ? undefined
-        : (student.data.student.studyEndDay ?? 0)
-      : undefined
+  let remainingStudyDays = -1
+  if (menu.account.studentInfo.studyAvaliableDay.open) {
+    if (student.data && student.data?.student.studyEndDay >= 0) {
+      remainingStudyDays = student.data.student.studyEndDay
+    }
+  }
 
   return (
     <>
@@ -145,10 +154,11 @@ export default function ActivityMain() {
             name={student.data?.student.name || ''}
             loginId={student.data?.student.loginId || ''}
             signUpDate={student.data?.student.registDate.substring(0, 10) || ''}
+            remainingStudyDays={remainingStudyDays}
             avatar={myAvatar}
             readingUnit={readingUnitImage}
             isOpenSetting={menu.account.setting.open}
-            remainingStudyDays={remainingStudyDaysForCard}
+            isOpenAccountInfo={menu.account.studentInfo.open}
           />
         )}
       </div>
@@ -294,6 +304,22 @@ function RecentReviewList({ reviewBooks }: { reviewBooks: HistoryStudy[] }) {
       enabled: !!selectedBookInfo,
     },
   )
+  const addFavorite = useAddFavorite({
+    onError: (error?: unknown) => {
+      if (error && typeof (error as any)?.message === 'string') {
+        try {
+          const errorPayload = JSON.parse((error as any).message) as {
+            message: string
+          }
+          alert(errorPayload.message)
+        } catch (e: unknown) {
+          alert('Favorite 추가 실패 Error')
+        }
+      }
+    },
+  })
+  const deleteFavorite = useDeleteFavorite()
+
   const { onStartStudy } = useStartStudy('review')
 
   const onSingleItemVocabulary = (
@@ -371,6 +397,17 @@ function RecentReviewList({ reviewBooks }: { reviewBooks: HistoryStudy[] }) {
     )
   }
 
+  const onToggleFavorite = (levelRoundId: string) => {
+    if (!bookInfo) {
+      return
+    }
+    if (bookInfo?.bookMarkYn) {
+      deleteFavorite.mutate({ levelRoundId })
+    } else {
+      addFavorite.mutate({ levelRoundId })
+    }
+  }
+
   // TODO: 학습이 가능한 경우에만 열리도록 하는 기능이 필요.
   const isStudyEnd = student?.data?.studyState?.isStudyEnd || false
   const onStudyEndMessage = () => {
@@ -440,6 +477,15 @@ function RecentReviewList({ reviewBooks }: { reviewBooks: HistoryStudy[] }) {
                   text: t('t8th059'),
                   onClick: () => {
                     onSingleItemWorksheets(history.levelName)
+                  },
+                })
+              }
+              if (!!bookInfo) {
+                const isFavorite = bookInfo.bookMarkYn
+                expendMenu.push({
+                  text: isFavorite ? 'Remove Favorite' : 'Add Favorite',
+                  onClick: () => {
+                    onToggleFavorite(history.levelRoundId)
                   },
                 })
               }

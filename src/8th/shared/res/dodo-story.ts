@@ -19,6 +19,7 @@ export interface DodoFriends {
     description: string
     imagePath: string
     imagePath2: string
+    moviePath: string
   }[]
 }
 
@@ -34,6 +35,7 @@ export interface DodoFriendsStory {
     description: string
     imagePath: string
     imagePath2: string
+    moviePath: string
   }[]
 }
 
@@ -69,6 +71,7 @@ function mergeDodoFriends(storyData: DodoFriendsStory[]): DodoFriends[] {
         description: story.list[index]?.description ?? '',
         imagePath: story.list[index]?.imagePath ?? '',
         imagePath2: story.list[index]?.imagePath2 ?? '',
+        moviePath: story.list[index]?.moviePath ?? '',
       })),
     }
   })

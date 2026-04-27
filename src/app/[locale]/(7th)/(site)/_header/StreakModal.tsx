@@ -9,8 +9,10 @@ import {
   Modal,
 } from '@/7th/_ui/common/common-components'
 import { useStyle } from '@/7th/_ui/context/StyleContext'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import Image from 'next/image'
+import { useEffect } from 'react'
 import { CONTINUOUS_SETTING } from './MyRgModal'
 
 const STYLE_ID = 'global_option_streak'
@@ -18,6 +20,8 @@ const STYLE_ID = 'global_option_streak'
 // 연속학습 모달
 export function StreakModal({ onCloseModal }: { onCloseModal?: () => void }) {
   const style = useStyle(STYLE_ID)
+
+  const maketingEventTracker = useTrack()
 
   // @language 'common'
   const { t } = useTranslation()
@@ -112,6 +116,12 @@ export function StreakModal({ onCloseModal }: { onCloseModal?: () => void }) {
   const day = String(todays.getDate()).padStart(2, '0')
 
   const formattedDate = `${year}${month}${day}`
+
+  useEffect(() => {
+    maketingEventTracker.eventAction('연속학습어워드 화면 진입', {
+      current_streak: continuousDay === 0 ? undefined : continuousDay,
+    })
+  }, [maketingEventTracker, continuousDay])
 
   return (
     <Modal

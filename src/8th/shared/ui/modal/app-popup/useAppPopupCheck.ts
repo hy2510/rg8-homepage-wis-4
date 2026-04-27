@@ -7,24 +7,24 @@ const AppPopupData = {
   // localStorage에 저장하여 브라우저 캐시 삭제 시 함께 삭제되어 다시 노출됨
   STORAGE_KEY: 'app_popup_dismissed',
   // 팝업 ID, 다시 안나오도록 하는 구분 값
-  POPUP_ID: '20260323',
-  START_DATE: new Date('2026-03-23'),
-  END_DATE: new Date('2026-04-10'),
+  POPUP_ID: '20260427',
+  START_DATE: new Date('2026-04-27'),
+  END_DATE: new Date('2026-05-12'),
   // 제외할 고객사 ID 리스트
   EXCLUDE_CUSTOMER_IDS: [
-    '002410',
-    '001521',
-    '002376',
-    '002269',
-    '002459',
-    '001388',
-    '000902',
-    '001754',
-    '002453',
-    '001523',
-    '000171',
-    '000928',
-    '001934',
+    // '002410',
+    // '001521',
+    // '002376',
+    // '002269',
+    // '002459',
+    // '001388',
+    // '000902',
+    // '001754',
+    // '002453',
+    // '001523',
+    // '000171',
+    // '000928',
+    // '001934',
   ],
   // 팝업 이미지
   POPUP_IMAGE: popupImage,
@@ -75,16 +75,16 @@ export function useAppPopupCheck({
 
     // 학원 제외
     if (target === 'academy') {
-      return
+      // return
     }
 
     // 고객사 제외 체크 (학교 아니면서 방과 후 아닌 곳)
-    if (
-      target === 'school' &&
-      AppPopupData.EXCLUDE_CUSTOMER_IDS.includes(customerId)
-    ) {
-      return
-    }
+    // if (
+    //   target === 'school' &&
+    //   AppPopupData.EXCLUDE_CUSTOMER_IDS.includes(customerId)
+    // ) {
+    //   return
+    // }
 
     // 날짜 체크: START_DATE ~ END_DATE 사이인지 확인
     const now = new Date()

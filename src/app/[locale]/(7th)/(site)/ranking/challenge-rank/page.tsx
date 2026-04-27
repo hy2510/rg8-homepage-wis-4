@@ -12,9 +12,10 @@ import {
 } from '@/7th/_ui/common/common-components'
 import { useStyle } from '@/7th/_ui/context/StyleContext'
 import LoadingScreen from '@/7th/_ui/modules/LoadingScreen'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import DateUtils from '@/util/date-utils'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ChallengeGroupRank from './_cpnt/ChallengeGroupRank'
 import ChallengeRank from './_cpnt/ChallengeRank'
 
@@ -37,6 +38,8 @@ export default function Page() {
 }
 
 function ChallengeRanking() {
+  const maketingEventTracker = useTrack()
+
   const style = useStyle(STYLE_ID)
 
   // @Language 'common'
@@ -70,6 +73,13 @@ function ChallengeRanking() {
 
   const { target } = useSiteBlueprint()
   const isSchool = target.school
+
+  useEffect(() => {
+    maketingEventTracker.eventAction('영어독서왕 랭킹 조회', {
+      selected_event: eventTitle,
+      period: `${eventStartDate} ~ ${eventEndDate}`,
+    })
+  }, [maketingEventTracker, eventTitle, eventStartDate, eventEndDate])
 
   return (
     <main className={style.challenge_rank}>

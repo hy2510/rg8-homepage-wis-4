@@ -130,10 +130,10 @@ export function isGoTo8th() {
     customerId: siteCustomerId,
     studentId: siteStudentId,
   })
-  if (siteBridge) {
-    return siteBridge.useType === 'nw'
+  if (!!siteBridge && siteBridge.useType === 'od') {
+    return false
   }
-  return false
+  return true
 }
 
 export function isAvailable8thCustomer() {

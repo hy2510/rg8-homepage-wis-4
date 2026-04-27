@@ -12,9 +12,10 @@ import {
   ExportModePanel,
 } from '@/7th/_ui/modules/library-export-mode-panel/export-mode-panel'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import { useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import StudentHistorySelectModal from '../_cpnt/StudentHistorySelectModal'
 import useExport, {
   ExportAction,
@@ -38,6 +39,8 @@ export default function Page() {
 }
 
 function NewBookLayout({ keyword }: { keyword: string }) {
+  const maketingEventTracker = useTrack()
+
   const style = useStyle(STYLE_ID)
 
   //// @Language 'common'
@@ -75,6 +78,12 @@ function NewBookLayout({ keyword }: { keyword: string }) {
       ? supportExportAction[0].action
       : undefined,
   )
+
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 섹션 탭 클릭', {
+      section_name: 'New Books',
+    })
+  }, [maketingEventTracker])
 
   return (
     <main className={style.search_result}>

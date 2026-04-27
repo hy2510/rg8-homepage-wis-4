@@ -31,8 +31,6 @@ import { VocabularyOption } from '@/8th/shared/hook/useExportPanel'
 import useStartStudy from '@/8th/shared/hook/useStartStudy'
 import {
   DailyRGCourseListStyle,
-  DailyRGSubTextStyle,
-  GoToNextLevelButtonStyle,
   QuickJumpButtonStyle,
 } from '@/8th/shared/styled/FeaturesStyled'
 import { Gap } from '@/8th/shared/ui/Misc'
@@ -50,7 +48,6 @@ import {
   useRef,
   useState,
 } from 'react'
-import DailyRGNavBar from '../component/DailyRGNavBar'
 
 // Daily RG Home Scroll 수정된 버전
 export default function DailyRGHome({ stage }: { stage?: string }) {
@@ -180,26 +177,9 @@ export default function DailyRGHome({ stage }: { stage?: string }) {
     return <></>
   }
 
-  const currentSubText = stages.find(
-    (s) => s.stageId === currentStage.stageId,
-  )?.subText
-
-  const onDailyStageChange = (
-    stageId: string,
-    stageName: string,
-    levelKey: string,
-  ) => {
-    setCurrentStage({
-      stageId,
-      stageName,
-      levelKey,
-    })
-    router.replace(`${SITE_PATH.NW82.DAILY_RG}?stage=${stageId}`)
-  }
-
   return (
     <>
-      {/* <DailyRGLevel
+      <DailyRGLevel
         stageTitle={currentStage.stageName}
         currentStageId={currentStage.stageId}
         stages={stages}
@@ -211,25 +191,7 @@ export default function DailyRGHome({ stage }: { stage?: string }) {
           })
           router.replace(`${SITE_PATH.NW82.DAILY_RG}?stage=${stageId}`)
         }}
-      /> */}
-
-      {/* levelKey에 맞는 서브 텍스트 표시 */}
-      {currentSubText != null && currentSubText !== '' && (
-        <>
-          <DailyRGSubTextStyle>{currentSubText}</DailyRGSubTextStyle>
-          <DailyRGSubTextStyle isFollowText>
-            Follow your reading journey!
-          </DailyRGSubTextStyle>
-        </>
-      )}
-
-      <Gap size={10} />
-      <DailyRGNavBar
-        currentStageId={currentStage.stageId}
-        stages={stages}
-        onStageChange={onDailyStageChange}
       />
-
       <DailyRGContentList
         stageId={currentStage.stageId}
         levelKey={currentStage.levelKey}
@@ -452,10 +414,10 @@ function DailyRGContentList({
     // 타겟 요소의 절대 중앙 위치
     const targetElementCenter = targetElementTop + boxHeight / 2
 
-    // 정중앙 정렬보다 스크롤을 EXTRA_PX 만큼 더 내림 (scrollTop 증가)
-    const FOCUS_SCROLL_EXTRA_DOWN_PX = -50
-    const moveYCenter =
-      targetElementCenter - window.innerHeight / 2 + FOCUS_SCROLL_EXTRA_DOWN_PX
+    // 화면 정중앙에 오도록 스크롤 위치 계산
+    // 화면 중앙 = window.innerHeight / 2
+    // 스크롤 위치 = 타겟 요소 중앙 - 화면 중앙
+    const moveYCenter = targetElementCenter - window.innerHeight / 2
 
     return {
       itemHeight: boxHeight,
@@ -887,6 +849,7 @@ function DailyRGContentList({
                         passCount={book.rgPointCount}
                         isPreK={isPreK}
                         preKCharacter={book.character}
+                        isMovieAvailable={!!book.animationPath}
                         expendMenu={expendMenu}
                         color={bgColor}
                         onStart={() => {
@@ -929,6 +892,22 @@ function DailyRGContentList({
                             })
                           }
                         }}
+                        onContentClick={() => {
+                          if (isStudyEnd) {
+                            onStudyEndMessage()
+                            return
+                          }
+                          setSelectBookInfo({
+                            levelRoundId: book.levelRoundId,
+                            surfaceImagePath: book.surfaceImagePath,
+                            title: book.topicTitle,
+                            bookCode: book.levelName,
+                          })
+                          setSelectBookInfoOption({
+                            ...selectBookInfoOption,
+                            isShowModal: true,
+                          })
+                        }}
                       />
                     )
                   })}
@@ -966,17 +945,6 @@ function DailyRGContentList({
           }}
         />
       )}
-
-      <Gap size={20} />
-      <GoToNextLevelButtonStyle>
-        <>Level Up!</>
-        <Image
-          src={Assets.Icon.arrowRightBlack}
-          alt="arrow right"
-          width={20}
-          height={20}
-        />
-      </GoToNextLevelButtonStyle>
 
       <Gap size={100} />
 

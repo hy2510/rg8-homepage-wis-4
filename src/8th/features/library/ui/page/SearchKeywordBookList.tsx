@@ -32,8 +32,9 @@ import Pagenation from '@/8th/shared/ui/Pagenation'
 import { SubPageNavHeader } from '@/8th/shared/ui/SubPageNavHeader'
 import { openWindow } from '@/8th/shared/utils/open-window'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 type SearchKeywordType =
   | 'Title'
@@ -89,8 +90,8 @@ function LibraryBookListDependency({
     <>
       <SubPageNavHeader
         title={`${t('t8th038')}`}
+        subTitle={booktype === 'EB' ? `(${t('t8th325')})` : `(${t('t8th326')})`}
         parentPath={booktype === 'EB' ? SITE_PATH.NW82.EB : SITE_PATH.NW82.PB}
-        libraryBookType={booktype}
       />
       <LibraryBookList
         bookType={booktype}
@@ -117,6 +118,16 @@ function LibraryBookList({
   keyword: string
   type?: SearchKeywordType
 }) {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 검색', {
+      version: '8th',
+      section_name: 'Search',
+      book_type: bookType === 'EB' ? 'eBook' : 'p Book Quiz',
+      keyword: keyword,
+    })
+  }, [maketingEventTracker, bookType, keyword])
+
   // @Language 'common'
   const { t } = useTranslation()
 

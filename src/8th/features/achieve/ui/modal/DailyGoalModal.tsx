@@ -13,10 +13,11 @@ import {
 } from '@/8th/shared/styled/SharedStyled'
 import { BoxStyle, StreakLine, TextStyle } from '@/8th/shared/ui/Misc'
 import { ModalContainer } from '@/8th/shared/ui/Modal'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import DateUtils from '@/util/date-utils'
 import Image from 'next/image'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import DailyGoalItem from '../component/DailyGoalItem'
 import DailyGoalSetting from '../component/DailyGoalSetting'
 
@@ -42,6 +43,13 @@ interface DailyGoalItemData {
 }
 
 export default function DailyGoalModal({ onClose }: DailyGoalModalProps) {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('일일목표 화면 진입', {
+      version: '8th',
+    })
+  }, [maketingEventTracker])
+
   // @Language 'common'
   const { t } = useTranslation()
 

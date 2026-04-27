@@ -1,3 +1,5 @@
+'use client'
+
 import { Assets } from '@/8th/assets/asset-library'
 import {
   useCalendarAttend,
@@ -14,6 +16,7 @@ import {
 } from '@/8th/shared/styled/SharedStyled'
 import { ModalContainer } from '@/8th/shared/ui/Modal'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import LevelUtils from '@/util/level-utils'
 import Image from 'next/image'
@@ -50,6 +53,7 @@ export default function CalendarModal({ onCloseModal }: CalendarModalProps) {
   // @Language 'common'
   const { t } = useTranslation()
 
+  const maketingEventTracker = useTrack()
   const router = useRouter()
 
   const [currentDate, setCurrentDate] = useState(new Date()) // 현재 날짜로 초기화
@@ -228,10 +232,20 @@ export default function CalendarModal({ onCloseModal }: CalendarModalProps) {
     }
   }
 
+  useEffect(() => {
+    maketingEventTracker.eventAction('캘린더 화면 진입', {
+      version: '8th',
+    })
+  }, [maketingEventTracker])
+
   const isLoading = calendarStudy.isFetching || calendarAttend.isFetching
 
   const onCalendarItemClick = (year: number, month: number, day: number) => {
     const date = `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`
+    maketingEventTracker.eventAction('캘린더 날짜 클릭', {
+      version: '8th',
+      selected_date: date,
+    })
     router.push(`${SITE_PATH.NW82.REVIEW}?startDate=${date}&endDate=${date}`)
     if (onCloseModal) {
       onCloseModal()

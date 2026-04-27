@@ -189,6 +189,7 @@ export default function LoginContextProvider({
           setAfterLoginFlag('student')
           setRedirect(destination ? destination : DESTINATION.STUDY)
           maketingEventTracker.eventAction('로그인')
+          maketingEventTracker.eventAction('로그인 성공')
         } else {
           setAfterLoginFlag('staff')
           setRedirect(`${STAFF_PATH.MAIN}?open=1`)
@@ -240,6 +241,11 @@ export default function LoginContextProvider({
           } else if (errorCode === 9998) {
             // 9998 오류 발생 시 아무 메시지도 출력하지 않음.
             return
+          }
+          if (errorCode !== 2001) {
+            maketingEventTracker.eventAction('로그인 실패', {
+              error_reason: `[CODE:${errorCode}]${errorMessage}`,
+            })
           }
         }
         onError && onError(errorCode, errorMessage, redirect)

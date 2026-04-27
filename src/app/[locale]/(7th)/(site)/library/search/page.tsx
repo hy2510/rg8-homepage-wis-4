@@ -20,6 +20,7 @@ import {
   ExportModePanel,
 } from '@/7th/_ui/modules/library-export-mode-panel/export-mode-panel'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -42,6 +43,8 @@ export default function Page() {
 }
 
 function SearchLayout({ keyword }: { keyword: string }) {
+  const maketingEventTracker = useTrack()
+
   const style = useStyle(STYLE_ID)
 
   // @Language 'common'
@@ -102,6 +105,14 @@ function SearchLayout({ keyword }: { keyword: string }) {
       ? supportExportAction[0].action
       : undefined,
   )
+
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 섹션 탭 클릭', {
+      section_name: 'Search',
+      content_type: tab === 'ebook' ? 'ebook' : 'pbook',
+      keyword: keyword,
+    })
+  }, [maketingEventTracker, keyword, tab])
 
   return (
     <main className={style.search_result}>

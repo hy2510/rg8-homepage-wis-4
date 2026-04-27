@@ -25,6 +25,7 @@ interface DailyRGBookItemProps {
   isCurrent?: boolean
   isPreK?: boolean
   preKCharacter?: string
+  isMovieAvailable?: boolean
   expendMenu?: {
     text: string
     subText?: string
@@ -33,6 +34,7 @@ interface DailyRGBookItemProps {
   onExpendMenuClick?: (isOpen: boolean) => void
   onStart?: () => void
   onImageLoaded?: (isSuccess: boolean) => void
+  onContentClick?: () => void
 }
 
 export default function DailyRGBookItem({
@@ -46,10 +48,12 @@ export default function DailyRGBookItem({
   isCurrent,
   isPreK,
   preKCharacter,
+  isMovieAvailable,
   expendMenu,
-  onStart,
   onExpendMenuClick,
+  onStart,
   onImageLoaded,
+  onContentClick,
 }: DailyRGBookItemProps) {
   const isPhone = useIsPhone()
 
@@ -86,7 +90,7 @@ export default function DailyRGBookItem({
         {passCount === 1 && <div className="completed-mark" />}
         {passCount >= 2 && <div className="completed-mark-twin" />}
         <div className={isPreK ? 'prek-thumbnail' : 'book-cover'}>
-          <div className="image-wrapper">
+          <div className="image-wrapper" onClick={onContentClick}>
             <Image
               src={imgUrl}
               alt="thumbnail"
@@ -105,11 +109,22 @@ export default function DailyRGBookItem({
                 height={42}
               />
             )}
+            {isMovieAvailable && (
+              <Image
+                src={Assets.Icon.playRed}
+                className={'movie-icon'}
+                alt={'movie-icon'}
+                width={42}
+                height={42}
+              />
+            )}
           </div>
         </div>
         <div className="title-container">
           <div className="title-box">
-            <div className="title">{title}</div>
+            <div className="title" onClick={onContentClick}>
+              {title}
+            </div>
             {/* <span className="dot">•</span> */}
             <div className={`point ${isCompleted ? 'good-job' : ''}`}>
               {pointText}
@@ -118,11 +133,11 @@ export default function DailyRGBookItem({
           <div>
             {isPhone ? (
               <>
-                {/* <ResourceDownloadButton
-                  isMobile
-                  expendMenu={expendMenu}
-                  onExpendMenuClick={onExpendMenuClick}
-                /> */}
+                {/*<ResourceDownloadButton
+                isMobile
+                expendMenu={expendMenu}
+                onExpendMenuClick={onExpendMenuClick}
+              /> */}
               </>
             ) : (
               <>
@@ -145,13 +160,14 @@ export default function DailyRGBookItem({
           )}
         </div>
       ) : (
-        // <div>
-        //   <ResourceDownloadButton
-        //     expendMenu={expendMenu}
-        //     onExpendMenuClick={onExpendMenuClick}
-        //   />
-        // </div>
-        <></>
+        <>
+          {/* <div>
+          <ResourceDownloadButton
+            expendMenu={expendMenu}
+            onExpendMenuClick={onExpendMenuClick}
+          />
+        </div> */}
+        </>
       )}
     </DailyRGBookItemStyle>
   )

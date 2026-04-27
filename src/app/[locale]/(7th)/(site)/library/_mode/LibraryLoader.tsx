@@ -13,6 +13,7 @@ import {
 import LoadingScreen from '@/7th/_ui/modules/LoadingScreen'
 import { getStudentLocalConfig } from '@/8th/features/student/model/student-local-config'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import BookReadingMode from './BookReadingMode'
@@ -117,6 +118,8 @@ function BookReadingLoading({
     status: string
   }
 }) {
+  const maketingEventTracker = useTrack()
+
   const newOption = { ...option }
   if (option.bookType === 'EB') {
     if (option.level === '6C') {
@@ -128,6 +131,12 @@ function BookReadingLoading({
     }
   }
   const { loading, error } = useOnLoadLibraryHome(newOption)
+
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 섹션 탭 클릭', {
+      section_name: '도서 메인',
+    })
+  }, [maketingEventTracker])
 
   if (loading) {
     return <LoadingScreen />

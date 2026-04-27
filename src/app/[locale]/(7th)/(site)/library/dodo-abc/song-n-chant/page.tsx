@@ -12,6 +12,8 @@ import StudyLevelBox from '@/7th/_ui/modules/library-find-study-level-selector/S
 import StudyLevelDropDown, {
   DropDownOption,
 } from '@/7th/_ui/modules/library-find-study-level-selector/StudyLevelDropDown'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
+import { useEffect } from 'react'
 import StudentHistorySelectModal from '../../_cpnt/StudentHistorySelectModal'
 import useQuickStudyStart from '../../_fn/use-quick-study-start'
 import DodoABCNavBar from '../_component/DodoABCNavBar'
@@ -28,6 +30,8 @@ export default function Page() {
 }
 
 function SongAndChant() {
+  const maketingEventTracker = useTrack()
+
   const style = useStyle(STYLE_ID)
 
   const { fetch: updateBook } = useFetchLibraryLevelDodoAbc()
@@ -49,6 +53,12 @@ function SongAndChant() {
   const onChangeFilterActivity = (activity: string) => {
     updateBook({ activity })
   }
+
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 섹션 탭 클릭', {
+      section_name: 'Dodo ABC Song & Chant',
+    })
+  }, [maketingEventTracker])
 
   const {
     studentHistoryId,

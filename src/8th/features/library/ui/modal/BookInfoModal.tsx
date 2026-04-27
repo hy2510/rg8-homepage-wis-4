@@ -396,6 +396,9 @@ export default function BookInfoModal({
 
       const { mode = undefined, type = 'study' } = params || {}
       if (bookInfo.studyId) {
+        if (studyStart.isPending) {
+          return
+        }
         studyStart.mutate({
           type,
           bookInfo: bookInfo,
@@ -472,11 +475,17 @@ export default function BookInfoModal({
     if (isStartAction) {
       setShowLevelInRange({ isShow: false, compare: 0 })
       if (type === 'add') {
+        if (addTodo.isPending) {
+          return
+        }
         addTodo.mutate({
           levelRoundId,
           studentHistoryId: queryStudentHistoryId!,
         })
       } else {
+        if (studyStart.isPending) {
+          return
+        }
         studyStart.mutate({
           type: type || 'study',
           bookInfo: bookInfo,

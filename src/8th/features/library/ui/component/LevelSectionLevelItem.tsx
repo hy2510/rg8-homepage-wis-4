@@ -25,29 +25,6 @@ interface LevelItemProps {
   fontColor?: string
 }
 
-function ProgressDonut({
-  completed,
-  total,
-}: {
-  completed: number
-  total: number
-}) {
-  const safeTotal = total > 0 ? total : 1
-  const percent = Math.min(100, Math.max(0, (completed / safeTotal) * 100))
-
-  return (
-    <div
-      className="progress-donut"
-      style={
-        {
-          '--progress': `${percent}%`,
-        } as React.CSSProperties
-      }>
-      <div className="progress-donut-inner">{Math.round(percent)}%</div>
-    </div>
-  )
-}
-
 export default function LevelItem({
   type,
   level,
@@ -199,5 +176,28 @@ function LevelPkItem({
         </div>
       </LevelPkItemStyle>
     </Link>
+  )
+}
+
+function ProgressDonut({
+  completed,
+  total,
+}: {
+  completed: number
+  total: number
+}) {
+  const safeTotal = total > 0 ? total : 1
+  const percent = Math.min(100, Math.max(0, (completed / safeTotal) * 100))
+
+  return (
+    <div
+      className="progress-donut"
+      style={
+        {
+          '--progress': `${percent}%`,
+        } as React.CSSProperties
+      }>
+      <div className="progress-donut-inner">{Math.round(percent)}%</div>
+    </div>
   )
 }

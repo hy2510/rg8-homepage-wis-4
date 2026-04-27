@@ -1,3 +1,5 @@
+'use client'
+
 import { Assets } from '@/8th/assets/asset-library'
 import { useSuccessiveStudy } from '@/8th/features/achieve/service/achieve-query'
 import { useContinuousStudy } from '@/8th/features/student/service/learning-query'
@@ -7,6 +9,7 @@ import {
 } from '@/8th/shared/styled/SharedStyled'
 import { BoxStyle, StreakLine, TextStyle } from '@/8th/shared/ui/Misc'
 import { ModalContainer } from '@/8th/shared/ui/Modal'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import DateUtils from '@/util/date-utils'
 import Image from 'next/image'
@@ -35,6 +38,8 @@ interface StreakModalProps {
 export default function StreakModal({ onClose }: StreakModalProps) {
   // @language 'common'
   const { t } = useTranslation()
+
+  const maketingEventTracker = useTrack()
 
   const continuousStudy = useContinuousStudy()
   const { data: streakData, isFetching: isStreakFetching } =
@@ -138,6 +143,13 @@ export default function StreakModal({ onClose }: StreakModalProps) {
       return () => clearTimeout(timer)
     }
   }, [currentStreakItemDay])
+
+  useEffect(() => {
+    maketingEventTracker.eventAction('연속학습어워드 화면 진입', {
+      version: '8th',
+      current_streak: currentStreakDay === 0 ? undefined : currentStreakDay,
+    })
+  }, [maketingEventTracker, currentStreakDay])
 
   return (
     <ModalContainer>

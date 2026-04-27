@@ -4,6 +4,7 @@ import { useCustomerInfo } from '@/7th/_context/CustomerContext'
 import LoginContextProvider from '@/7th/_context/LoginContext'
 import { CheckBox } from '@/7th/_ui/common/common-components'
 import { useStyle } from '@/7th/_ui/context/StyleContext'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import SignupKR from './SignupKR'
@@ -14,6 +15,8 @@ const STYLE_ID = 'page_sign_up'
 export default function Signup() {
   const style = useStyle(STYLE_ID)
 
+  const maketingEventTracker = useTrack()
+
   // @language 'common'
   const { t } = useTranslation()
 
@@ -23,6 +26,15 @@ export default function Signup() {
 
   const isNotSupportSignup =
     customerUse !== 'Private' || (countryCode !== 'KR' && countryCode !== 'VN')
+
+  useEffect(() => {
+    if (!isNotSupportSignup) {
+      maketingEventTracker.eventAction('회원가입 진입', {
+        country_code: countryCode,
+      })
+    }
+  }, [isNotSupportSignup, countryCode, maketingEventTracker])
+
   if (isNotSupportSignup) {
     return <div>{t('t275')}</div>
   }

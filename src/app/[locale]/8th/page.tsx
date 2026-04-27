@@ -114,11 +114,11 @@ export default function Page() {
         key={`${SITE_PATH.NW82.DAILY_RG}`}
         href={`${SITE_PATH.NW82.DAILY_RG}`}
         style={linkStyle}>
-        {'Daily RG'}
+        {'RG TRACK'}
       </Link>
       <Link
         key={`${SITE_PATH.NW82.DAILY_RESULT}`}
-        href={`${SITE_PATH.NW82.DAILY_RESULT}?stage=1&section=1`}
+        href={`${SITE_PATH.NW82.DAILY_RESULT}?level=KB&stage=1&section=1`}
         style={linkStyle}>
         {'Daily Book List'}
       </Link>
@@ -204,7 +204,7 @@ export default function Page() {
         <ReadingUnitStoryModal onClose={() => setModal(undefined)} />
       )}
       {modal === 'leveltest' && (
-        <LevelTestInfoModal onCloseModal={() => setModal(undefined)} />
+        <LevelTestInfoModal onClose={() => setModal(undefined)} />
       )}
       {modal === 'dailygoal' && (
         <DailyGoalModal onClose={() => setModal(undefined)} />

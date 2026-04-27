@@ -8,9 +8,10 @@ import {
 } from '@/7th/_client/store/student/info/selector'
 import { useSiteBlueprint } from '@/7th/_context/CustomerContext'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Purchase from '../_cpnt/Purchase'
 import PurchaseInApp from '../_cpnt/PurchaseInApp'
 
@@ -21,6 +22,12 @@ export default function Page() {
 
   // @language 'common'
   const { t } = useTranslation()
+
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('상품 리스트 조회')
+    maketingEventTracker.eventAction('이용권 구매 화면 진입')
+  }, [maketingEventTracker])
 
   const path = usePathname()
   const isLogOff = useStudentInfoFlagLogin() === 'off'

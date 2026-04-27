@@ -346,6 +346,9 @@ export default function TodoBookInfoModal({
           alert(t('t8th314'))
           return
         }
+        if (addTodo.isPending) {
+          return
+        }
         addTodo.mutate({
           levelRoundId,
           studentHistoryId: queryStudentHistoryId!,

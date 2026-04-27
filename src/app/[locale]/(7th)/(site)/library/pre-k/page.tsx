@@ -22,8 +22,9 @@ import LibrarySearchFilter, {
   LibraryFilterOption,
 } from '@/7th/_ui/modules/library-set-fliter/LibrarySearchFilter'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import StudentHistorySelectModal from '../_cpnt/StudentHistorySelectModal'
 import useExport, { useSupportExportActionSearch } from '../_fn/use-export'
 
@@ -47,6 +48,8 @@ function ValidatePreK() {
 }
 
 function PreKLayout() {
+  const maketingEventTracker = useTrack()
+
   const style = useStyle(STYLE_ID)
   // @Language 'common'
   const { t } = useTranslation()
@@ -120,6 +123,12 @@ function PreKLayout() {
   }
 
   const [bookInfo, setBookInfo] = useState<string | undefined>(undefined)
+
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 섹션 탭 클릭', {
+      section_name: 'PreK',
+    })
+  }, [maketingEventTracker])
 
   const {
     isSelectMode,

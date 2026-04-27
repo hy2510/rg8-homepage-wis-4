@@ -6,7 +6,10 @@ import {
 } from '@/8th/shared/styled/SharedStyled'
 import { BoxStyle, TextStyle } from '@/8th/shared/ui/Misc'
 import { ModalContainer } from '@/8th/shared/ui/Modal'
+import { useFetchStudentWithdraw } from '@/app/[locale]/(7th)/_client/store/student/withdraw/hook'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
+import { useRouter } from 'next/navigation'
 import { useMemo, useState } from 'react'
 
 export default function WithDrawModal({
@@ -14,8 +17,15 @@ export default function WithDrawModal({
 }: {
   onClickClose?: () => void
 }) {
+  const maketingEventTracker = useTrack()
+
   // @language 'common'
   const { t } = useTranslation()
+
+  const router = useRouter()
+
+  const { fetch: fetchStudentWithdraw, loading: withdrawLoading } =
+    useFetchStudentWithdraw()
 
   const [withdrawCause, setWithdrawCause] = useState('')
   const [isOnEtcCause, setOnEtcCause] = useState(false)
@@ -90,7 +100,19 @@ export default function WithDrawModal({
       )[0]
       const cause = `${t('t8th172')} : ${item.key !== '9' ? `${item.value}` : `${item.value}: ${etcCause}`}` //  사유
 
-      alert('delete ' + cause)
+      fetchStudentWithdraw({
+        cause: cause,
+        callback: (isSuccess) => {
+          if (isSuccess) {
+            maketingEventTracker.eventAction('탈퇴', {
+              version: '8th',
+              deactivation_reason: cause,
+            })
+            router.replace('/signoff')
+          }
+        },
+      })
+      // alert('delete ' + cause)
     }
   }
 

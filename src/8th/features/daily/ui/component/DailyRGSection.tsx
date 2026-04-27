@@ -45,11 +45,12 @@ export default function DailyRGSection({
     isActive && _progressColor ? _progressColor : 'var(--color-gray-strong)'
 
   return (
-    <DailyRGCourseContainerStyle ref={ref} onClick={onSectionClick}>
+    <DailyRGCourseContainerStyle ref={ref}>
       <DailyRGCourseStyle
-        bgColor={isCompleted ? '#ffbf00' : bgColor}
+        bgColor={isCompleted ? '#FFCA2B' : bgColor}
         isCurrent={isActive}
-        isCompleted={isCompleted}>
+        isCompleted={isCompleted}
+        onClick={onSectionClick}>
         <ProgressBarContainerStyle>
           <TextStyle
             fontColor={isActive || isCompleted ? '#fff' : 'secondary'}

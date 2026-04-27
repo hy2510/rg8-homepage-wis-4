@@ -4,14 +4,16 @@ import { usePointRank } from '@/8th/features/rank/service/rank-query'
 import RankMonthlyHeader from '@/8th/features/rank/ui/component/RankMonthlyHeader'
 import RankMonthlyItem from '@/8th/features/rank/ui/component/RankMonthlyItem'
 import { useCustomerConfiguration } from '@/8th/shared/context/CustomerContext'
-import { TextStyle } from '@/8th/shared/ui/Misc'
 import Pagenation from '@/8th/shared/ui/Pagenation'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const RECORD_PER_PAGE = 10
 
 export default function RankingMonth() {
+  const maketingEventTracker = useTrack()
+
   // @Language 'common'
   const { t } = useTranslation()
   const { menu } = useCustomerConfiguration()
@@ -60,6 +62,14 @@ export default function RankingMonth() {
       }
     }
   }
+  useEffect(() => {
+    maketingEventTracker.eventAction('다독(포인트) 랭킹 조회', {
+      version: '8th',
+      type: period === 'monthly' ? 'monthly' : 'total',
+      selected_month:
+        period === 'monthly' ? `${new Date().getMonth() + 1}` : undefined,
+    })
+  }, [maketingEventTracker, period])
 
   if (ranking.isLoading) {
     return (

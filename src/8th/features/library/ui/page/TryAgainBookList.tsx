@@ -14,8 +14,9 @@ import { BoxStyle, TextStyle } from '@/8th/shared/ui/Misc'
 import Pagenation from '@/8th/shared/ui/Pagenation'
 import { SubPageNavHeader } from '@/8th/shared/ui/SubPageNavHeader'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function TryAgainBookList() {
   return <LibraryBookListDependency />
@@ -43,6 +44,14 @@ function LibraryBookListDependency() {
 }
 
 function BookList() {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 섹션 탭 클릭', {
+      version: '8th',
+      section_name: 'Try Again',
+    })
+  }, [maketingEventTracker])
+
   // @Language 'common'
   const { t } = useTranslation()
 

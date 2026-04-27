@@ -1,5 +1,6 @@
 'use client'
 
+import LibraryTabBar from '@/8th/features/library/ui/component/LibraryTabBar'
 import {
   useChangeListenAndRepeat,
   useChangeStudentAvatar,
@@ -12,7 +13,6 @@ import {
   useUpdateStudentLocalConfig,
 } from '@/8th/features/student/service/setting-query'
 import { useStudent } from '@/8th/features/student/service/student-query'
-import AccountSectionTabBar from '@/8th/features/student/ui/component/AccountSectionTabBar'
 import SettingCheckSelector from '@/8th/features/student/ui/component/SettingCheckSelector'
 import SettingHeader from '@/8th/features/student/ui/component/SettingHeader'
 import SettingImageSelector from '@/8th/features/student/ui/component/SettingImageSelector'
@@ -25,15 +25,26 @@ import CustomCheckbox from '@/8th/shared/ui/CustomCheckbox'
 import { BoxStyle, TextStyle } from '@/8th/shared/ui/Misc'
 import { SubPageNavHeader } from '@/8th/shared/ui/SubPageNavHeader'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
+import { usePathname } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 
 export default function AccountSetting() {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('계정설정 화면 진입', {
+      version: '8th',
+    })
+  }, [maketingEventTracker])
+
   const { menu } = useCustomerConfiguration()
   const setting = menu.account.setting
 
   // @language 'common'
   const { t } = useTranslation()
+
+  const pathname = usePathname()
 
   const { data, isLoading } = useStudent()
   const { data: avatarData, isLoading: isAvatarDataLoading } =
@@ -99,13 +110,31 @@ export default function AccountSetting() {
   const myAvatar = avatarData.avatarId || '097971'
   const myReadingUnit = data.student.studyReadingUnitId
 
+  const tabBarItems: React.ComponentProps<typeof LibraryTabBar>['items'] = []
+  if (menu.account.setting.open) {
+    tabBarItems.push({
+      href: SITE_PATH.NW82.ACCOUNTINFO_SETTING,
+      active: pathname.includes(SITE_PATH.NW82.ACCOUNTINFO_SETTING),
+      label: t('t8th336'),
+    })
+  }
+  if (menu.account.studentInfo.open) {
+    tabBarItems.push({
+      href: SITE_PATH.NW82.ACCOUNTINFO,
+      active:
+        pathname.includes(SITE_PATH.NW82.ACCOUNTINFO) &&
+        !pathname.includes(SITE_PATH.NW82.ACCOUNTINFO_SETTING),
+      label: t('t8th337'),
+    })
+  }
+
   return (
     <>
       <SubPageNavHeader
-        title="Setting"
+        title={t('t8th335')}
         parentPath={SITE_PATH.NW82.ACTIVITY}
       />
-      <AccountSectionTabBar active="setting" />
+      {tabBarItems.length > 1 && <LibraryTabBar items={tabBarItems} />}
       <BoxStyle>
         {isOpenHomeScreen && (
           <MainScreenSetting
@@ -196,7 +225,7 @@ function MainScreenSetting({
     label: string
   }[] = []
   if (isOpenDailyRG) {
-    options.push({ value: 'DailyRG', label: 'DAILY RG' })
+    options.push({ value: 'DailyRG', label: 'RG TRACK' })
   }
   if (isOpenEBook) {
     options.push({ value: 'eBook', label: 'E-BOOK' })

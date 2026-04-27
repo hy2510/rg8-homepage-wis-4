@@ -1,5 +1,5 @@
 import { LevelMasterItemStyle } from '@/8th/shared/styled/FeaturesStyled'
-import { BoxStyle, TextStyle } from '@/8th/shared/ui/Misc'
+import { BoxStyle, Gap, TextStyle } from '@/8th/shared/ui/Misc'
 import useTranslation from '@/localization/client/useTranslations'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
@@ -16,6 +16,7 @@ interface LevelMasterItemProps {
   totalPoints: number
   imgSrc: string
   isCurrentLevel: string
+  certificationDate?: string
   onClick?: (level: string) => void
   onClickCertification?: () => void
 }
@@ -28,6 +29,7 @@ export default function LevelMasterItem({
   totalPoints,
   imgSrc,
   isCurrentLevel,
+  certificationDate,
   onClick,
   onClickCertification,
 }: LevelMasterItemProps) {
@@ -93,9 +95,19 @@ export default function LevelMasterItem({
           {t('t8th195', { num1: earnPoints, num2: totalPoints })}
         </TextStyle>
         {isCertificationAvailable && (
-          <TextStyle className="complete-text" onClick={onClickCertification}>
-            {t('t8th196')}
-          </TextStyle>
+          <>
+            <Gap size={4} />
+            <TextStyle
+              fontSize="medium"
+              fontFamily="sans"
+              fontColor="secondary"
+              fontWeight={700}>
+              {certificationDate}
+            </TextStyle>
+            <TextStyle className="complete-text" onClick={onClickCertification}>
+              {t('t8th196')}
+            </TextStyle>
+          </>
         )}
       </BoxStyle>
     </LevelMasterItemStyle>

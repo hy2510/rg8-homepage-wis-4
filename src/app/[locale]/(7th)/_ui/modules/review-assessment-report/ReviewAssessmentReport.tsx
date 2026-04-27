@@ -23,10 +23,11 @@ import { openWindow } from '@/7th/_function/open-window'
 import { goToStudy } from '@/7th/_function/study-start'
 import { AlertBox, Button, Modal } from '@/7th/_ui/common/common-components'
 import { useScreenMode, useStyle } from '@/7th/_ui/context/StyleContext'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import { useLanguagePackContext } from '@/localization/client/LanguagePackContext'
 import useTranslation from '@/localization/client/useTranslations'
 import Image from 'next/image'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import VocaPrintOptions from '../library-book-cover/VocaPrintOptions'
 
 const STYLE_ID = 'review_assessment_report'
@@ -67,6 +68,8 @@ export const ReviewAssessmentReport = ({
   completedInfo: string
   earnPoints: number
 }) => {
+  const maketingEventTracker = useTrack()
+
   const style = useStyle(STYLE_ID)
   // @Language 'common'
   const { t } = useTranslation()
@@ -172,6 +175,15 @@ export const ReviewAssessmentReport = ({
   const { userReadingUnit } = useStudentReadingUnit()
 
   const [viewVocaPrintOptions, setViewVocaPrintOptions] = useState(false)
+
+  useEffect(() => {
+    if (!bookInfo.bookCode) return
+    if (!bookInfo.levelRoundId) return
+    maketingEventTracker.eventAction('My Read 도서 클릭', {
+      level_round_id: bookInfo.levelRoundId,
+      book_code: bookInfo.bookCode,
+    })
+  }, [maketingEventTracker, bookInfo.bookCode, bookInfo.levelRoundId])
 
   return (
     <Modal

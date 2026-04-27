@@ -914,13 +914,50 @@ export const EarnedReadingUnitImageStyle = styled.div`
     cursor: pointer;
     width: 150px;
     height: 150px;
+    border-radius: 16px;
+    overflow: hidden;
     object-fit: cover;
     transition: all 0.3s ease;
 
     &.active {
       width: 300px;
       height: 300px;
-      border-radius: 20px;
+      border-radius: 32px;
+    }
+  }
+
+  .video-container {
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    top: 0;
+
+    .replay-icon {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      border-radius: 32px;
+
+      &.transparent {
+        opacity: 0;
+      }
+    }
+
+    .replay-icon {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
     }
   }
 
@@ -1560,6 +1597,7 @@ export const DailyRGBookItemStyle = styled.div<{
       border-radius: 15px;
       background-color: var(--color-gray-strong);
       overflow: hidden;
+      flex-shrink: 0;
 
       ${phone(`
         width: 100%;
@@ -1606,6 +1644,22 @@ export const DailyRGBookItemStyle = styled.div<{
           opacity: ${({ isCurrent, isCompleted }) =>
             isCurrent || isCompleted ? 1 : 0.6};
         }
+        .movie-icon {
+          position: absolute;
+          width: 30px;
+          height: 30px;
+          bottom: 0;
+          right: 0;
+          margin-bottom: 2px;
+          margin-right: 2px;
+          background-color: #fff;
+          border-radius: 50%;
+          object-fit: contain;
+          filter: ${({ isCurrent, isCompleted }) =>
+            isCurrent || isCompleted ? 'none' : 'grayscale(100%)'};
+          opacity: ${({ isCurrent, isCompleted }) =>
+            isCurrent || isCompleted ? 1 : 0.6};
+        }
       }
     }
 
@@ -1634,6 +1688,22 @@ export const DailyRGBookItemStyle = styled.div<{
           opacity: ${({ isCurrent, isCompleted }) =>
             isCurrent || isCompleted ? 1 : 0.6};
         }
+        .movie-icon {
+          position: absolute;
+          width: 30px;
+          height: 30px;
+          bottom: 0;
+          right: 0;
+          margin-bottom: 2px;
+          margin-right: 2px;
+          background-color: #fff;
+          border-radius: 50%;
+          object-fit: contain;
+          filter: ${({ isCurrent, isCompleted }) =>
+            isCurrent || isCompleted ? 'none' : 'grayscale(100%)'};
+          opacity: ${({ isCurrent, isCompleted }) =>
+            isCurrent || isCompleted ? 1 : 0.6};
+        }
       }
     }
   }
@@ -1649,7 +1719,7 @@ export const DailyRGBookItemStyle = styled.div<{
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      // padding: 10px;
+      padding: 15px;
       gap: 0;
     `)}
 
@@ -1893,7 +1963,6 @@ export const DailyRGNavBarStyle = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 10px 20px;
-  padding-right: 15px;
   gap: 0;
   border-top: 1px solid var(--line-color-primary);
   border-bottom: 1px solid var(--line-color-primary);
@@ -3249,6 +3318,7 @@ export const RecentlyViewedStyle = styled.div`
       overflow-x: auto;
       overflow-y: hidden;
       flex-wrap: nowrap;
+      align-items: flex-end;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       padding-bottom: 4px;

@@ -2,22 +2,16 @@
 
 import { useCategorySeries } from '@/8th/features/library/service/library-query'
 import SeriesItem from '@/8th/features/library/ui/component/LevelSectionSeriesItem'
-import {
-  clearLibrarySeriesNav,
-  flashLibrarySeriesRestoreElement,
-  librarySeriesScrollElementId,
-  peekLibrarySeriesNav,
-  rememberLibrarySeriesNav,
-} from '@/8th/features/library/ui/librarySeriesNavRestore'
 import { findSeriesColor } from '@/8th/features/library/ui/levelSectionData'
 import { useIsPhone } from '@/8th/shared/context/ScreenModeContext'
 import { SearchBarStyle } from '@/8th/shared/styled/FeaturesStyled'
-import { BoxStyle, TextStyle } from '@/8th/shared/ui/Misc'
+import { BoxStyle } from '@/8th/shared/ui/Misc'
 import { SubPageNavHeader } from '@/8th/shared/ui/SubPageNavHeader'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import LevelUtils from '@/util/level-utils'
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 /** 제목 안의 `KA~3C`, `1A ~ 2B` 같은 레벨 구간 문자열을 모두 추출 */
 function parseLevelRangesFromTitle(
@@ -70,22 +64,48 @@ function apiLevelRangeContainsToken(
 }
 
 export default function SeriesList({ booktype }: { booktype: string }) {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 섹션 탭 클릭', {
+      version: '8th',
+      section_name: 'Series',
+      book_type: booktype === 'EB' ? 'eBook' : 'p Book Quiz',
+    })
+  }, [maketingEventTracker, booktype])
+
   //@language 'common'
   const { t } = useTranslation()
 
   const isPhone = useIsPhone()
+
   const [searchQuery, setSearchQuery] = useState('')
+  const [keyword, setKeyword] = useState('')
 
   const categorySeries = useCategorySeries({
     bookType: booktype as 'EB' | 'PB',
   })
+
+  useEffect(() => {
+    const q = keyword.trim()
+    if (q.length === 0) {
+      setSearchQuery('')
+      return
+    } else if (q.length < 1) {
+      return
+    }
+
+    const timer = setTimeout(async () => {
+      setSearchQuery(q)
+    }, 300)
+    return () => clearTimeout(timer)
+  }, [keyword])
 
   const filteredCategory = useMemo(() => {
     const list = categorySeries?.data?.category ?? []
     const q = searchQuery.trim().toLowerCase()
     if (!q) return list
     const searchTokens = searchQuery.trim().split(/\s+/).filter(Boolean)
-    return list.filter((series) => {
+    const output = list.filter((series) => {
       const levelRange =
         series.bookLevelMin !== series.bookLevelMax
           ? `${series.bookLevelMin}~${series.bookLevelMax}`
@@ -103,50 +123,15 @@ export default function SeriesList({ booktype }: { booktype: string }) {
       )
       return nameMatch || levelMatch || titleLevelSpanMatch || apiLevelSpanMatch
     })
+    return output
   }, [categorySeries?.data?.category, searchQuery])
-
-  const seriesListScrollConsumedRef = useRef(false)
-  const [seriesScrollTitle, setSeriesScrollTitle] = useState<string | null>(
-    null,
-  )
-
-  useLayoutEffect(() => {
-    if (categorySeries?.isLoading || filteredCategory.length === 0) return
-    if (seriesListScrollConsumedRef.current) return
-    const p = peekLibrarySeriesNav()
-    if (
-      !p ||
-      p.returnTarget !== 'seriesList' ||
-      p.bookType !== booktype
-    ) {
-      return
-    }
-    seriesListScrollConsumedRef.current = true
-    clearLibrarySeriesNav()
-    setSeriesScrollTitle(p.seriesTitle)
-  }, [booktype, categorySeries?.isLoading, filteredCategory.length])
-
-  useEffect(() => {
-    if (!seriesScrollTitle) return
-    const scrollId = librarySeriesScrollElementId(seriesScrollTitle)
-    const t = window.setTimeout(() => {
-      document.getElementById(scrollId)?.scrollIntoView({
-        behavior: 'auto',
-        block: 'start',
-        inline: 'nearest',
-      })
-      flashLibrarySeriesRestoreElement(seriesScrollTitle)
-      setSeriesScrollTitle(null)
-    }, 450)
-    return () => window.clearTimeout(t)
-  }, [seriesScrollTitle])
 
   return (
     <>
       <SubPageNavHeader
         title={`${t('t8th039')}`}
+        subTitle={booktype === 'EB' ? `(${t('t8th325')})` : `(${t('t8th326')})`}
         parentPath={booktype === 'EB' ? SITE_PATH.NW82.EB : SITE_PATH.NW82.PB}
-        libraryBookType={booktype as 'EB' | 'PB'}
       />
       <BoxStyle display="flex" flexDirection="column" gap={20}>
         <SearchBarStyle className="input-only">
@@ -163,66 +148,44 @@ export default function SeriesList({ booktype }: { booktype: string }) {
               <input
                 type="search"
                 placeholder={t('t8th324')}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
                 aria-label={t('t8th324')}
                 style={{ fontSize: '0.9em' }}
               />
             </BoxStyle>
           </BoxStyle>
         </SearchBarStyle>
-        <BoxStyle
-          display="grid"
-          gridTemplateColumns={`repeat(${isPhone ? 2 : 3}, 1fr)`}
-          gap={20}>
-          {categorySeries?.isLoading ? (
-            <TextStyle
-              padding="0 0 0 20px"
-              fontSize="medium"
-              fontFamily="sans"
-              width="100%">
-              Loading...
-            </TextStyle>
-          ) : filteredCategory.length === 0 ? (
-            <TextStyle
-              padding="0 0 0 20px"
-              fontSize="medium"
-              fontFamily="sans"
-              width="100%">
-              {t('t8th009')}
-            </TextStyle>
-          ) : (
-            filteredCategory.map((series) => {
-              const levelRange =
-                series.bookLevelMin !== series.bookLevelMax
-                  ? `${series.bookLevelMin}~${series.bookLevelMax}`
-                  : series.bookLevelMin
-              const color = findSeriesColor(series.color).color
-              const href =
-                booktype === 'EB'
-                  ? `${SITE_PATH.NW82.EB_SERIES_FIND}?name=${encodeURIComponent(series.name)}&level=${levelRange}`
-                  : `${SITE_PATH.NW82.PB_SERIES_FIND}?name=${encodeURIComponent(series.name)}&level=${levelRange}`
-              return (
-                <SeriesItem
-                  key={series.name}
-                  level={levelRange}
-                  title={series.name}
-                  imgSrc={series.imagePath}
-                  bgColor={color}
-                  href={href}
-                  assignScrollAnchor
-                  onSeriesNavigate={() =>
-                    rememberLibrarySeriesNav({
-                      seriesTitle: series.name,
-                      returnTarget: 'seriesList',
-                      bookType: booktype as 'EB' | 'PB',
-                    })
-                  }
-                />
-              )
-            })
-          )}
-        </BoxStyle>
+      </BoxStyle>
+      <BoxStyle
+        display="grid"
+        gridTemplateColumns={`repeat(${isPhone ? 2 : 3}, 1fr)`}
+        gap={20}>
+        {categorySeries?.isLoading ? (
+          <div>Loading series...</div>
+        ) : (
+          filteredCategory.map((series) => {
+            const levelRange =
+              series.bookLevelMin !== series.bookLevelMax
+                ? `${series.bookLevelMin}~${series.bookLevelMax}`
+                : series.bookLevelMin
+            const color = findSeriesColor(series.color).color
+            const href =
+              booktype === 'EB'
+                ? `${SITE_PATH.NW82.EB_SERIES_FIND}?name=${encodeURIComponent(series.name)}&level=${levelRange}&call=list`
+                : `${SITE_PATH.NW82.PB_SERIES_FIND}?name=${encodeURIComponent(series.name)}&level=${levelRange}&call=list`
+            return (
+              <SeriesItem
+                key={series.name}
+                level={levelRange}
+                title={series.name}
+                imgSrc={series.imagePath}
+                bgColor={color}
+                href={href}
+              />
+            )
+          })
+        )}
       </BoxStyle>
     </>
   )

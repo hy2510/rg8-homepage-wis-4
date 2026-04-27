@@ -10,6 +10,7 @@ export type StudentLocalConfig = {
   levelGuidanceLevelChangeRequestLevel: string
   levelGuidanceLevelUpBackRequest: string
   appUserGuideAutoShow: boolean
+  continueDefaultTab: 'todo' | 'level' | undefined
 }
 type StudentLocalConfigId = {
   customerId: string
@@ -24,6 +25,7 @@ const DEFAULT_STUDENT_LOCAL_CONFIG: StudentLocalConfig = {
   levelGuidanceLevelChangeRequestLevel: '',
   levelGuidanceLevelUpBackRequest: '',
   appUserGuideAutoShow: true,
+  continueDefaultTab: undefined,
 }
 
 function createStudentLocalConfig(configId: string): StudentLocalConfig {
@@ -63,6 +65,10 @@ function parseStudentLocalConfig(json: any): StudentLocalConfig {
       json?.appUserGuideAutoShow === undefined
         ? DEFAULT_STUDENT_LOCAL_CONFIG.appUserGuideAutoShow
         : RenewType.renewBoolean(json?.appUserGuideAutoShow),
+    continueDefaultTab:
+      json?.continueDefaultTab === undefined
+        ? DEFAULT_STUDENT_LOCAL_CONFIG.continueDefaultTab
+        : (RenewType.renewString(json?.continueDefaultTab) as 'todo' | 'level'),
   }
 }
 

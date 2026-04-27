@@ -20,6 +20,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/baro-001.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/baro-001.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/baro-001.mp4',
       },
       {
         title: 'Pirate Baro',
@@ -28,6 +30,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/baro-002.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/baro-002.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/baro-002.mp4',
       },
       {
         title: 'Pirate Captain Baro',
@@ -36,6 +40,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/baro-003.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/baro-003.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/baro-003.mp4',
       },
       {
         title: 'Pirate King Baro',
@@ -44,6 +50,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/baro-004.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/baro-004.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/baro-004.mp4',
       },
     ],
   },
@@ -65,6 +73,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/chello-001.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/chello-001.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/chello-001.mp4',
       },
       {
         title: 'Singer Trainee Chello',
@@ -73,6 +83,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/chello-002.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/chello-002.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/chello-002.mp4',
       },
       {
         title: 'Pop Star Chello',
@@ -81,6 +93,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/chello-003.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/chello-003.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/chello-003.mp4',
       },
       {
         title: 'Vocal Queen Chello',
@@ -89,6 +103,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/chello-004.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/chello-004.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/chello-004.mp4',
       },
     ],
   },
@@ -110,6 +126,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/millo-001.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/millo-001.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/millo-001.mp4',
       },
       {
         title: 'Spaceship Researcher Milo',
@@ -118,6 +136,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/millo-002.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/millo-002.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/millo-002.mp4',
       },
       {
         title: 'Spaceship Professor Milo',
@@ -126,6 +146,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/millo-003.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/millo-003.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/millo-003.mp4',
       },
       {
         title: 'Spaceship Director Milo',
@@ -134,6 +156,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/millo-004.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/millo-004.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/millo-004.mp4',
       },
     ],
   },
@@ -155,6 +179,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/jack-001.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/jack-001.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/jack-001.mp4',
       },
       {
         title: 'Citizen Hero Jack',
@@ -163,6 +189,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/jack-002.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/jack-002.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/jack-002.mp4',
       },
       {
         title: 'Mayor Candidate Jack',
@@ -171,6 +199,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/jack-003.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/jack-003.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/jack-003.mp4',
       },
       {
         title: 'Pumpkin Mayor Jack',
@@ -179,6 +209,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/jack-004.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/jack-004.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/jack-004.mp4',
       },
     ],
   },
@@ -200,6 +232,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/blanc-001.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/blanc-001.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/blanc-001.mp4',
       },
       {
         title: 'Intern Blanc',
@@ -208,6 +242,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/blanc-002.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/blanc-002.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/blanc-002.mp4',
       },
       {
         title: 'Resident Blanc',
@@ -216,6 +252,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/blanc-003.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/blanc-003.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/blanc-003.mp4',
       },
       {
         title: 'Dr. Blanc',
@@ -224,6 +262,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/blanc-004.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/blanc-004.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/blanc-004.mp4',
       },
     ],
   },
@@ -245,6 +285,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/sheila-001.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/sheila-001.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/sheila-001.mp4',
       },
       {
         title: 'Dish Washer Sheila',
@@ -253,6 +295,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/sheila-002.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/sheila-002.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/sheila-002.mp4',
       },
       {
         title: 'Chef Sheila',
@@ -261,6 +305,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/sheila-003.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/sheila-003.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/sheila-003.mp4',
       },
       {
         title: 'Executive Chef Sheila',
@@ -269,6 +315,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/sheila-004.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/sheila-004.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/sheila-004.mp4',
       },
     ],
   },
@@ -290,6 +338,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/tori-001.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/tori-001.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/tori-001.mp4',
       },
       {
         title: 'Rock Climber Tori',
@@ -298,6 +348,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/tori-002.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/tori-002.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/tori-002.mp4',
       },
       {
         title: 'Jungle Explorer Tori',
@@ -306,6 +358,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/tori-003.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/tori-003.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/tori-003.mp4',
       },
       {
         title: 'Rafting Expert Tori',
@@ -314,6 +368,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/tori-004.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/tori-004.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/tori-004.mp4',
       },
       {
         title: 'Greatest Explorer Tori',
@@ -322,6 +378,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/tori-005.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/tori-005.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/tori-005.mp4',
       },
     ],
   },
@@ -343,6 +401,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/roro-001.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/roro-001.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/roro-001.mp4',
       },
       {
         title: 'Secret Agent Roro',
@@ -351,6 +411,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/roro-002.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/roro-002.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/roro-002.mp4',
       },
       {
         title: 'Acorn Angel Roro',
@@ -359,6 +421,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/roro-003.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/roro-003.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/roro-003.mp4',
       },
       {
         title: 'Acorn Hero Roro',
@@ -367,6 +431,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/roro-004.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/roro-004.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/roro-004.mp4',
       },
       {
         title: 'Rorohood',
@@ -375,6 +441,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/roro-005.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/roro-005.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/roro-005.mp4',
       },
     ],
   },
@@ -396,6 +464,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/greenthumb-001.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/greenthumb-001.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/greenthumb-001.mp4',
       },
       {
         title: 'Seed Alchemist Papa Greenthumb',
@@ -404,6 +474,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/greenthumb-002.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/greenthumb-002.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/greenthumb-002.mp4',
       },
       {
         title: 'Sprout Wizard Papa Greenthumb',
@@ -412,6 +484,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/greenthumb-003.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/greenthumb-003.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/greenthumb-003.mp4',
       },
       {
         title: 'Tree Mage Papa Greenthumb',
@@ -420,6 +494,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/greenthumb-004.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/greenthumb-004.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/greenthumb-004.mp4',
       },
       {
         title: 'Forest Spirit Papa Greenthumb',
@@ -428,6 +504,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/greenthumb-005.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/greenthumb-005.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/greenthumb-005.mp4',
       },
     ],
   },
@@ -449,6 +527,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/leoni-001.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/leoni-001.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/leoni-001.mp4',
       },
       {
         title: 'Novice Athlete Leoni',
@@ -457,6 +537,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/leoni-002.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/leoni-002.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/leoni-002.mp4',
       },
       {
         title: 'Taekwondo Master Leoni',
@@ -465,6 +547,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/leoni-003.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/leoni-003.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/leoni-003.mp4',
       },
       {
         title: 'Bodyguard Leoni',
@@ -473,6 +557,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/leoni-004.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/leoni-004.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/leoni-004.mp4',
       },
       {
         title: 'Royal Guard Leoni',
@@ -481,6 +567,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/leoni-005.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/leoni-005.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/leoni-005.mp4',
       },
       {
         title: 'Royal Knight Leoni',
@@ -489,6 +577,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/leoni-006.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/leoni-006.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/leoni-006.mp4',
       },
     ],
   },
@@ -510,6 +600,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/goma-001.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/goma-001.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/goma-001.mp4',
       },
       {
         title: 'Bookworm Goma',
@@ -518,6 +610,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/goma-002.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/goma-002.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/goma-002.mp4',
       },
       {
         title: 'Writer Assistant Goma',
@@ -526,6 +620,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/goma-003.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/goma-003.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/goma-003.mp4',
       },
       {
         title: 'Novice Writer Goma',
@@ -534,6 +630,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/goma-004.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/goma-004.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/goma-004.mp4',
       },
       {
         title: 'Bestseller Author Goma',
@@ -542,6 +640,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/goma-005.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/goma-005.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/goma-005.mp4',
       },
       {
         title: 'Award-Winning Author Goma',
@@ -550,6 +650,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/goma-006.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/goma-006.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/goma-006.mp4',
       },
     ],
   },
@@ -571,6 +673,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/gino-001.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/gino-001.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/gino-001.mp4',
       },
       {
         title: 'Athlete Gino',
@@ -579,6 +683,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/gino-002.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/gino-002.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/gino-002.mp4',
       },
       {
         title: 'Junior Wrestler Gino',
@@ -587,6 +693,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/gino-003.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/gino-003.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/gino-003.mp4',
       },
       {
         title: 'Amateur Wrestler Gino',
@@ -595,6 +703,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/gino-004.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/gino-004.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/gino-004.mp4',
       },
       {
         title: 'Pro Wrestler Gino',
@@ -603,6 +713,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/gino-005.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/gino-005.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/gino-005.mp4',
       },
       {
         title: 'Champion Wrestler Gino',
@@ -611,6 +723,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/gino-006.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/gino-006.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/gino-006.mp4',
       },
     ],
   },
@@ -632,6 +746,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/edmond-001.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/edmond-001.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/edmond-001.mp4',
       },
       {
         title: 'Bored Prince Edmond',
@@ -640,6 +756,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/edmond-002.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/edmond-002.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/edmond-002.mp4',
       },
       {
         title: 'Lonely Prince Edmond',
@@ -648,6 +766,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/edmond-003.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/edmond-003.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/edmond-003.mp4',
       },
       {
         title: 'Confident Prince Edmond',
@@ -656,6 +776,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/edmond-004.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/edmond-004.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/edmond-004.mp4',
       },
       {
         title: 'Excited Prince Edmond',
@@ -664,6 +786,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/edmond-005.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/edmond-005.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/edmond-005.mp4',
       },
       {
         title: 'Happy Prince Edmond',
@@ -672,6 +796,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/edmond-006.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/edmond-006.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/edmond-006.mp4',
       },
     ],
   },
@@ -693,6 +819,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/subcharacter/gold_01.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/gold_01.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/gold_01.mp4',
       },
     ],
   },
@@ -714,6 +842,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/subcharacter/platinum_01.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/platinum_01.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/platinum_01.mp4',
       },
     ],
   },
@@ -735,6 +865,8 @@ export const dodofriendsStoryEn: DodoFriendsStory[] = [
           'https://wcfresource.a1edu.com/newsystem/image/character/subcharacter/titanium_01.png',
         imagePath2:
           'https://wcfresource.a1edu.com/newsystem/image/character/dodofriends/motion/titanium_01.gif',
+        moviePath:
+          'https://wcfresource.a1edu.com/newsystem/character/dodonfriends/anim/titanium_01.mp4',
       },
     ],
   },

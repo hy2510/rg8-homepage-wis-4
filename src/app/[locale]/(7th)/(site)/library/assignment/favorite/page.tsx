@@ -20,8 +20,9 @@ import {
   ExportItem,
   ExportModePanel,
 } from '@/7th/_ui/modules/library-export-mode-panel/export-mode-panel'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import StudentHistorySelectModal from '../../_cpnt/StudentHistorySelectModal'
 import useExport, {
   ExportAction,
@@ -40,6 +41,8 @@ export default function Page() {
 }
 
 function Favorite() {
+  const maketingEventTracker = useTrack()
+
   const style = useStyle(STYLE_ID)
   // @Language 'common'
   const { t } = useTranslation()
@@ -134,6 +137,13 @@ function Favorite() {
   if (!isSelectMode && exportMode !== undefined) {
     setExportMode(undefined)
   }
+
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 섹션 탭 클릭', {
+      section_name: 'Favorite',
+    })
+  }, [maketingEventTracker])
+
   return (
     <>
       <AssignmentNavBar active={'favorite'} />

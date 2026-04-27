@@ -639,7 +639,7 @@ const HomePartnership = () => {
             </Link>
           </div> */}
 
-          <div className={style.title}>{'차이홍 중국어 체험 제휴'}</div>
+          {/* <div className={style.title}>{'차이홍 중국어 체험 제휴'}</div>
           <div className={style.partner_banner_group}>
             <Link
               href={'#'}
@@ -649,7 +649,7 @@ const HomePartnership = () => {
               }}>
               <div className={`${style.partner_banner} ${style.caihong}`}></div>
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

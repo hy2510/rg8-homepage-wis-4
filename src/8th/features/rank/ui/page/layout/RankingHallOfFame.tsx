@@ -3,14 +3,21 @@
 import { useHallOfFameRank } from '@/8th/features/rank/service/rank-query'
 import RankHallOfFameHeader from '@/8th/features/rank/ui/component/RankHallOfFameHeader'
 import RankHallOfFameItem from '@/8th/features/rank/ui/component/RankHallOfFameItem'
-import { TextStyle } from '@/8th/shared/ui/Misc'
 import Pagenation from '@/8th/shared/ui/Pagenation'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const RECORD_PER_PAGE = 10
 
 export default function RankingHallOfFame() {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('명예의전당 조회', {
+      version: '8th',
+    })
+  }, [maketingEventTracker])
+
   // @Language 'common'
   const { t } = useTranslation()
 

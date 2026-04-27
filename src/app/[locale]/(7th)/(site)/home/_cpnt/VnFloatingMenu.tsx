@@ -1,12 +1,19 @@
 import style from './vn-floating-menu.module.css'
 
-export default function VnFloatingMenu() {
+export default function VnFloatingMenu({
+  targetScreen = 'vn-home',
+}: {
+  targetScreen?: 'vn-home' | 'vn-catalog'
+}) {
   return (
     <div className={style['contact-box-bottom']}>
       <a
         className={`${style['contact-box-wrapper']} ${style['nut-chat-facebook']}`}
         href="https://m.me/102648127927992"
         rel="nofollow"
+        data-gtm="vn-float-menu-click"
+        data-gtm-event="vn-facebook"
+        data-gtm-screen={targetScreen}
         target="_blank">
         <div
           className={`${style['contact-icon-box']}`}
@@ -39,8 +46,10 @@ export default function VnFloatingMenu() {
       </a>
       <a
         className={`${style['contact-box-wrapper']} ${style['nut-chat-zalo']}`}
-        href="
-    https://zalo.me/84828848000"
+        href="https://zalo.me/84828848000"
+        data-gtm="vn-float-menu-click"
+        data-gtm-event="vn-zalo"
+        data-gtm-screen={targetScreen}
         rel="nofollow"
         target="_blank">
         <div
@@ -92,7 +101,10 @@ export default function VnFloatingMenu() {
       </a>
       <a
         className={`${style['contact-box-wrapper']} ${style['nut-goi-hotline']}`}
-        href="tel:0828848000">
+        href="tel:0828848000"
+        data-gtm="vn-float-menu-click"
+        data-gtm-event="vn-hotline"
+        data-gtm-screen={targetScreen}>
         <div
           className={`${style['contact-icon-box']}`}
           style={{ color: '#ed1b24' }}>

@@ -9,9 +9,10 @@ import {
 import { useCustomerInfo } from '@/7th/_context/CustomerContext'
 import { useScreenMode, useStyle } from '@/7th/_ui/context/StyleContext'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import BillPaper from './BillPaper'
 import PayMethodList from './PayMethod'
 import PayerInfo from './PayerInfo'
@@ -51,6 +52,24 @@ export default function Purchase({
     undefined,
   )
 
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    if (payload && selectItem) {
+      const filteredItem = payload?.product?.filter(
+        (item) => item.id === selectItem,
+      )
+      if (filteredItem && filteredItem.length > 0) {
+        maketingEventTracker.eventAction('이용권 상품 조회', {
+          catagory_id:
+            purchaseType === 'direct' || purchaseType === 'directvn'
+              ? 'web'
+              : purchaseType,
+          product_id: filteredItem[0].name,
+        })
+      }
+    }
+  }, [maketingEventTracker, payload, selectItem, purchaseType])
+
   const onProductClick = (itemId: string) => {
     setSelectItem(itemId)
   }
@@ -88,6 +107,21 @@ export default function Purchase({
         price,
         mobileYn: isMobile ? 'Y' : 'N',
       }
+      maketingEventTracker.eventAction('결제 시작', {
+        product_id: targetProduct.name,
+        total_price: price,
+      })
+      maketingEventTracker.eventAction('이용권 결제하기 클릭', {
+        catagory:
+          purchaseType === 'direct' || purchaseType === 'directvn'
+            ? 'web'
+            : purchaseType,
+        product_id: targetProduct.id,
+        product_name: targetProduct.name,
+        price: targetProduct.totalFee,
+        currency: currency,
+        subscription_type: targetProduct.name,
+      })
       setPaymentInfo(param)
     }
   }
@@ -182,6 +216,17 @@ export default function Purchase({
           currency={currency}
           onPurchaseResult={onPaymentResult}
           onCancel={() => {
+            maketingEventTracker.eventAction('구매 취소', {
+              product_id: paymentInfo.productName,
+              cancel_reason: '사용자 취소',
+            })
+            maketingEventTracker.eventAction('결제 취소', {
+              product_name: paymentInfo.productName,
+              price: paymentInfo.price,
+              currency: currency,
+              subscription_type: paymentInfo.productName,
+              cancel_reason: '사용자 취소',
+            })
             setPaymentInfo(undefined)
           }}
         />

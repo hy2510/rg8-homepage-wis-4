@@ -9,6 +9,7 @@ import {
   ReadingUnitStoryItemStyle,
 } from '@/8th/shared/styled/FeaturesStyled'
 import Image from 'next/image'
+import { useEffect, useRef, useState } from 'react'
 
 /**
  * 리딩유닛 스토리
@@ -16,8 +17,10 @@ import Image from 'next/image'
 
 interface ReadingUnitStoryItemProps {
   type: 'prologue' | 'earned' | 'current' | 'notCompleted'
+  id: string
   imgSrc: string
   imgAniSrc: string
+  videoSrc: string
   earnedTitle: string
   earnedMessage: string
   currentPoint: number
@@ -29,8 +32,9 @@ interface ReadingUnitStoryItemProps {
 
 export default function ReadingUnitStoryItem({
   type,
+  id,
   imgSrc,
-  imgAniSrc,
+  videoSrc,
   earnedTitle,
   earnedMessage,
   currentPoint,
@@ -43,8 +47,9 @@ export default function ReadingUnitStoryItem({
     <ReadingUnitStoryItemStyle>
       {type === 'earned' && (
         <ReadingUnitStoryEarnedItem
+          id={id}
           imgSrc={imgSrc}
-          imgAniSrc={imgAniSrc}
+          videoSrc={videoSrc}
           earnedTitle={earnedTitle}
           earnedMessage={earnedMessage}
           isOpen={isOpen}
@@ -88,30 +93,86 @@ export function ReadingUnitStoryPrologue({
 
 // 획득한 리딩유닛 이미지
 function ReadingUnitStoryEarnedItem({
+  id,
   imgSrc,
-  imgAniSrc,
+  videoSrc,
   earnedTitle,
   earnedMessage,
   isOpen,
   onClick,
 }: {
+  id: string
   imgSrc: string
-  imgAniSrc: string
+  videoSrc: string
   earnedTitle: string
   earnedMessage: string
   isOpen: boolean
   onClick?: () => void
 }) {
+  const [isReplayOn, setIsReplayOn] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    if (!isOpen) {
+      setIsReplayOn(false)
+    }
+    const video = videoRef.current
+    if (!video) {
+      return
+    }
+    const videoEnded = () => {
+      if (video) {
+        video.pause()
+        setIsReplayOn(true)
+      }
+    }
+    video.addEventListener('ended', videoEnded)
+    if (!isOpen) {
+      video.pause()
+      video.currentTime = 0
+    }
+    return () => {
+      video.removeEventListener('ended', videoEnded)
+    }
+  }, [isOpen])
+
   return (
     <EarnedReadingUnitImageStyle onClick={onClick}>
       <Image
-        src={isOpen ? imgAniSrc : imgSrc}
-        alt=""
+        src={imgSrc}
+        alt="Earned Reading Unit Image"
         width={150}
         height={150}
         className={`earned-reading-unit-image ${isOpen ? 'active' : ''}`}
       />
-
+      {isOpen && (
+        <div className="video-container">
+          <video
+            className={`transparent`}
+            data-video-id={id}
+            ref={videoRef}
+            src={videoSrc}
+            poster={imgSrc}
+            playsInline
+          />
+          {isReplayOn && (
+            <Image
+              src={Assets.Icon.replayBtn}
+              alt="Replay Icon"
+              width={60}
+              height={60}
+              className="replay-icon"
+              onClick={(e) => {
+                e.stopPropagation()
+                if (isOpen && videoRef.current) {
+                  setIsReplayOn(false)
+                  videoRef.current.play()
+                }
+              }}
+            />
+          )}
+        </div>
+      )}
       {isOpen ? (
         <div className="earned-reading-unit-text-container">
           <div className="title">{earnedTitle}</div>
@@ -121,7 +182,7 @@ function ReadingUnitStoryEarnedItem({
         <div className="play-icon-container">
           <Image
             src={Assets.Icon.playRed}
-            alt=""
+            alt="Play Icon"
             width={30}
             height={30}
             className="play-icon"

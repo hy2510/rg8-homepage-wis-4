@@ -16,27 +16,29 @@ interface StudentInfoCardProps {
   name: string
   loginId: string
   signUpDate: string
+  remainingStudyDays: number
   avatar: string
   readingUnit: string
   isOpenSetting: boolean
+  isOpenAccountInfo: boolean
   customerGroupName?: string
-  /** `menu.account.studentInfo.studyAvaliableDay.open`일 때만 전달 (AccountInfo의 StudyStatusView와 동일하게 `studyEndDay` 사용) */
-  remainingStudyDays?: number
 }
 
 export default function StudentInfoCard({
   name,
   loginId,
+  signUpDate,
+  remainingStudyDays,
   avatar,
   readingUnit,
   customerGroupName,
   isOpenSetting,
-  remainingStudyDays,
+  isOpenAccountInfo,
 }: StudentInfoCardProps) {
   // @Language 'common'
   const { t } = useTranslation()
 
-  const card = (
+  const cardComponent = (
     <StudentInfoCardStyle>
       <BoxStyle className="character-container">
         <Image
@@ -62,25 +64,22 @@ export default function StudentInfoCard({
             flexDirection="column"
             alignItems="flex-start">
             <div className="user-id">{loginId}</div>
-            {remainingStudyDays !== undefined && (
+            {/* <div className="sign-up-date">{signUpDate}</div> */}
+            {remainingStudyDays > 0 && (
               <div className="study-remaining-period">
-                {t('t8th093')}
-                {t('t8th049', { num: remainingStudyDays })}
+                {`${t('t8th093')} ${t('t8th049', { num: remainingStudyDays })}`}
               </div>
             )}
-            {/* <div className="sign-up-date">{signUpDate}</div> */}
+            {remainingStudyDays === 0 && (
+              <div className="study-remaining-period">{t('t8th338')}</div>
+            )}
             <div className="customer-group-name">{customerGroupName}</div>
           </BoxStyle>
         </BoxStyle>
       </BoxStyle>
-      {isOpenSetting && (
+      {(isOpenSetting || isOpenAccountInfo) && (
         <span className="settings-gear" aria-hidden>
-          <Image
-            src={Assets.Icon.SettingsGray}
-            alt=""
-            width={22}
-            height={22}
-          />
+          <Image src={Assets.Icon.SettingsGray} alt="" width={22} height={22} />
         </span>
       )}
     </StudentInfoCardStyle>
@@ -88,21 +87,10 @@ export default function StudentInfoCard({
 
   if (isOpenSetting) {
     return (
-      <Link
-        href={SITE_PATH.NW82.ACCOUNTINFO_SETTING}
-        target="_self"
-        aria-label={t('t8th080')}
-        style={{
-          display: 'block',
-          width: '100%',
-          textDecoration: 'none',
-          color: 'inherit',
-          cursor: 'pointer',
-        }}>
-        {card}
-      </Link>
+      <Link href={SITE_PATH.NW82.ACCOUNTINFO_SETTING}>{cardComponent}</Link>
     )
+  } else if (isOpenAccountInfo) {
+    return <Link href={SITE_PATH.NW82.ACCOUNTINFO}>{cardComponent}</Link>
   }
-
-  return card
+  return cardComponent
 }

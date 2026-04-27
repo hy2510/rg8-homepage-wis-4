@@ -1,5 +1,6 @@
 'use client'
 
+import LibraryTabBar from '@/8th/features/library/ui/component/LibraryTabBar'
 import { useAdjustHistoryList } from '@/8th/features/payment/service/payment-query'
 import {
   useChangeContinuousStudyType,
@@ -14,7 +15,6 @@ import {
   useStudent,
   useStudentHistoryList,
 } from '@/8th/features/student/service/student-query'
-import AccountSectionTabBar from '@/8th/features/student/ui/component/AccountSectionTabBar'
 import ExtraOptionLayoutItem from '@/8th/features/student/ui/component/ExtraOptionLayoutItem'
 import StudentEditInputPassword from '@/8th/features/student/ui/component/StudentEditInputPassword'
 import StudentEditInputPhoneNumber from '@/8th/features/student/ui/component/StudentEditInputPhone'
@@ -33,10 +33,11 @@ import {
   isValidateStudentName,
   isValidateStudentNameKr,
 } from '@/8th/shared/utils/validation'
-import { isUnlimitedStudyPeriod } from '@/8th/shared/utils/student-study-period'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import DateUtils from '@/util/date-utils'
+import { usePathname } from 'next/navigation'
 import { Fragment, useEffect, useState } from 'react'
 
 type editModeType =
@@ -47,10 +48,19 @@ type editModeType =
   | 'password'
   | undefined
 export default function AccountInfo() {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('계정정보 화면 진입', {
+      version: '8th',
+    })
+  }, [maketingEventTracker])
+
   const { menu, setting, country } = useCustomerConfiguration()
 
   // @language 'common'
   const { t } = useTranslation()
+
+  const pathname = usePathname()
 
   const { data } = useStudent()
   const studentHistory = useStudentHistoryList()
@@ -159,29 +169,43 @@ export default function AccountInfo() {
     menu.account.studentInfo.withdraw.open
 
   const paymentUrl = setting.paymentable ? setting.paymentUrl : undefined
+
+  const tabBarItems: React.ComponentProps<typeof LibraryTabBar>['items'] = []
+  if (menu.account.setting.open) {
+    tabBarItems.push({
+      href: SITE_PATH.NW82.ACCOUNTINFO_SETTING,
+      active: pathname.includes(SITE_PATH.NW82.ACCOUNTINFO_SETTING),
+      label: t('t8th336'),
+    })
+  }
+  if (menu.account.studentInfo.open) {
+    tabBarItems.push({
+      href: SITE_PATH.NW82.ACCOUNTINFO,
+      active:
+        pathname.includes(SITE_PATH.NW82.ACCOUNTINFO) &&
+        !pathname.includes(SITE_PATH.NW82.ACCOUNTINFO_SETTING),
+      label: t('t8th337'),
+    })
+  }
   return (
     <>
       <SubPageNavHeader
-        title="Setting"
+        title={t('t8th335')}
         parentPath={SITE_PATH.NW82.ACTIVITY}
       />
-      <AccountSectionTabBar active="account" />
+      {tabBarItems.length > 1 && <LibraryTabBar items={tabBarItems} />}
       <BoxStyle
         display="flex"
         flexDirection="column"
         alignItems="flex-start"
         gap={20}>
-        {menu.account.studentInfo.studyAvaliableDay.open &&
-          !isUnlimitedStudyPeriod(
-            data?.student?.studyEndDay || 0,
-            data?.student?.studyEndDate,
-          ) && (
-            <StudyStatusView
-              remainingStudyPeriod={data?.student?.studyEndDay || 0}
-              endStudyDate={studyEndDate}
-              paymentUrl={paymentUrl}
-            />
-          )}
+        {menu.account.studentInfo.studyAvaliableDay.open && (
+          <StudyStatusView
+            remainingStudyPeriod={data?.student?.studyEndDay || 0}
+            endStudyDate={studyEndDate}
+            paymentUrl={paymentUrl}
+          />
+        )}
         {menu.account.studentInfo.studentName.open && (
           <StudentName
             isKorea={country === 'kr'}

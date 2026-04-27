@@ -95,7 +95,7 @@ export default function Collections({
           width={28}
           height={28}
         /> */}
-        <span>· {t('t8th004')}</span>
+        <span>{`· ${t('t8th004')}`}</span>
       </BoxStyle>
       <BoxStyle
         display="grid"

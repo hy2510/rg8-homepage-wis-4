@@ -33,9 +33,10 @@ import Pagenation from '@/8th/shared/ui/Pagenation'
 import { SubPageNavHeader } from '@/8th/shared/ui/SubPageNavHeader'
 import { openDownloadLink, openWindow } from '@/8th/shared/utils/open-window'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const WORKBOOK_LEVELS = [
   'PK',
@@ -98,8 +99,8 @@ function LibraryBookListDependency({
     <>
       <SubPageNavHeader
         title={`${t('t8th007')}`}
+        subTitle={booktype === 'EB' ? `(${t('t8th325')})` : `(${t('t8th326')})`}
         parentPath={booktype === 'EB' ? SITE_PATH.NW82.EB : SITE_PATH.NW82.PB}
-        libraryBookType={booktype}
       />
       <LibraryBookList bookType={booktype} level={level} volume={volume} />
     </>
@@ -122,6 +123,16 @@ function LibraryBookList({
   level: string
   volume: number
 }) {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 검색', {
+      version: '8th',
+      section_name: 'WorkBook',
+      book_type: 'eBook',
+      volume: `${level}-${volume}`,
+    })
+  }, [maketingEventTracker, level, volume])
+
   // @Language 'common'
   const { t } = useTranslation()
 
@@ -517,6 +528,13 @@ function HeaderContent({
   onLevelChange: (level: string) => void
   onVolumeChange: (volume: number) => void
 }) {
+  const { menu } = useCustomerConfiguration()
+
+  const isOpenPreKClassic = menu.eb.readingLevel.level.prekClassic.open
+  const levelList = isOpenPreKClassic
+    ? WORKBOOK_LEVELS
+    : WORKBOOK_LEVELS.filter((item) => item !== 'PK')
+
   const volumes = Array.from(
     { length: level === 'PK' ? 20 : 10 },
     (_, index) => index + 1,
@@ -527,7 +545,7 @@ function HeaderContent({
         selectedValue={level}
         largeFont
         onChange={(value) => onLevelChange(value.key)}
-        options={WORKBOOK_LEVELS.map((item) => ({ key: item, label: item }))}
+        options={levelList.map((item) => ({ key: item, label: item }))}
       />
       <SelectBox
         selectedValue={volume.toString()}

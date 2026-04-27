@@ -6,6 +6,10 @@ import {
   useExportVocabulary,
   useExportWorksheet,
 } from '@/8th/features/export/service/export-query'
+import {
+  useAddFavorite,
+  useDeleteFavorite,
+} from '@/8th/features/library/service/library-query'
 import PrintVocabularyModal from '@/8th/features/library/ui/modal/PrintVocabularyModal'
 import { HistoryStudy } from '@/8th/features/review/model/history-study'
 import {
@@ -30,11 +34,12 @@ import { BoxStyle, TextStyle } from '@/8th/shared/ui/Misc'
 import { SubPageNavHeader } from '@/8th/shared/ui/SubPageNavHeader'
 import { openWindow } from '@/8th/shared/utils/open-window'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import DateUtils from '@/util/date-utils'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function WriteResultHistory({
   startDate,
@@ -45,6 +50,16 @@ export default function WriteResultHistory({
   endDate?: string
   keyword?: string
 }) {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('Writing 화면 진입', {
+      version: '8th',
+      start_date: startDate,
+      end_date: endDate,
+      keyword: keyword,
+    })
+  }, [maketingEventTracker, startDate, endDate, keyword])
+
   //@language 'common'
   const { t } = useTranslation()
 
@@ -134,6 +149,22 @@ function WriteResultHistoryList({
       enabled: !!selectedBookInfo,
     },
   )
+
+  const addFavorite = useAddFavorite({
+    onError: (error?: unknown) => {
+      if (error && typeof (error as any)?.message === 'string') {
+        try {
+          const errorPayload = JSON.parse((error as any).message) as {
+            message: string
+          }
+          alert(errorPayload.message)
+        } catch (e: unknown) {
+          alert('Favorite 추가 실패 Error')
+        }
+      }
+    },
+  })
+  const deleteFavorite = useDeleteFavorite()
 
   const { onStartStudy } = useStartStudy('review')
 
@@ -319,6 +350,17 @@ function WriteResultHistoryList({
     )
   }
 
+  const onToggleFavorite = (levelRoundId: string) => {
+    if (!bookInfo) {
+      return
+    }
+    if (bookInfo?.bookMarkYn) {
+      deleteFavorite.mutate({ levelRoundId })
+    } else {
+      addFavorite.mutate({ levelRoundId })
+    }
+  }
+
   return (
     <>
       <ReviewListStyle>
@@ -427,6 +469,17 @@ function WriteResultHistoryList({
                             text: t('t8th059'),
                             onClick: () => {
                               onSingleItemWorksheets(history.levelName)
+                            },
+                          })
+                        }
+                        if (!!bookInfo) {
+                          const isFavorite = bookInfo.bookMarkYn
+                          expendMenu.push({
+                            text: isFavorite
+                              ? 'Remove Favorite'
+                              : 'Add Favorite',
+                            onClick: () => {
+                              onToggleFavorite(history.levelRoundId)
                             },
                           })
                         }

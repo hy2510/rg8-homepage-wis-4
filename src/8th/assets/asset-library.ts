@@ -140,7 +140,6 @@ import deleteWhite from './images/icons/delete-white.svg'
 import deleteBlack from './images/icons/delete.svg'
 import downloadLightBlue from './images/icons/download-light-blue.svg'
 import EditGray from './images/icons/edit-gray.svg'
-import SettingsGray from './images/icons/settings-gray.svg'
 import glossyPoint2 from './images/icons/glossy-point-2.png'
 import glossyPointSmall from './images/icons/glossy-point-small.svg'
 import glossyPoint from './images/icons/glossy-point.svg'
@@ -162,17 +161,19 @@ import moreHorizontalWhite from './images/icons/more-horizontal-white.svg'
 import moreVerticalGray from './images/icons/more-vertical-gray.svg'
 import playRed from './images/icons/play-red.png'
 import plusGreen from './images/icons/plus-green.png'
+import replayBtn from './images/icons/replay-btn.png'
 import searchBlack from './images/icons/search-black.svg'
+import SettingsGray from './images/icons/settings-gray.svg'
 import shadow from './images/icons/shadow.svg'
 import booksRead from './images/icons/side/books-read.png'
 import dailyGoalCompleteBg from './images/icons/side/daily-goal-complete-bg.svg'
 import earnedPoints from './images/icons/side/earned-points.png'
 import favorite from './images/icons/side/favorite.png'
 import sparklingBg from './images/icons/side/sparkling-bg.png'
-import streakDone from './images/icons/side/streak_done.png'
 import streakFire from './images/icons/side/streak-fire.png'
-import streakGone from './images/icons/side/streak_gone.png'
 import streakReady from './images/icons/side/streak-ready.png'
+import streakDone from './images/icons/side/streak_done.png'
+import streakGone from './images/icons/side/streak_gone.png'
 import streakReadyPending from './images/icons/side/streak_ready.png'
 import toDo from './images/icons/side/to-do.png'
 import checkMarkGoldTwin from './images/icons/study/check-mark-gold-twin.png'
@@ -269,6 +270,7 @@ export const Assets = {
     moreHorizontalGray: moreHorizontalGray,
     moreVerticalGray: moreVerticalGray,
     playRed: playRed,
+    replayBtn: replayBtn,
     plusGreen: plusGreen,
     searchBlack: searchBlack,
     shadow: shadow,
@@ -280,6 +282,7 @@ export const Assets = {
       calendar: calendar,
       dubbing: dubbing,
       ebooks: ebooks,
+      library: ebooks,
       main: main,
       readingPath: readingPath,
       more: more,
@@ -290,11 +293,11 @@ export const Assets = {
       earnedPoints: earnedPoints,
       favorite: favorite,
       sparklingBg: sparklingBg,
-      streakDone: streakDone,
       streakFire: streakFire,
-      streakGone: streakGone,
       streakReady: streakReady,
-      /** 어제까지 연속 유지, 오늘 미학습 (모바일 헤더 등) */
+      streakDone: streakDone,
+      streakGone: streakGone,
+      /* 어제까지 연속 유지, 오늘 미학습 (모바일 헤더 등) */
       streakReadyPending: streakReadyPending,
       toDo: toDo,
       dailyGoalCompleteBg: dailyGoalCompleteBg,

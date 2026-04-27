@@ -15,12 +15,13 @@ import { useStudentDailyLearning } from '@/7th/_client/store/student/daily-learn
 import { Modal } from '@/7th/_ui/common/common-components'
 import { useStyle } from '@/7th/_ui/context/StyleContext'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import DateUtils from '@/util/date-utils'
 import LevelUtils from '@/util/level-utils'
 import NumberUtils from '@/util/number-utils'
 import { useRouter } from 'next/navigation'
-import { ReactNode, useMemo, useState } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 
 const STYLE_ID = 'global_option_calendar'
 
@@ -74,6 +75,8 @@ const CalendarUI = ({
     month: nowDate.getMonth() + 1,
   })
 
+  const maketingEventTracker = useTrack()
+
   const router = useRouter()
 
   const monthNames = [
@@ -104,6 +107,11 @@ const CalendarUI = ({
     'Nov',
     'Dec',
   ]
+
+  useEffect(() => {
+    maketingEventTracker.eventAction('캘린더 화면 진입')
+  }, [maketingEventTracker])
+
   const yearChangeLeft = ({ year, month }: { year: number; month: number }) => {
     const newYear = year - 1
     updateCalendarDate({ year: newYear, month })
@@ -159,6 +167,9 @@ const CalendarUI = ({
     day: number
   }) => {
     const date = `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`
+    maketingEventTracker.eventAction('캘린더 날짜 클릭', {
+      selected_date: date,
+    })
     router.push(`${SITE_PATH.REVIEW.MAIN}?startDate=${date}&endDate=${date}`)
     onCloseModal && onCloseModal()
   }

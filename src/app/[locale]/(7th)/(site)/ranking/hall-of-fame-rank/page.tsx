@@ -4,9 +4,10 @@ import { useOnLoadHallOfFame } from '@/7th/_client/store/ranking/hall-of-fame/ho
 import { HallOfFameResponse } from '@/7th/_repository/client/ranking/hall-of-fame'
 import { Button, Modal } from '@/7th/_ui/common/common-components'
 import { useScreenMode, useStyle } from '@/7th/_ui/context/StyleContext'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const STYLE_ID = 'page_hall_of_fame_rank'
 
@@ -32,6 +33,8 @@ type HallOfFameListItem = {
 }
 
 const HallOfFameLayout = ({ data }: { data: HallOfFameResponse }) => {
+  const maketingEventTracker = useTrack()
+
   const style = useStyle(STYLE_ID)
 
   // @language 'common'
@@ -69,6 +72,10 @@ const HallOfFameLayout = ({ data }: { data: HallOfFameResponse }) => {
     boardList.unshift(userBoard)
   }
   const hasMore = boardList.length < data.list.length + (data.user ? 1 : 0)
+
+  useEffect(() => {
+    maketingEventTracker.eventAction('명예의전당 조회')
+  }, [maketingEventTracker])
 
   return (
     <main className={style.hall_off_fame_rank}>

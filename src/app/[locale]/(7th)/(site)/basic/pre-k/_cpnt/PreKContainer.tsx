@@ -4,6 +4,7 @@ import { useAchieveLevelBooks } from '@/7th/_client/store/achieve/level-books/se
 import { useFetchLibraryLevelPreK } from '@/7th/_client/store/library/pre-k/hook'
 import { useSiteBlueprint } from '@/7th/_context/CustomerContext'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import PreKLayout from './PreKLayout'
@@ -27,12 +28,18 @@ export default function PreKContainer({
 }: {
   activity: string
 }) {
+  const maketingEventTracker = useTrack()
+
   const router = useRouter()
   const replaceActivity = useCallback(
     (activityName: string) => {
+      maketingEventTracker.eventAction('기초 카테고리 진입', {
+        category_type: 'pre_k',
+        category_name: activityName,
+      })
       router.replace(`${SITE_PATH.BASIC.PRE_K}?activity=${activityName}`)
     },
-    [router],
+    [router, maketingEventTracker],
   )
   const { PreK: isPreKOpen } = useSiteBlueprint().studyOpen
 

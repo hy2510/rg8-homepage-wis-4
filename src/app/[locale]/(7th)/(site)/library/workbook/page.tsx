@@ -21,8 +21,9 @@ import { BookCover } from '@/7th/_ui/modules/library-book-cover/book-cover'
 import { BookList } from '@/7th/_ui/modules/library-find-book-list/book-list'
 import StudyLevelBox from '@/7th/_ui/modules/library-find-study-level-selector/StudyLevelBox'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import StudentHistorySelectModal from '../_cpnt/StudentHistorySelectModal'
 import useExport, { useSupportExportActionSearch } from '../_fn/use-export'
 
@@ -118,6 +119,8 @@ function EBookLayout({
 }: {
   levelList: { level: string; count: number }[]
 }) {
+  const maketingEventTracker = useTrack()
+
   // @Language 'common'
   const { t } = useTranslation()
 
@@ -165,6 +168,12 @@ function EBookLayout({
   }
 
   const [bookInfo, setBookInfo] = useState<string | undefined>(undefined)
+
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 섹션 탭 클릭', {
+      section_name: 'Workbook',
+    })
+  }, [maketingEventTracker])
 
   const {
     isSelectMode,

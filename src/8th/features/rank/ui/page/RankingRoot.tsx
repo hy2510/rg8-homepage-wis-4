@@ -3,13 +3,13 @@
 import RankCategory, {
   RankCategoryItem,
 } from '@/8th/features/rank/ui/component/RankCategory'
-import { hasOngoingReadingKingEvent } from '@/8th/features/readingking/model/event-period'
 import { useReadingKingEventList } from '@/8th/features/readingking/service/readingking-query'
 import { useCustomerConfiguration } from '@/8th/shared/context/CustomerContext'
 import { SubPageNavHeader } from '@/8th/shared/ui/SubPageNavHeader'
 import SITE_PATH from '@/app/site-path'
 import useTranslation from '@/localization/client/useTranslations'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import DateUtils from '@/util/date-utils'
+import { useEffect, useState } from 'react'
 import RankingChallenge from './layout/RankingChallenge'
 import RankingHallOfFame from './layout/RankingHallOfFame'
 import RankingLevelMaster from './layout/RankingLevelMaster'
@@ -20,6 +20,7 @@ type TabType =
   | 'reading-king'
   | 'level-master'
   | 'hall-of-fame'
+  | 'default'
 
 export default function RankingRoot() {
   const { menu } = useCustomerConfiguration()
@@ -27,89 +28,65 @@ export default function RankingRoot() {
   // @Language 'common'
   const { t } = useTranslation()
 
-  const eventListQuery = useReadingKingEventList({
+  const tabs: RankCategoryItem[] = []
+  if (menu.rank.monthly.open) {
+    tabs.push({ label: t('t8th225'), value: 'earned-points-rank' })
+  }
+  if (menu.rank.readingking.open) {
+    tabs.push({ label: t('t8th226'), value: 'reading-king' })
+  }
+  if (menu.rank.levelMaster.open) {
+    tabs.push({ label: t('t8th227'), value: 'level-master' })
+  }
+  if (menu.rank.hallOfFame.open) {
+    tabs.push({ label: t('t8th228'), value: 'hall-of-fame' })
+  }
+
+  const readingKingEvent = useReadingKingEventList({
     enabled: menu.rank.readingking.open,
   })
-
-  const readingKingContestOngoing =
-    menu.rank.readingking.open &&
-    !eventListQuery.isLoading &&
-    hasOngoingReadingKingEvent(eventListQuery.data?.list ?? [])
-
-  const tabs: RankCategoryItem[] = useMemo(() => {
-    const items: RankCategoryItem[] = []
-    if (menu.rank.monthly.open) {
-      items.push({ label: t('t8th225'), value: 'earned-points-rank' })
+  let targetEventId = undefined
+  if (readingKingEvent.data && readingKingEvent.data.list.length > 0) {
+    const latestEvent = readingKingEvent.data.list[0]
+    const dateRange = DateUtils.rangeDayCheck(
+      DateUtils.createDate(latestEvent.startDate),
+      DateUtils.createDate(latestEvent.endDate),
+      new Date(),
+    )
+    if (-2 < dateRange && dateRange < 2) {
+      targetEventId = latestEvent.eventId
     }
-    if (menu.rank.readingking.open) {
-      items.push({ label: t('t8th226'), value: 'reading-king' })
-    }
-    if (menu.rank.levelMaster.open) {
-      items.push({ label: t('t8th227'), value: 'level-master' })
-    }
-    if (menu.rank.hallOfFame.open) {
-      items.push({ label: t('t8th228'), value: 'hall-of-fame' })
-    }
-    if (readingKingContestOngoing) {
-      const rkIndex = items.findIndex((i) => i.value === 'reading-king')
-      if (rkIndex > 0) {
-        const rk = items[rkIndex]!
-        return [rk, ...items.filter((_, j) => j !== rkIndex)]
-      }
-    }
-    return items
-  }, [
-    menu.rank.hallOfFame.open,
-    menu.rank.levelMaster.open,
-    menu.rank.monthly.open,
-    menu.rank.readingking.open,
-    readingKingContestOngoing,
-    t,
-  ])
-
-  const waitingReadingKingSchedule =
-    menu.rank.readingking.open && eventListQuery.isLoading
-
-  const [selectedTab, setSelectedTab] = useState<TabType | undefined>(undefined)
-  const initialTabPicked = useRef(false)
-
+  }
   useEffect(() => {
-    if (tabs.length === 0) return
-    if (waitingReadingKingSchedule) return
-    if (initialTabPicked.current) return
-    initialTabPicked.current = true
-    setSelectedTab(tabs[0]?.value as TabType)
-  }, [tabs, waitingReadingKingSchedule])
+    if (!!targetEventId) {
+      setSelectedTab('reading-king')
+    }
+  }, [targetEventId])
 
-  const header = (
-    <SubPageNavHeader
-      title={t('t8th270')}
-      parentPath={SITE_PATH.NW82.ACTIVITY}
-    />
+  const [selectedTab, setSelectedTab] = useState<TabType | undefined>(
+    tabs.length > 0 ? 'default' : undefined,
   )
 
-  if (tabs.length === 0) {
-    return <>{header}</>
-  }
-
-  if (waitingReadingKingSchedule) {
-    return <>{header}</>
-  }
+  const currentTab = selectedTab === 'default' ? tabs[0].value : selectedTab
 
   return (
     <>
-      {header}
-      {!!selectedTab && (
+      <SubPageNavHeader
+        title={t('t8th270')}
+        parentPath={SITE_PATH.NW82.ACTIVITY}
+      />
+      {!!currentTab && (
         <RankCategory
           tabs={tabs}
-          selectedTab={selectedTab}
+          selectedTab={currentTab}
           setSelectedTab={(tab: string) => setSelectedTab(tab as TabType)}
         />
       )}
-      {selectedTab === 'earned-points-rank' && <RankingMonth />}
-      {selectedTab === 'reading-king' && <RankingChallenge />}
-      {selectedTab === 'level-master' && <RankingLevelMaster />}
-      {selectedTab === 'hall-of-fame' && <RankingHallOfFame />}
+
+      {currentTab === 'earned-points-rank' && <RankingMonth />}
+      {currentTab === 'reading-king' && <RankingChallenge />}
+      {currentTab === 'level-master' && <RankingLevelMaster />}
+      {currentTab === 'hall-of-fame' && <RankingHallOfFame />}
     </>
   )
 }

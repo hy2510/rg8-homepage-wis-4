@@ -47,6 +47,7 @@ import {
 } from '@/7th/_ui/common/common-components'
 import { useScreenMode, useStyle } from '@/7th/_ui/context/StyleContext'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import { useLanguagePackContext } from '@/localization/client/LanguagePackContext'
 import useTranslation from '@/localization/client/useTranslations'
 import DateUtils from '@/util/date-utils'
@@ -82,6 +83,8 @@ export function BookInfoModal({
   onClickDelete,
   onClickLightBox,
 }: BookInfoModal) {
+  const maketingEventTracker = useTrack()
+
   const style = useStyle(STYLE_ID)
 
   // @Language 'common'
@@ -534,6 +537,15 @@ export function BookInfoModal({
   }
 
   const [viewVocaPrintOptions, setViewVocaPrintOptions] = useState(false)
+
+  useEffect(() => {
+    if (!bookInfo.bookCode) return
+    if (!bookInfo.levelRoundId) return
+    maketingEventTracker.eventAction('도서 상세 조회', {
+      level_round_id: bookInfo.levelRoundId,
+      book_code: bookInfo.bookCode,
+    })
+  }, [maketingEventTracker, bookInfo.bookCode, bookInfo.levelRoundId])
 
   if (isBookInfoInitLoading || error) {
     return (

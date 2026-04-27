@@ -8,7 +8,9 @@ import {
 import { useLibraryTheme } from '@/7th/_client/store/library/theme/selector'
 import { useStyle } from '@/7th/_ui/context/StyleContext'
 import LoadingScreen from '@/7th/_ui/modules/LoadingScreen'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
+import { useEffect } from 'react'
 import { SearchThemeSeriesBookListTemplate } from '../_cpnt/SearchBookListTemplate'
 
 const STYLE_ID = 'page_theme'
@@ -27,6 +29,8 @@ export default function Page() {
 }
 
 function ThemeLayout() {
+  const maketingEventTracker = useTrack()
+
   const style = useStyle(STYLE_ID)
   // @Language 'common'
   const { t } = useTranslation()
@@ -52,6 +56,12 @@ function ThemeLayout() {
   }) => {
     fetch({ ...params, page: params.page || 1 })
   }
+
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 섹션 탭 클릭', {
+      section_name: 'Theme',
+    })
+  }, [maketingEventTracker])
 
   return (
     <SearchThemeSeriesBookListTemplate

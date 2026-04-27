@@ -17,6 +17,7 @@ import {
 import { StreakLine } from '@/8th/shared/ui/Misc'
 import { ModalContainer } from '@/8th/shared/ui/Modal'
 import { openWindow } from '@/8th/shared/utils/open-window'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import { useEffect, useRef, useState } from 'react'
 import LevelMasterItem from '../component/LevelMasterItem'
@@ -29,6 +30,7 @@ export interface LevelData {
   totalPoints: number
   imgSrc: string
   isComplete: boolean
+  certificationDate?: string
   certificationPath?: string
 }
 
@@ -65,6 +67,13 @@ export default function LevelMasterModal({
 }: {
   onCloseModal: () => void
 }) {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('레벨마스터 목록 화면 진입', {
+      version: '8th',
+    })
+  }, [maketingEventTracker])
+
   const { setting } = useCustomerConfiguration()
 
   // @Language 'common'
@@ -135,6 +144,11 @@ export default function LevelMasterModal({
             (master) => master.masterLevelName === level.levelName,
           )?.certificationPath
         : undefined
+      const certificationDate = isComplete
+        ? levelmaster.data?.list.find(
+            (master) => master.masterLevelName === level.levelName,
+          )?.levelDate
+        : undefined
 
       levelData.push({
         level: level.levelName,
@@ -143,6 +157,7 @@ export default function LevelMasterModal({
         totalPoints: level.requiredRgPoint,
         imgSrc: LEVLE_IMAGE_MAP[level.levelName],
         isComplete,
+        certificationDate,
         certificationPath,
       })
     })
@@ -172,6 +187,7 @@ export default function LevelMasterModal({
                 imgSrc={level.imgSrc}
                 isComplete={level.isComplete}
                 isCurrentLevel={currentLevel}
+                certificationDate={level.certificationDate}
                 onClick={handleLevelClick}
                 onClickCertification={
                   setting.printLevelCertificate && level.certificationPath

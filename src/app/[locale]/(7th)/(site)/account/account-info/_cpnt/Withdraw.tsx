@@ -7,6 +7,7 @@ import { useFetchStudentWithdraw } from '@/7th/_client/store/student/withdraw/ho
 import { useCustomerInfo } from '@/7th/_context/CustomerContext'
 import { Modal } from '@/7th/_ui/common/common-components'
 import { useStyle } from '@/7th/_ui/context/StyleContext'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import { useRouter } from 'next/navigation'
 import { useMemo, useState } from 'react'
@@ -14,6 +15,8 @@ import { useMemo, useState } from 'react'
 const STYLE_ID = 'page_account_info'
 
 export default function Withdraw() {
+  const maketingEventTracker = useTrack()
+
   const style = useStyle(STYLE_ID)
 
   // @language 'common'
@@ -66,6 +69,9 @@ export default function Withdraw() {
                 cause: memo,
                 callback: (isSuccess) => {
                   if (isSuccess) {
+                    maketingEventTracker.eventAction('탈퇴', {
+                      deactivation_reason: memo,
+                    })
                     deleteAccountGetResult({ loginId, customerId })
                     alert(
                       t('t598'), // 회원탈퇴가 완료되었습니다. 그동안 이용해주셔서 감사합니다.

@@ -7,9 +7,10 @@ import {
 } from '@/7th/_client/store/student/info/selector'
 import { useSiteBlueprint } from '@/7th/_context/CustomerContext'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Ticket from '../_cpnt/Ticket'
 
 export default function Page() {
@@ -22,6 +23,15 @@ export default function Page() {
   const path = usePathname()
   const isLogOff = useStudentInfoFlagLogin() === 'off'
   const [redirect, setRedirect] = useState('')
+
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    if (studyState !== 'PAUSED') {
+      maketingEventTracker.eventAction('이용권 등록 화면 진입', {
+        entry_source: 'gnb_click',
+      })
+    }
+  }, [maketingEventTracker, studyState])
 
   if (studyState === 'PAUSED') {
     // 학습 일시중지 중에는 티켓등록을 할 수 없습니다.

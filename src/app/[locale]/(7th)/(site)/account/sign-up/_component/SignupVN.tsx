@@ -114,6 +114,10 @@ export default function SignupVN({ style }: { style: Record<string, string> }) {
       return
     }
 
+    maketingEventTracker.eventAction('회원가입 시작', {
+      country_code: 'VN',
+      signup_method: 'email',
+    })
     emailCert.fetch({
       email: params.email,
       password: params.password,
@@ -238,6 +242,10 @@ export default function SignupVN({ style }: { style: Record<string, string> }) {
       callback: (data) => {
         if (data.success) {
           setLoginAction(true)
+          maketingEventTracker.eventAction('회원가입 성공', {
+            country_code: 'KR',
+            signup_method: 'email',
+          })
           maketingEventTracker.eventAction('회원가입')
           onLogin({
             id: signupParams.email,

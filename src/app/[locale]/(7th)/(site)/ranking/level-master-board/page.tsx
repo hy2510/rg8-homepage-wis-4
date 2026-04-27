@@ -5,9 +5,10 @@ import { useSiteBlueprint } from '@/7th/_context/CustomerContext'
 import { LevelMasterBoardResponse } from '@/7th/_repository/client/ranking/level-master'
 import { Button } from '@/7th/_ui/common/common-components'
 import { useStyle } from '@/7th/_ui/context/StyleContext'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import LevelUtils from '@/util/level-utils'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const STYLE_ID = 'page_level_master_board'
 
@@ -34,6 +35,8 @@ type LevelMasterListItem = {
 }
 
 const LevelMasterLayout = ({ data }: { data: LevelMasterBoardResponse }) => {
+  const maketingEventTracker = useTrack()
+
   const style = useStyle(STYLE_ID)
 
   // @Language 'common'
@@ -58,6 +61,10 @@ const LevelMasterLayout = ({ data }: { data: LevelMasterBoardResponse }) => {
       }
     })
   const hasMore = boardList.length < data.list.length
+
+  useEffect(() => {
+    maketingEventTracker.eventAction('레벨마스터 랭킹 조회')
+  }, [maketingEventTracker])
 
   return (
     <main className={style.level_master_layout}>

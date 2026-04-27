@@ -23,11 +23,11 @@ interface LevelTestHistoryData {
 }
 
 interface LevelTestInfoModalProps {
-  onCloseModal: () => void
+  onClose: () => void
 }
 
 export default function LevelTestInfoModal({
-  onCloseModal,
+  onClose,
 }: LevelTestInfoModalProps) {
   // @language 'common'
   const { t } = useTranslation()
@@ -56,7 +56,7 @@ export default function LevelTestInfoModal({
     <ModalContainer>
       <ModalHeaderStyle>
         <div className="title">{t('t8th259')}</div>
-        <div className="btn-close" onClick={onCloseModal} />
+        <div className="btn-close" onClick={onClose} />
       </ModalHeaderStyle>
       <ModalBodyStyle>
         <BoxStyle

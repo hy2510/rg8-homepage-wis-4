@@ -4,8 +4,10 @@ import { useStudentInfo } from '@/7th/_client/store/student/info/selector'
 import { Button } from '@/7th/_ui/common/common-components'
 import { useStyle } from '@/7th/_ui/context/StyleContext'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 const STYLE_ID = 'page_welcome'
 
@@ -18,6 +20,17 @@ export default function Welcome() {
   const student = useStudentInfo()
 
   const router = useRouter()
+
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    if (!!student.studentId) {
+      maketingEventTracker.eventAction('회원가입 완료')
+      maketingEventTracker.eventAction('무료 체험 시작', {
+        trial_type: student.studyEndDay,
+      })
+    }
+  }, [maketingEventTracker, student])
+
   return (
     <div className={style.sign_up_box}>
       <main className={style.welcome}>

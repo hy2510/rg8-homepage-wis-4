@@ -13,11 +13,12 @@ import {
 } from '@/7th/_ui/common/common-components'
 import { useScreenMode, useStyle } from '@/7th/_ui/context/StyleContext'
 import LoadingScreen from '@/7th/_ui/modules/LoadingScreen'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import { VIETNAMESE } from '@/localization/localize-config'
 import NumberUtils from '@/util/number-utils'
 import Image from 'next/image'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
 const STYLE_ID = 'page_points_rank'
 
@@ -36,6 +37,8 @@ export default function Page() {
 }
 
 function PointRank() {
+  const maketingEventTracker = useTrack()
+
   const style = useStyle(STYLE_ID)
   // @Language 'common'
   const { t, i18n } = useTranslation()
@@ -207,6 +210,17 @@ function PointRank() {
 
   const isMobile = useScreenMode() === 'mobile'
 
+  useEffect(() => {
+    const date = new Date()
+    maketingEventTracker.eventAction('다독(포인트) 랭킹 조회', {
+      type: tab === 'monthly' ? 'monthly' : 'total',
+      selected_month:
+        tab === 'monthly'
+          ? `${date.getFullYear()}. ${date.getMonth() + 1}`
+          : undefined,
+    })
+  }, [maketingEventTracker, tab])
+
   return (
     <main className={style.point_rank}>
       <div>
@@ -250,6 +264,9 @@ function PointRank() {
           className={style.txt_link}
           onClick={() => {
             const url = `/src/html/page-contents/${isMobile ? 'mobile' : 'pc'}/ranking/ranking_01_point_pop${language === VIETNAMESE ? `_${VIETNAMESE}` : ''}.html`
+            maketingEventTracker.eventAction('포인트 안내 클릭', {
+              url: url,
+            })
             setModalUrl(url)
           }}>
           {t('t406')}

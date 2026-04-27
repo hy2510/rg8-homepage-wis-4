@@ -5,16 +5,22 @@ export default async function Page({
   searchParams,
 }: {
   params: Promise<{ booktype: string }>
-  searchParams: Promise<{ code: string; name: string; level?: string }>
+  searchParams: Promise<{
+    code: string
+    name: string
+    level?: string
+    call?: string
+  }>
 }) {
   const { booktype } = await params
-  const { name, level } = await searchParams
+  const { name, level, call } = await searchParams
 
   return (
     <SearchSeriesBookList
       booktype={booktype.toUpperCase()}
       seriesName={name}
       level={level}
+      referrer={call}
     />
   )
 }

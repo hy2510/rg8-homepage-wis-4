@@ -12,5 +12,6 @@ export const historyKeys = {
     params
       ? (['history', 'writing', params] as const)
       : (['history', 'writing'] as const),
+  bookInfoParent: () => ['history', 'book-info'] as const,
   bookInfo: (studyId: string) => ['history', 'book-info', studyId] as const,
 }

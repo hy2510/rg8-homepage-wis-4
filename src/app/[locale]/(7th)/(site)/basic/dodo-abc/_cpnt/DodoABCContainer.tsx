@@ -4,6 +4,7 @@ import { useAchieveLevelBooks } from '@/7th/_client/store/achieve/level-books/se
 import { useFetchLibraryLevelDodoAbc } from '@/7th/_client/store/library/dodo-abc/hook'
 import { useSiteBlueprint } from '@/7th/_context/CustomerContext'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import DodoABCLayout from './DodoABCLayout'
@@ -60,12 +61,18 @@ export default function DodoABCContainer({
 }: {
   activity: string
 }) {
+  const maketingEventTracker = useTrack()
+
   const router = useRouter()
   const replaceActivity = useCallback(
     (activityName: string) => {
+      maketingEventTracker.eventAction('기초 카테고리 진입', {
+        category_type: 'dodo_abc',
+        category_name: activityName,
+      })
       router.replace(`${SITE_PATH.BASIC.DODO_ABC}?activity=${activityName}`)
     },
-    [router],
+    [router, maketingEventTracker],
   )
   const { DodoABC: isDodoABCOpen } = useSiteBlueprint().studyOpen
 

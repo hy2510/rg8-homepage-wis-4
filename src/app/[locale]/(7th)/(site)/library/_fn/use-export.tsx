@@ -126,6 +126,7 @@ export default function useExport() {
           todoListReload({ isReload: true })
           updateBookList(levelRoundIds, true)
           alert(t('t340'))
+          setSelectMode(false)
         } else if (error) {
           if ((error as any).message) {
             alert((error as any).message)

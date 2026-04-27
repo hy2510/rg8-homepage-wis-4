@@ -20,6 +20,7 @@ import {
   ExportItem,
   ExportModePanel,
 } from '@/7th/_ui/modules/library-export-mode-panel/export-mode-panel'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import { useEffect, useState } from 'react'
 import StudentHistorySelectModal from '../../_cpnt/StudentHistorySelectModal'
@@ -33,6 +34,8 @@ const STYLE_ID = 'page_to_do'
 
 const PAGE_PER_RECORD = 12
 export default function Page() {
+  const maketingEventTracker = useTrack()
+
   const style = useStyle(STYLE_ID)
 
   // @Language 'common'
@@ -180,6 +183,12 @@ export default function Page() {
       })
     }
   }
+
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 섹션 탭 클릭', {
+      section_name: 'To-Do',
+    })
+  }, [maketingEventTracker])
 
   if (isPageLoading) {
     return (

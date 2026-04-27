@@ -5,9 +5,14 @@ window.TRANSLATE_EN = {
     aria_label: "Usage guide table",
     header: { menu: "Menu", intro: "Description" },
     daily: {
-      menu: "DAILY RG",
+      menu: "RG TRACK",
       desc: "Carefully recommended daily English books matched to each student's level.",
       tip: "When you change the study level, the recommended level changes as well."
+    },
+    library: {
+      menu: "LIBRARY",
+      desc: "Digital books for online reading with follow-up learning activities.",
+      tip: "Use Continue (series/level from recently read books and in-progress level), or browse by level, movie book, topic, and series."
     },
     ebooks: {
       menu: "E-BOOKS",
@@ -20,7 +25,7 @@ window.TRANSLATE_EN = {
       tip: "Use Continue (series/level from recently read books and in-progress level), or browse by level, topic, and series."
     },
     my_activity: {
-      menu: "MY ACTIVITY",
+      menu: "MY PAGE",
       desc: "Check your study level, reading rank, and recent learning history.",
       tip: "Change your level and review detailed progress by period in Learning Results."
     },

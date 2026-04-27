@@ -138,6 +138,8 @@ export function SetStudyMode() {
           }}
         />
       </div>
+      {/*  Listen & Repeat 기능 사용 종료 처리
+
       <div className={style.row_c}>
         <div className={style.txt_h}>{t('t166')}</div>
         <SetStudyOptionItem
@@ -157,6 +159,7 @@ export function SetStudyMode() {
           }
         />
       </div>
+       */}
       <div className={style.row_b}>
         <div className={style.txt_h}>{t('t168')}</div>
         <SetStudyOptionItem

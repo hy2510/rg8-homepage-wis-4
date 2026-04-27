@@ -22,27 +22,29 @@ type StreakStatus = 'zero' | 'progress' | 'award'
 
 /**
  * 연속학습 카드 컴포넌트
- * @param titleOpensModal false면 제목 클릭 시 모달 미표시(6th 연속 표기 등 레거시 전용)
  */
 export default function StreakCard({
   isTodayStudy,
   streakDay,
-  titleOpensModal = true,
+  isClassicMode,
 }: {
   isTodayStudy: boolean
   streakDay: number
-  titleOpensModal?: boolean
+  isClassicMode: boolean
 }) {
   //@language 'common'
   const { t } = useTranslation()
 
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const awardDay =
-    Math.floor(streakDay / STREAK_DAY_STEP) * STREAK_DAY_STEP + STREAK_DAY_STEP
   let streakStatus: StreakStatus = 'zero'
 
-  if (isTodayStudy && streakDay > 0 && streakDay % STREAK_DAY_STEP === 0) {
+  if (
+    !isClassicMode &&
+    isTodayStudy &&
+    streakDay > 0 &&
+    streakDay % STREAK_DAY_STEP === 0
+  ) {
     streakStatus = 'award'
   } else if (streakDay > 0) {
     streakStatus = 'progress'
@@ -55,11 +57,9 @@ export default function StreakCard({
       <WidgetBoxStyle height="168px" getAward={streakStatus === 'award'}>
         <StreakCardStyle>
           <CommonTitleStyle
-            noLink={!titleOpensModal}
-            onClick={
-              titleOpensModal ? () => setIsModalOpen(true) : undefined
-            }
-            getAward={awardDay === streakDay}>
+            onClick={!isClassicMode ? () => setIsModalOpen(true) : undefined}
+            noLink={isClassicMode}
+            getAward={streakStatus === 'award'}>
             {t('t8th253')}
           </CommonTitleStyle>
           {streakStatus === 'zero' && <StreakStatusReady />}
@@ -81,9 +81,7 @@ export default function StreakCard({
           </>
         )}
       </WidgetBoxStyle>
-      {titleOpensModal && isModalOpen && (
-        <StreakModal onClose={() => setIsModalOpen(false)} />
-      )}
+      {isModalOpen && <StreakModal onClose={() => setIsModalOpen(false)} />}
     </>
   )
 }

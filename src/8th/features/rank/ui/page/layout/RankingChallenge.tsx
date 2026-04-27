@@ -13,10 +13,11 @@ import { useReadingKingEventList } from '@/8th/features/readingking/service/read
 import { useStudentAvatarList } from '@/8th/features/student/service/setting-query'
 import { useCustomerConfiguration } from '@/8th/shared/context/CustomerContext'
 import { RoundedFullButton } from '@/8th/shared/ui/Buttons'
-import { BoxStyle, TextStyle } from '@/8th/shared/ui/Misc'
+import { BoxStyle } from '@/8th/shared/ui/Misc'
 import Pagenation from '@/8th/shared/ui/Pagenation'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const RECORD_PER_PAGE = 10
 export default function RankingChallenge() {
@@ -64,6 +65,8 @@ function RankingChallengeList({
   }[]
   isOpenGroupRank: boolean
 }) {
+  const maketingEventTracker = useTrack()
+
   // @Language 'common'
   const { t } = useTranslation()
 
@@ -80,6 +83,18 @@ function RankingChallengeList({
   const onChangeEvent = (key: string) => {
     setSelectedEvent(events.find((event) => event.key === key)!)
   }
+
+  useEffect(() => {
+    if (!selectedEvent) return
+    const eventTitle = selectedEvent.title
+    const eventStartDate = selectedEvent.startDate
+    const eventEndDate = selectedEvent.endDate
+    maketingEventTracker.eventAction('영어독서왕 랭킹 조회', {
+      version: '8th',
+      selected_event: eventTitle,
+      period: `${eventStartDate} ~ ${eventEndDate}`,
+    })
+  }, [maketingEventTracker, selectedEvent])
 
   return (
     <>

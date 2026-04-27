@@ -8,9 +8,10 @@ import { useOnLoadSuccessiveStudy } from '@/7th/_client/store/achieve/successive
 import { useStudentAvatar } from '@/7th/_client/store/student/avatar/selector'
 import { useStudentReadingUnit } from '@/7th/_client/store/student/reading-unit/selector'
 import { Modal } from '@/7th/_ui/common/common-components'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ChallengeAward } from './MyRgModal/ChallengeAward'
 import { ChooseAvatarAndReadingUnit } from './MyRgModal/ChooseAvatarAndReadingUnit'
 import { DailyGoalAward } from './MyRgModal/DailyGoalAward'
@@ -59,6 +60,8 @@ export function MyRgModal({ onCloseModal }: { onCloseModal?: () => void }) {
   // @Language 'common'
   const { t } = useTranslation()
 
+  const maketingEventTracker = useTrack()
+
   useOnLoadSuccessiveDailyGoal()
   useOnLoadSuccessiveStudy()
   useOnLoadAchieveLevelMaster()
@@ -96,6 +99,10 @@ export function MyRgModal({ onCloseModal }: { onCloseModal?: () => void }) {
   const onModalClose = () => {
     onCloseModal && onCloseModal()
   }
+
+  useEffect(() => {
+    maketingEventTracker.eventAction('나의RG 화면 진입')
+  }, [maketingEventTracker])
 
   return (
     <Modal

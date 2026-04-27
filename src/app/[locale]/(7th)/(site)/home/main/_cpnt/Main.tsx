@@ -20,6 +20,7 @@ import {
 import LogIn from '@/7th/_ui/modules/home-main-components/home-main-log-in'
 import MainBanner from '@/7th/_ui/modules/home-main-components/home-main-main-banner'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import { isGoTo8th } from '@/external/site-7-8-bridge'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -68,6 +69,11 @@ function MainComponent({ platform }: { platform: string }) {
     return () => window.removeEventListener('resize', findFormpactor)
   }, [])
 
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('홈 화면 조회')
+  }, [maketingEventTracker])
+
   const router = useRouter()
   const { target, country, isPaymentable, custom } = useSiteBlueprint()
   const disableRankMenu = custom?.menu?.ranking?.disableAll
@@ -78,6 +84,9 @@ function MainComponent({ platform }: { platform: string }) {
   const isLogin = useStudentIsLogin()
   const onClickMainLoginButton = () => {
     if (isLogin) {
+      maketingEventTracker.eventAction('학습하기 버튼 클릭', {
+        version: isGoTo8th() ? '8th' : '7th',
+      })
       // 7차 - 8차 연동 부분 체크 - 8차 화면으로 이동
       if (isGoTo8th()) {
         // 8차 사이트는 직접 이동

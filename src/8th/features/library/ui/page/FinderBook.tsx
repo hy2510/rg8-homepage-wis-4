@@ -8,7 +8,8 @@ import {
 import ChallengeBoard from '@/8th/features/library/ui/component/ChallengeBoard'
 import Collections from '@/8th/features/library/ui/component/Collections'
 import ContinueViewed from '@/8th/features/library/ui/component/ContinueViewed'
-import LevelSection from '@/8th/features/library/ui/component/LevelSection'
+import LevelSectionContainer from '@/8th/features/library/ui/component/LevelSectionContainer'
+import LibraryTabBar from '@/8th/features/library/ui/component/LibraryTabBar'
 import SearchBar from '@/8th/features/library/ui/component/SearchBar'
 import {
   LevelSectionType,
@@ -41,21 +42,30 @@ import {
   useCustomerConfiguration,
   useCustomerInfo,
 } from '@/8th/shared/context/CustomerContext'
-import { LibraryFinderTabBarStyle } from '@/8th/shared/styled/FeaturesStyled'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import DateUtils from '@/util/date-utils'
 import LevelUtils from '@/util/level-utils'
-import Link from 'next/link'
-import { useParams } from 'next/navigation'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import TodoBookInfoModal from '../modal/TodoBookInfoModal'
+
+const TODO_BOOK_LIMIT = 8
 
 export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 섹션 탭 클릭', {
+      version: '8th',
+      section_name: 'Library',
+      book_type: booktype === 'eb' ? 'eBook' : 'p Book Quiz',
+    })
+  }, [maketingEventTracker, booktype])
+
   // @Language 'common'
   const { t } = useTranslation()
+
   const { menu, setting } = useCustomerConfiguration()
-  const params = useParams<{ locale: string }>()
-  const locale = (params?.locale || '').toLowerCase()
 
   const student = useStudent()
   const customerId = useCustomerInfo()?.customerId || ''
@@ -72,7 +82,9 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
   const continueCategory = useCategoryContinue()
   const todo = useTodoList()
 
-  const readingKingEvent = useReadingKingEventList()
+  const readingKingEvent = useReadingKingEventList({
+    enabled: setting.showReadingking,
+  })
   const { mutate: changeEventPrize } = useReadingKingEventPrizeUpdate()
 
   let targetEventId = undefined
@@ -130,19 +142,27 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
     let continueSeries = undefined
 
     if (booktype === 'eb') {
+      let tmpUserLevel = userLevel
+      if (tmpUserLevel === '6C') {
+        tmpUserLevel = '6B'
+      }
+      const ebUserLevel = tmpUserLevel
+
       const dodoAbcData = isOpenDodoAbc
-        ? makeLevelSectionTypeDodoABC(levels.data?.dodoABC || [], locale)
+        ? makeLevelSectionTypeDodoABC(levels.data?.dodoABC || [])
         : undefined
       const pkData = isOpenPreKClassic
         ? makeLevelSectionTypePK(levels.data?.preK || [])
         : undefined
       if (pkData) {
+        pkData.section = t('t8th329')
         lSectionData.push(pkData)
       }
       if (dodoAbcData) {
+        dodoAbcData.section = t('t8th329')
         lSectionData.push(dodoAbcData)
       }
-      if (userLevel === 'PK') {
+      if (ebUserLevel === 'PK') {
         if (dodoAbcData) {
           containLevelGroup = dodoAbcData.section
         } else if (pkData) {
@@ -152,8 +172,9 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
 
       const ebData = levels.data?.eb || []
 
-      const lvKTo1Data = makeLevelSectionType('Kto1', 'eb', ebData, locale)
+      const lvKTo1Data = makeLevelSectionType('Kto1', 'eb', ebData)
       if (lvKTo1Data) {
+        lvKTo1Data.section = t('t8th330')
         const seriesData = makeLevelSectionSeries(
           'eb',
           'KA',
@@ -164,12 +185,13 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
           lvKTo1Data.series = [{ items: seriesData }]
         }
         lSectionData.push(lvKTo1Data)
-        if (LevelUtils.isContainLevel(userLevel, 'KA', '1C')) {
+        if (LevelUtils.isContainLevel(ebUserLevel, 'KA', '1C')) {
           containLevelGroup = lvKTo1Data.section
         }
       }
-      const lv2To3Data = makeLevelSectionType('2to3', 'eb', ebData, locale)
+      const lv2To3Data = makeLevelSectionType('2to3', 'eb', ebData)
       if (lv2To3Data) {
+        lv2To3Data.section = t('t8th331')
         const seriesData = makeLevelSectionSeries(
           'eb',
           '2A',
@@ -180,12 +202,13 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
           lv2To3Data.series = [{ items: seriesData }]
         }
         lSectionData.push(lv2To3Data)
-        if (LevelUtils.isContainLevel(userLevel, '2A', '3C')) {
+        if (LevelUtils.isContainLevel(ebUserLevel, '2A', '3C')) {
           containLevelGroup = lv2To3Data.section
         }
       }
-      const lv4To6Data = makeLevelSectionType('4to6', 'eb', ebData, locale)
+      const lv4To6Data = makeLevelSectionType('4to6', 'eb', ebData)
       if (lv4To6Data) {
+        lv4To6Data.section = t('t8th332')
         const seriesData = makeLevelSectionSeries(
           'eb',
           '4A',
@@ -196,12 +219,14 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
           lv4To6Data.series = [{ items: seriesData }]
         }
         lSectionData.push(lv4To6Data)
-        if (LevelUtils.isContainLevel(userLevel, '4A', '6C')) {
+        if (LevelUtils.isContainLevel(ebUserLevel, '4A', '6C')) {
           containLevelGroup = lv4To6Data.section
         }
       }
 
-      const continueLevelData = continueCategory.data?.continue?.eb?.level
+      // MEMO: Continue 레벨 기준을 서버에서 마지막학습 레벨 기준으로 하는 대신, 학습자 레벨로 고정
+      // const continueLevelData = continueCategory.data?.continue?.eb?.level
+      const continueLevelData = ebUserLevel
       const continueSeriesData = continueCategory.data?.continue?.eb?.series
 
       if (continueLevelData) {
@@ -241,9 +266,17 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
       }
     } else if (booktype === 'pb') {
       const pbData = levels.data?.pb || []
+      let tmpUserLevel = userLevel
+      if (
+        LevelUtils.getLevelIndex('KB') >= LevelUtils.getLevelIndex(tmpUserLevel)
+      ) {
+        tmpUserLevel = 'KC'
+      }
+      const pbUserLevel = tmpUserLevel
 
-      const lvKTo1Data = makeLevelSectionType('Kto1', 'pb', pbData, locale)
+      const lvKTo1Data = makeLevelSectionType('Kto1', 'pb', pbData)
       if (lvKTo1Data) {
+        lvKTo1Data.section = t('t8th330')
         const seriesData = makeLevelSectionSeries(
           'pb',
           'KC',
@@ -254,12 +287,13 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
           lvKTo1Data.series = [{ items: seriesData }]
         }
         lSectionData.push(lvKTo1Data)
-        if (LevelUtils.isContainLevel(userLevel, 'KC', '1C')) {
+        if (LevelUtils.isContainLevel(pbUserLevel, 'KC', '1C')) {
           containLevelGroup = lvKTo1Data.section
         }
       }
-      const lv2To3Data = makeLevelSectionType('2to3', 'pb', pbData, locale)
+      const lv2To3Data = makeLevelSectionType('2to3', 'pb', pbData)
       if (lv2To3Data) {
+        lv2To3Data.section = t('t8th331')
         const seriesData = makeLevelSectionSeries(
           'pb',
           '2A',
@@ -270,12 +304,13 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
           lv2To3Data.series = [{ items: seriesData }]
         }
         lSectionData.push(lv2To3Data)
-        if (LevelUtils.isContainLevel(userLevel, '2A', '3C')) {
+        if (LevelUtils.isContainLevel(pbUserLevel, '2A', '3C')) {
           containLevelGroup = lv2To3Data.section
         }
       }
-      const lv4To6Data = makeLevelSectionType('4to6', 'pb', pbData, locale)
+      const lv4To6Data = makeLevelSectionType('4to6', 'pb', pbData)
       if (lv4To6Data) {
+        lv4To6Data.section = t('t8th332')
         const seriesData = makeLevelSectionSeries(
           'pb',
           '4A',
@@ -286,12 +321,14 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
           lv4To6Data.series = [{ items: seriesData }]
         }
         lSectionData.push(lv4To6Data)
-        if (LevelUtils.isContainLevel(userLevel, '4A', '6C')) {
+        if (LevelUtils.isContainLevel(pbUserLevel, '4A', '6C')) {
           containLevelGroup = lv4To6Data.section
         }
       }
 
-      const continueLevelData = continueCategory.data?.continue?.pb?.level
+      // MEMO: Continue 레벨 기준을 서버에서 마지막학습 레벨 기준으로 하는 대신, 학습자 레벨로 고정
+      // const continueLevelData = continueCategory.data?.continue?.pb?.level
+      const continueLevelData = pbUserLevel
       const continueSeriesData = continueCategory.data?.continue?.pb?.series
 
       if (continueLevelData) {
@@ -350,6 +387,9 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
         return a.substring(1, 2).charCodeAt(0) - b.substring(1, 2).charCodeAt(0)
       })
 
+      /*
+       * MEMO::  2026-04-10 컨티뉴 목록에서 To-Do 레벨 카테고리 추가하는 기능 제거 (최근 레벨과 시리즈 2건만 나오도록 함)
+       * 
       if (booktype === 'eb') {
         continueTodoLevelData.push(
           ...continueTodoLevelList
@@ -387,6 +427,7 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
             }),
         )
       }
+        */
     }
 
     const continueSectionResult: LevelSectionType | undefined =
@@ -397,7 +438,18 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
             series: [{ items: continueSeries ? [continueSeries] : [] }],
             todos:
               continueTodoLevelData.length > 0
-                ? [{ items: continueTodoLevelData }]
+                ? [
+                    {
+                      // MEMO: 최대 3건만 나오도록 함
+                      items: continueTodoLevelData.filter(
+                        (_, idx) =>
+                          idx <
+                          3 -
+                            (continueLevel ? 1 : 0) -
+                            (continueSeries ? 1 : 0),
+                      ),
+                    },
+                  ]
                 : undefined,
           }
         : undefined
@@ -422,7 +474,6 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
     }
   }, [
     booktype,
-    locale,
     levels.data,
     seriesCategory.data,
     userSetting.data,
@@ -432,7 +483,20 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
     isOpenSeries,
     isOpenPreKClassic,
     isOpenDodoAbc,
+    t,
   ])
+
+  const [bookInfo, setBookInfo] = useState<
+    | {
+        levelRoundId: string
+        surfaceImagePath: string
+        title: string
+        bookCode: string
+        studentHistoryId: string
+        studyId: string
+      }
+    | undefined
+  >(undefined)
 
   if (levels.isLoading || seriesCategory.isLoading || userSetting.isLoading) {
     return <div />
@@ -453,6 +517,23 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
     changeEventPrize({ eventId: targetEventId!, eventPrizeId: prizeId })
   }
 
+  const libraryTabBarItems: React.ComponentProps<
+    typeof LibraryTabBar
+  >['items'] = []
+  if (menu.eb.open) {
+    libraryTabBarItems.push({
+      href: SITE_PATH.NW82.EB,
+      active: booktype === 'eb',
+      label: t('t8th325'),
+    })
+  }
+  if (menu.pb.open) {
+    libraryTabBarItems.push({
+      href: SITE_PATH.NW82.PB,
+      active: booktype === 'pb',
+      label: t('t8th326'),
+    })
+  }
   const collectionsList: React.ComponentProps<typeof Collections>['list'] = []
   if (menu[booktype].collections.newBooks.open) {
     collectionsList.push('NewBooks')
@@ -460,8 +541,9 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
   if (menu[booktype].collections.themes.open) {
     collectionsList.push('Theme')
   }
-  // Series 노출
-  collectionsList.push('Series')
+  if (menu[booktype].collections.series.open) {
+    collectionsList.push('Series')
+  }
   if (booktype === 'eb' ? menu.eb.collections.movies.open : undefined) {
     collectionsList.push('Movie')
   }
@@ -470,6 +552,60 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
   }
   if (booktype === 'eb' ? menu.eb.collections.schoolSubjects.open : undefined) {
     collectionsList.push('SchoolSubjects')
+  }
+
+  const todos =
+    todo.data?.todo?.filter((todo) =>
+      todo.levelName.startsWith(booktype === 'eb' ? 'EB' : 'PB'),
+    ) ?? []
+  const isTodoMore = todos.length > TODO_BOOK_LIMIT
+
+  const onTodoBookClick = (studyId: string) => {
+    const book = todos.find((book) => book.studyId === studyId)
+    if (!book) {
+      return
+    }
+
+    if (isStudyEnd) {
+      onStudyEndMessage()
+      return
+    }
+
+    setBookInfo({
+      levelRoundId: book.levelRoundId,
+      surfaceImagePath: book.surfaceImagePath,
+      title: book.title,
+      bookCode: book.levelName,
+      studentHistoryId: book.studentHistoryId,
+      studyId: book.studyId,
+    })
+  }
+
+  // TODO: 학습이 가능한 경우에만 열리도록 하는 기능이 필요.
+  const isStudyEnd = student?.data?.studyState?.isStudyEnd || false
+  const onStudyEndMessage = () => {
+    const message = student?.data?.studyState?.studyEndMessage || ''
+    if (message) {
+      alert(message)
+    }
+  }
+
+  let continueDefaultTab: 'todo' | 'level' = 'todo'
+  if (userConfig.continueDefaultTab) {
+    continueDefaultTab = userConfig.continueDefaultTab
+  }
+  if (
+    continueDefaultTab === 'level' &&
+    !findBookData.continueSection &&
+    todos.length > 0
+  ) {
+    continueDefaultTab = 'todo'
+  } else if (
+    continueDefaultTab === 'todo' &&
+    !!findBookData.continueSection &&
+    todos.length === 0
+  ) {
+    continueDefaultTab = 'level'
   }
 
   return (
@@ -495,46 +631,48 @@ export default function FinderBook({ booktype }: { booktype: 'eb' | 'pb' }) {
           isDefaultExpend={userConfig.mode === 'challenge'}
         />
       )}
-      {(menu.eb.open || menu.pb.open) && (
-        <LibraryFinderTabBarStyle>
-          <div className="tabs">
-            {menu.eb.open && (
-              <Link
-                href={SITE_PATH.NW82.EB}
-                className={`tab ${booktype === 'eb' ? 'active' : 'inactive'}`}
-                aria-current={booktype === 'eb' ? 'page' : undefined}
-                scroll={false}>
-                {t('t8th325')}
-              </Link>
-            )}
-            {menu.pb.open && (
-              <Link
-                href={SITE_PATH.NW82.PB}
-                className={`tab ${booktype === 'pb' ? 'active' : 'inactive'}`}
-                aria-current={booktype === 'pb' ? 'page' : undefined}
-                scroll={false}>
-                {t('t8th326')}
-              </Link>
-            )}
-          </div>
-        </LibraryFinderTabBarStyle>
+      {libraryTabBarItems.length > 0 && (
+        <LibraryTabBar items={libraryTabBarItems} />
       )}
       {menu[booktype].search.open && <SearchBar booktype={booktype} />}
-      {menu[booktype].continue.open && findBookData.continueSection && (
-        <ContinueViewed
-          continueSection={findBookData.continueSection}
-          booktype={booktype}
-        />
-      )}
+      {menu[booktype].continue.open &&
+        (!!findBookData.continueSection || todos.length > 0) && (
+          <ContinueViewed
+            defaultTab={continueDefaultTab}
+            onChangeTab={(tab) => {
+              updateUserConfig({
+                customerId,
+                studentId,
+                continueDefaultTab: tab,
+              })
+            }}
+            continueSection={findBookData.continueSection}
+            todos={todos.filter((_, idx) => idx < TODO_BOOK_LIMIT)}
+            moreTodo={isTodoMore}
+            onClickBook={onTodoBookClick}
+          />
+        )}
       {menu[booktype].readingLevel.open && (
-        <LevelSection
+        <LevelSectionContainer
           levelSection={findBookData.sectionData}
           defaultLevel={findBookData.defaultOpenSection}
-          libraryBookType={booktype === 'eb' ? 'EB' : 'PB'}
         />
       )}
       {menu[booktype].collections.open && (
         <Collections bookType={booktype} list={collectionsList} />
+      )}
+      {bookInfo && (
+        <TodoBookInfoModal
+          onClickClose={() => {
+            setBookInfo(undefined)
+          }}
+          title={bookInfo.title}
+          bookCode={bookInfo.bookCode}
+          imgSrc={bookInfo.surfaceImagePath}
+          levelRoundId={bookInfo.levelRoundId}
+          studentHistoryId={bookInfo.studentHistoryId}
+          studyId={bookInfo.studyId}
+        />
       )}
     </>
   )

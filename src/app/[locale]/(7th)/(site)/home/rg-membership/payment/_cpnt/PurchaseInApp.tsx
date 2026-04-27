@@ -49,6 +49,20 @@ export default function PurchaseInApp({
     setIapInterface(iap)
   }, [])
 
+  useEffect(() => {
+    if (payload && selectItem) {
+      const filteredItem = payload?.product?.filter(
+        (item) => item.id === selectItem,
+      )
+      if (filteredItem && filteredItem.length > 0) {
+        maketingEventTracker.eventAction('이용권 상품 조회', {
+          catagory_id: purchaseType,
+          product_id: filteredItem[0].name,
+        })
+      }
+    }
+  }, [maketingEventTracker, purchaseType, payload, selectItem])
+
   const onProductClick = (itemId: string) => {
     setSelectItem(itemId)
   }
@@ -72,7 +86,18 @@ export default function PurchaseInApp({
 
     if (targetProduct) {
       const itemId = targetProduct.id
-
+      maketingEventTracker.eventAction('결제 시작', {
+        product_id: targetProduct.id,
+        total_price: targetProduct.totalFee,
+      })
+      maketingEventTracker.eventAction('이용권 결제하기 클릭', {
+        category: purchaseType,
+        product_id: targetProduct.id,
+        product_name: targetProduct.name,
+        price: targetProduct.totalFee,
+        currency: currency,
+        subscription_type: targetProduct.name,
+      })
       purchaseFetch({
         itemId,
         callback: (isSuccess, errorCode) => {
@@ -81,12 +106,31 @@ export default function PurchaseInApp({
               value: targetProduct.totalFee,
               currency,
             })
+            maketingEventTracker.eventAction('결제 완료', {
+              product_id: targetProduct.id,
+              product_name: targetProduct.name,
+              price: targetProduct.totalFee,
+              currency: currency,
+              subscription_type: targetProduct.name,
+            })
             alert(t('t694')) // 결제가 완료 되었습니다.
             router.push(SITE_PATH.HOME.MEMBERSHIP_PAYMENT_HISTORY)
           } else {
             if (errorCode !== -99) {
               alert('errorCode: ' + errorCode)
             }
+            maketingEventTracker.eventAction('구매 취소', {
+              product_id: targetProduct.id,
+              cancel_reason: errorCode,
+            })
+            maketingEventTracker.eventAction('결제 취소', {
+              product_id: targetProduct.id,
+              product_name: targetProduct.name,
+              price: targetProduct.totalFee,
+              currency: currency,
+              subscription_type: targetProduct.name,
+              cancel_reason: errorCode,
+            })
           }
         },
       })

@@ -34,6 +34,7 @@ import Pagenation from '@/8th/shared/ui/Pagenation'
 import { SubPageNavHeader } from '@/8th/shared/ui/SubPageNavHeader'
 import { openDownloadLink, openWindow } from '@/8th/shared/utils/open-window'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import { useEffect, useState } from 'react'
 
@@ -56,7 +57,7 @@ function LibraryBookListDependency() {
       <SubPageNavHeader
         title={`${t('t8th030')}`}
         iconSrc={Assets.Icon.Side.favorite.src}
-        parentPath={SITE_PATH.NW82.ACTIVITY}
+        parentPath={SITE_PATH.NW82.LIBRARY}
       />
       <BookList />
     </>
@@ -72,6 +73,14 @@ type FavoriteBookExportType =
   | 'EditDelete'
 
 function BookList() {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 섹션 탭 클릭', {
+      version: '8th',
+      section_name: 'Favorite',
+    })
+  }, [maketingEventTracker])
+
   const [favoriteSearch, setFavoriteSearch] = useState<{
     status?: string
     page: number

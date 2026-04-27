@@ -10,6 +10,7 @@ import {
 import LoadingScreen from '@/7th/_ui/modules/LoadingScreen'
 import { ReportSearchBox } from '@/7th/_ui/modules/review-detail-view-search-box/review-detail-view-search-box'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import DateUtils from '@/util/date-utils'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -44,6 +45,8 @@ export default function Page() {
 }
 
 function HistoryLayout({ initLoading }: { initLoading?: boolean }) {
+  const maketingEventTracker = useTrack()
+
   // @Language 'common'
   const { t } = useTranslation()
 
@@ -129,6 +132,13 @@ function HistoryLayout({ initLoading }: { initLoading?: boolean }) {
       )
     }
   }
+
+  useEffect(() => {
+    maketingEventTracker.eventAction('My Speak 화면 진입', {
+      start_date: startDateText,
+      end_date: endDateText,
+    })
+  }, [maketingEventTracker, startDateText, endDateText])
 
   return (
     <>

@@ -32,8 +32,9 @@ import {
 import { SubPageNavHeader } from '@/8th/shared/ui/SubPageNavHeader'
 import { openWindow } from '@/8th/shared/utils/open-window'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const activityMap: Record<string, { key: string; title: string }> = {
   alphabet: { key: 'Study-Alphabet', title: 'Alphabet' },
@@ -94,7 +95,7 @@ function LibraryBookListDependency({
   return (
     <>
       <SubPageNavHeader
-        title="PK"
+        title={`DODO ABC`}
         subTitle={title}
         parentPath={SITE_PATH.NW82.EB}
       />
@@ -113,6 +114,15 @@ type SearchBookExportType =
   | 'BookList'
 
 function StudyBookList({ activity }: { activity: string }) {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 검색', {
+      version: '8th',
+      section_name: 'DODO ABC Study',
+      activity: activity,
+    })
+  }, [maketingEventTracker, activity])
+
   // @Language 'common'
   const { t } = useTranslation()
 
@@ -497,6 +507,15 @@ function StudyBookList({ activity }: { activity: string }) {
 }
 
 function GameBookList({ activity }: { activity: string }) {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 검색', {
+      version: '8th',
+      section_name: 'DODO ABC Game',
+      activity: activity,
+    })
+  }, [maketingEventTracker, activity])
+
   // @Language 'common'
   const { t } = useTranslation()
 
@@ -601,6 +620,15 @@ function GameBookList({ activity }: { activity: string }) {
 }
 
 function SongBookList({ activity }: { activity: string }) {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 검색', {
+      version: '8th',
+      section_name: 'DODO ABC Song & Chant',
+      activity: activity,
+    })
+  }, [maketingEventTracker, activity])
+
   // @Language 'common'
   const { t } = useTranslation()
 

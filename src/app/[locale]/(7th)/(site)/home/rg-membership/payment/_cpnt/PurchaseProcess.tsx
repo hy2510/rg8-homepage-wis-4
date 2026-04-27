@@ -79,6 +79,24 @@ export default function PurchaseProcess({
             value: request.price,
             currency,
           })
+          maketingEventTracker.eventAction('결제 완료', {
+            product_name: request.productName,
+            price: request.price,
+            currency: currency,
+            subscription_type: request.productName,
+          })
+        } else {
+          maketingEventTracker.eventAction('구매 취소', {
+            product_id: request.productName,
+            cancel_reason: message,
+          })
+          maketingEventTracker.eventAction('결제 취소', {
+            product_name: request.productName,
+            price: request.price,
+            currency: currency,
+            subscription_type: request.productName,
+            cancel_reason: message,
+          })
         }
         onPurchaseResult &&
           onPurchaseResult({ isSuccess: code === 0, code, message })
@@ -88,7 +106,7 @@ export default function PurchaseProcess({
     return () => {
       window.removeEventListener('message', messageHandler)
     }
-  }, [onPurchaseResult])
+  }, [maketingEventTracker, request, currency, onPurchaseResult, t])
   const [isOpner, setOpener] = useState(false)
   useEffect(() => {
     if (!isOpner && REQUEST_WINDOW_TYPE === 'opener') {

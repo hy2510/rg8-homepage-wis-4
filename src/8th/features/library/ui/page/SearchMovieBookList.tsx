@@ -37,9 +37,10 @@ import { SubPageNavHeader } from '@/8th/shared/ui/SubPageNavHeader'
 import { convertEBPBFilter } from '@/8th/shared/utils/convert'
 import { openDownloadLink, openWindow } from '@/8th/shared/utils/open-window'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function SearchMovieBookList({
   booktype,
@@ -82,8 +83,8 @@ function LibraryBookListDependency({
     <>
       <SubPageNavHeader
         title={t('t8th006')}
+        subTitle={booktype === 'EB' ? `(${t('t8th325')})` : `(${t('t8th326')})`}
         parentPath={booktype === 'EB' ? SITE_PATH.NW82.EB : SITE_PATH.NW82.PB}
-        libraryBookType={booktype}
       />
       <LibraryBookList
         bookType={booktype}
@@ -114,6 +115,16 @@ function LibraryBookList({
     sort: string
   }
 }) {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 검색', {
+      version: '8th',
+      section_name: 'Movie Book',
+      book_type: bookType === 'EB' ? 'eBook' : 'p Book Quiz',
+      level: level,
+    })
+  }, [maketingEventTracker, bookType, level])
+
   // @Language 'common'
   const { t } = useTranslation()
 

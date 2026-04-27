@@ -33,8 +33,9 @@ import Pagenation from '@/8th/shared/ui/Pagenation'
 import { SubPageNavHeader } from '@/8th/shared/ui/SubPageNavHeader'
 import { openWindow } from '@/8th/shared/utils/open-window'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const activityMap: Record<string, { key: string; title: string }> = {
   all: { key: 'All', title: 'All' },
@@ -95,6 +96,15 @@ type SearchBookExportType =
   | 'BookList'
 
 function BookList({ activity }: { activity: string }) {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 검색', {
+      version: '8th',
+      section_name: 'PreK',
+      activity: activity,
+    })
+  }, [maketingEventTracker, activity])
+
   // @Language 'common'
   const { t } = useTranslation()
 

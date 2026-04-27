@@ -18,11 +18,12 @@ import { RoundedFullButton } from '@/8th/shared/ui/Buttons'
 import { BoxStyle, TextStyle } from '@/8th/shared/ui/Misc'
 import { SubPageNavHeader } from '@/8th/shared/ui/SubPageNavHeader'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import DateUtils from '@/util/date-utils'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function SpeakResultHistory({
   startDate,
@@ -31,6 +32,15 @@ export default function SpeakResultHistory({
   startDate?: string
   endDate?: string
 }) {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('My Speak 화면 진입', {
+      version: '8th',
+      start_date: startDate,
+      end_date: endDate,
+    })
+  }, [maketingEventTracker, startDate, endDate])
+
   //@language 'common'
   const { t } = useTranslation()
 

@@ -31,8 +31,9 @@ import {
 import { SubPageNavHeader } from '@/8th/shared/ui/SubPageNavHeader'
 import { openWindow } from '@/8th/shared/utils/open-window'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function NewBookList({ booktype }: { booktype: string }) {
   return <LibraryBookListDependency booktype={booktype as 'EB' | 'PB'} />
@@ -56,8 +57,8 @@ function LibraryBookListDependency({ booktype }: { booktype: 'EB' | 'PB' }) {
     <>
       <SubPageNavHeader
         title={`${t('t8th005')}`}
+        subTitle={booktype === 'EB' ? `(${t('t8th325')})` : `(${t('t8th326')})`}
         parentPath={booktype === 'EB' ? SITE_PATH.NW82.EB : SITE_PATH.NW82.PB}
-        libraryBookType={booktype as 'EB' | 'PB'}
       />
       <LibraryBookList bookType={booktype} year={year} month={month} />
     </>
@@ -80,6 +81,15 @@ function LibraryBookList({
   year: number
   month: number
 }) {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 검색', {
+      version: '8th',
+      section_name: 'New Books',
+      book_type: bookType === 'EB' ? 'eBook' : 'p Book Quiz',
+    })
+  }, [maketingEventTracker, bookType])
+
   // @Language 'common'
   const { t } = useTranslation()
 

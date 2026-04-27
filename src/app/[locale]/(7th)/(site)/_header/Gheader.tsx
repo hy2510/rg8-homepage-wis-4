@@ -17,6 +17,7 @@ import {
 import StreakFire from '@/7th/_ui/modules/StreakFire'
 import BookSearchBar from '@/7th/_ui/modules/library-book-search-bar/BookSearchBar'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import {
   isAvailable8thCustomer,
   updateSiteBridge,
@@ -118,6 +119,8 @@ export default function Gheader() {
   const language = i18n.language
 
   const style = useStyle(STYLE_ID)
+
+  const maketingEventTracker = useTrack()
 
   const isMobile = useScreenMode() === 'mobile'
   const appType = useApplicationType()
@@ -239,11 +242,14 @@ export default function Gheader() {
           prefetch={false}
           onClick={(e) => {
             e.preventDefault()
+            maketingEventTracker.eventAction('버전(차수) 진입', {
+              version: '8th',
+            })
             onClickGoTo8th()
           }}>
           <div className="go_to_8th_bar">
             <div className="title">
-              <span>🎉 {t('t933')}</span>
+              <span>📢 {t('t933')}</span>
               <span className="icon"></span>
             </div>
             <div className="description">{t('t934')}</div>
@@ -315,6 +321,8 @@ function GnbLogOn({
   const { custom } = useSiteBlueprint()
   const disableRankMenu = custom?.menu?.ranking?.disableAll
 
+  const maketingEventTracker = useTrack()
+
   const { userAvatar } = useStudentAvatar()
   const studentPoint = useStudentInfo().rgPoint
   let medalStyle = ''
@@ -343,18 +351,33 @@ function GnbLogOn({
             imgSrc={MENU.basic.icon}
             menuName={t('t557')} // 기초
             href={MENU.basic.href}
+            onClick={() => {
+              maketingEventTracker.eventAction('GNB 탭 클릭', {
+                tab_name: '기초',
+              })
+            }}
           />
           <GnbButton
             active={pathname.indexOf(MENU.study.key) != -1}
             imgSrc={MENU.study.icon}
             menuName={t('t558')} // 도서
             href={MENU.study.href}
+            onClick={() => {
+              maketingEventTracker.eventAction('GNB 탭 클릭', {
+                tab_name: '도서',
+              })
+            }}
           />
           <GnbButton
             active={pathname.indexOf(MENU.review.key) != -1}
             imgSrc={MENU.review.icon}
             menuName={t('t032')}
             href={MENU.review.href}
+            onClick={() => {
+              maketingEventTracker.eventAction('GNB 탭 클릭', {
+                tab_name: '리뷰',
+              })
+            }}
           />
           {!disableRankMenu && (
             <GnbButton
@@ -362,6 +385,11 @@ function GnbLogOn({
               imgSrc={MENU.ranking.icon}
               menuName={t('t033')}
               href={MENU.ranking.href}
+              onClick={() => {
+                maketingEventTracker.eventAction('GNB 탭 클릭', {
+                  tab_name: '랭킹',
+                })
+              }}
             />
           )}
         </div>
@@ -370,6 +398,9 @@ function GnbLogOn({
         <OptionButton
           isCalendar
           onClick={() => {
+            maketingEventTracker.eventAction('GNB 탭 클릭', {
+              tab_name: '캘린더',
+            })
             onClick('calendar')
           }}
         />
@@ -377,12 +408,18 @@ function GnbLogOn({
           isStreak
           imgSrc="/src/images/@global-header/streak.svg"
           onClick={() => {
+            maketingEventTracker.eventAction('GNB 탭 클릭', {
+              tab_name: '연속학습',
+            })
             onClick('streak')
           }}
         />
         <OptionButton
           imgSrc="/src/images/@global-header/quest.svg"
           onClick={() => {
+            maketingEventTracker.eventAction('GNB 탭 클릭', {
+              tab_name: '퀘스트',
+            })
             onClick('quest')
           }}
         />
@@ -612,15 +649,17 @@ const GnbButton = ({
   active,
   href,
   imgSrc,
+  onClick,
 }: {
   menuName: string
   active: boolean
   href: string
   imgSrc: string
+  onClick?: () => void
 }) => {
   const style = useStyle(STYLE_ID)
   return (
-    <Link href={href}>
+    <Link href={href} onClick={onClick}>
       <div className={`${style.gnb_button} ${active && style.active}`}>
         <Image alt="" src={imgSrc} width={24} height={24} />
         <span>{menuName}</span>

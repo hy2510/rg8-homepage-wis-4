@@ -12,6 +12,8 @@ import { useSelectStudyLevel } from '@/7th/_client/store/student/daily-learning/
 import { useStyle } from '@/7th/_ui/context/StyleContext'
 import LoadingScreen from '@/7th/_ui/modules/LoadingScreen'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
+import { useEffect } from 'react'
 import { SearchLevelBookListTemplate } from '../_cpnt/SearchBookListTemplate'
 
 const STYLE_ID = 'page_movie_book'
@@ -47,6 +49,8 @@ export default function Page() {
 }
 
 function EBookLayout() {
+  const maketingEventTracker = useTrack()
+
   const style = useStyle(STYLE_ID)
 
   const BookType = 'EB'
@@ -70,6 +74,12 @@ function EBookLayout() {
   }) => {
     fetch(params)
   }
+
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 섹션 탭 클릭', {
+      section_name: 'Movie Book',
+    })
+  }, [maketingEventTracker])
 
   return (
     <SearchLevelBookListTemplate

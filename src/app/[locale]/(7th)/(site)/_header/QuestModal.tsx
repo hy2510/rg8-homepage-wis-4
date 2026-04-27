@@ -1,3 +1,5 @@
+'use client'
+
 import '@/7th/_ui/common/global-option-quest/global-option-level-bg-color.scss'
 import { useAchieveLevelPoint } from '@/7th/_client/store/achieve/level-point/selector'
 import { useSelectStudyLevel } from '@/7th/_client/store/student/daily-learning/selector'
@@ -10,6 +12,7 @@ import {
   ProgressBar,
 } from '@/7th/_ui/common/common-components'
 import { useScreenMode, useStyle } from '@/7th/_ui/context/StyleContext'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import { useLanguagePackContext } from '@/localization/client/LanguagePackContext'
 import useTranslation from '@/localization/client/useTranslations'
 import NumberUtils from '@/util/number-utils'
@@ -29,11 +32,17 @@ export function QuestModal({
 }) {
   const style = useStyle(STYLE_ID)
 
+  const maketingEventTracker = useTrack()
+
   // @language 'common'
   const { t } = useTranslation()
 
   const [isDodoAndFriends, _isDodoAndFriends] = useState(!showFirstLevelMaster)
   const [isLevelMaster, _isLevelMaster] = useState(showFirstLevelMaster)
+
+  useEffect(() => {
+    maketingEventTracker.eventAction('퀘스트 목록 화면 진입')
+  }, [maketingEventTracker])
 
   return (
     <Modal

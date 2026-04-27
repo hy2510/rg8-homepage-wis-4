@@ -110,6 +110,10 @@ export default function SignupKR({ style }: { style: Record<string, string> }) {
       return
     }
 
+    maketingEventTracker.eventAction('회원가입 시작', {
+      country_code: 'KR',
+      signup_method: 'email',
+    })
     emailCert.fetch({
       email: params.email,
       password: params.password,
@@ -146,6 +150,10 @@ export default function SignupKR({ style }: { style: Record<string, string> }) {
       authCode,
       callback: (data) => {
         if (data.success) {
+          maketingEventTracker.eventAction('회원가입 성공', {
+            country_code: 'KR',
+            signup_method: 'email',
+          })
           maketingEventTracker.eventAction('회원가입')
           setLoginAction(true)
           onLogin({

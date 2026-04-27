@@ -17,10 +17,7 @@ import useTranslation from '@/localization/client/useTranslations'
 import DateUtils from '@/util/date-utils'
 import NumberUtils from '@/util/number-utils'
 import Image from 'next/image'
-import React, { useEffect, useRef, useState } from 'react'
-
-/** 학습일수 프로그레스 바 채움 폭만 이 일수를 분모로 계산 (회색 달성율 문구는 goalDay 기준 유지) */
-const STUDY_DAY_PROGRESS_BAR_DENOMINATOR = 90
+import { useEffect, useRef, useState } from 'react'
 
 // 메인 컴포넌트
 export default function ChallengeBoard({
@@ -54,11 +51,6 @@ export default function ChallengeBoard({
   isDefaultExpend?: boolean
 }) {
   const [isExpend, setExpend] = useState(isDefaultExpend || false)
-
-  useEffect(() => {
-    setExpend(isDefaultExpend || false)
-  }, [isDefaultExpend])
-
   const remainingDays = DateUtils.dayDistance(
     new Date(),
     DateUtils.createDate(endDate),
@@ -294,7 +286,7 @@ function ChallengeBoardExpend({
           />
           <ProgressItem
             progressType="remaining-day"
-            currentValue={Math.max(remainingDays, 0)}
+            currentValue={Math.max(maxEventDay - remainingDays, 0)}
             goalValue={maxEventDay}
             maxValue={maxEventDay}
           />
@@ -329,41 +321,34 @@ function ProgressItem({
   const { t } = useTranslation()
 
   const [isVisible, setIsVisible] = useState(false)
-  const elapsedDays = Math.max(maxValue - currentValue, 0)
-  const progressBaseValue =
-    progressType === 'remaining-day' ? elapsedDays : currentValue
 
-  // 현재 진행률 (목표일·달성율 문구 등 — study-day는 goalValue(예: 80일) 기준)
-  const progressPercentage = NumberUtils.toRgDecimalPoint(
-    NumberUtils.getHundredPercentage(progressBaseValue, goalValue, {
+  // 현재 진행률 계산(goalValue 기준 백분율)
+  const progressGoalBasePercentage = NumberUtils.toRgDecimalPoint(
+    NumberUtils.getHundredPercentage(currentValue, goalValue, {
       isInteger: false,
       limitZeroToHundred: false,
     }),
   )
-  // study-day 바 채움만 90일 기준 비율
-  const progressBarFillPercentage =
-    progressType === 'study-day'
-      ? NumberUtils.toRgDecimalPoint(
-          NumberUtils.getHundredPercentage(
-            progressBaseValue,
-            STUDY_DAY_PROGRESS_BAR_DENOMINATOR,
-            {
-              isInteger: false,
-              limitZeroToHundred: false,
-            },
-          ),
-        )
-      : progressPercentage
-  // 목표 길이 계산 (goalValue 기준)
+  // 현재 진행률 계산(maxValue 기준 백분율)
+  let progressMaxBasePercentage = progressGoalBasePercentage
+  if (goalValue !== maxValue) {
+    progressMaxBasePercentage = NumberUtils.toRgDecimalPoint(
+      NumberUtils.getHundredPercentage(currentValue, maxValue, {
+        isInteger: false,
+        limitZeroToHundred: false,
+      }),
+    )
+  }
+  // 목표 길이 계산 (goalValue 기준 백분율)
   const goalLengthPercentage = NumberUtils.toRgDecimalPoint(
-    NumberUtils.getHundredPercentage(goalValue, maxValue!, {
+    NumberUtils.getHundredPercentage(goalValue, maxValue, {
       isInteger: false,
       limitZeroToHundred: false,
     }),
   )
 
   // 컴포넌트가 마운트되면 애니메이션 시작
-  React.useEffect(() => {
+  useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(true)
     }, 100) // 약간의 지연 후 애니메이션 시작
@@ -382,20 +367,23 @@ function ProgressItem({
       '/',
     )
     fillColor = 'red'
-    subText = `${t('t8th279', { num: progressPercentage })}${t('t8th280', { num: goalValue })}`
-  } else if (progressType === 'remaining-day') {
-    title = '종료일까지'
-    titleText = `${elapsedDays}/${maxValue}일`
-    fillColor = 'green'
-    subText = `${elapsedDays}일 경과`
-  } else {
+    subText = `${t('t8th279', { num: progressGoalBasePercentage })}${t('t8th280', { num: goalValue })}`
+  } else if (progressType === 'earned-point') {
     title = t('t8th277')
     titleText = t('t8th283', { txt: `${currentValue}/${goalValue}` }).replace(
       '&#x2F;',
       '/',
     )
     fillColor = ''
-    subText = t('t8th279', { num: progressPercentage })
+    subText = t('t8th279', { num: progressGoalBasePercentage })
+  } else if (progressType === 'remaining-day') {
+    title = t('t8th327')
+    titleText = t('t8th282', { txt: `${currentValue}/${maxValue}` }).replace(
+      '&#x2F;',
+      '/',
+    )
+    fillColor = 'green'
+    subText = t('t8th328', { txt: currentValue })
   }
 
   return (
@@ -409,7 +397,7 @@ function ProgressItem({
           className={`progress-bar-fill ${fillColor}`}
           style={{
             width: isVisible
-              ? `${Math.min(progressBarFillPercentage, 100)}%`
+              ? `${Math.min(progressMaxBasePercentage, 100)}%`
               : '0%',
           }}></div>
         {goalValue !== maxValue && (

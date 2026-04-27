@@ -64,12 +64,20 @@ import { useEffect, useRef, useState } from 'react'
 // 페이지 타입별 제목 및 아이콘 매핑
 const PAGE_CONFIG = {
   [SITE_PATH.NW82.DAILY_RG]: {
-    title: 'RG PATH',
+    title: 'RG TRACK',
     icon: Assets.Icon.Gnb.readingPath,
   },
-  [SITE_PATH.NW82.EB]: {
+  [SITE_PATH.NW82.LIBRARY]: {
     title: 'LIBRARY',
+    icon: Assets.Icon.Gnb.library,
+  },
+  [SITE_PATH.NW82.EB]: {
+    title: 'E-BOOK',
     icon: Assets.Icon.Gnb.ebooks,
+  },
+  [SITE_PATH.NW82.PB]: {
+    title: 'P-BOOK QUIZ',
+    icon: Assets.Icon.Gnb.bookQuiz,
   },
   [SITE_PATH.NW82.ACTIVITY]: {
     title: 'MY PAGE',
@@ -88,24 +96,24 @@ export default function MainLayout({
   const { t } = useTranslation()
 
   const isDesktop = useIsDesktop()
-  /** 뷰포트 1200px 이하(phone / tablet-small / tablet-large). CSS labtopS·ScreenMode 기준과 동일 */
-  const isCompactTopBar = !isDesktop
 
   const { menu, target, country } = useCustomerConfiguration()
 
   const pathname = usePathname()
   const router = useRouter()
-
   let header: { title: string; icon: StaticImageData } | null = null
   if (pathname.endsWith(SITE_PATH.NW82.DAILY_RG)) {
     header = PAGE_CONFIG[SITE_PATH.NW82.DAILY_RG]
   } else if (
+    pathname.endsWith(SITE_PATH.NW82.LIBRARY) ||
     pathname.endsWith(SITE_PATH.NW82.EB) ||
-    pathname.includes(`${SITE_PATH.NW82.EB}/`) ||
-    pathname.endsWith(SITE_PATH.NW82.PB) ||
-    pathname.includes(`${SITE_PATH.NW82.PB}/`)
+    pathname.endsWith(SITE_PATH.NW82.PB)
   ) {
-    header = PAGE_CONFIG[SITE_PATH.NW82.EB]
+    header = PAGE_CONFIG[SITE_PATH.NW82.LIBRARY]
+    // } else if (pathname.endsWith(SITE_PATH.NW82.EB)) {
+    //   header = PAGE_CONFIG[SITE_PATH.NW82.EB]
+    // } else if (pathname.endsWith(SITE_PATH.NW82.PB)) {
+    //   header = PAGE_CONFIG[SITE_PATH.NW82.PB]
   } else if (pathname.endsWith(SITE_PATH.NW82.ACTIVITY)) {
     header = PAGE_CONFIG[SITE_PATH.NW82.ACTIVITY]
   }
@@ -552,29 +560,21 @@ export default function MainLayout({
                         onClick={() => setIsCalendarModalOpen(true)}
                       />
                     )}
-                    {isCompactTopBar && menu.streak.open && (
+                    {menu.streak.open && (
                       <MenuItemStreak
                         isTodayStudy={isTodayStudy}
                         streakCount={
                           isStreakLegacyMode ? streakDay6th : streakDay
                         }
-                        disabled={isStreakLegacyMode}
-                        onClick={
-                          isStreakLegacyMode
-                            ? undefined
-                            : () => setIsStreakModalOpen(true)
-                        }
+                        isStreakLegacyMode={isStreakLegacyMode}
+                        onClick={() => setIsStreakModalOpen(true)}
                       />
                     )}
                     <MenuItemAvatar
                       image={myAvatar?.imageCircle || ''}
                       avatarName={myAvatar?.name || ''}
                       medal={medalName}
-                      levelName={
-                        isCompactTopBar
-                          ? dailyLearning.data?.settingLevelName || 'PK'
-                          : undefined
-                      }
+                      levelName={dailyLearning.data?.settingLevelName || 'PK'}
                       onClick={() => setIsRightContainerOpen(true)}
                     />
                   </div>
@@ -626,11 +626,11 @@ export default function MainLayout({
                   setIsRightContainerOpen(false)
                 }}
               />
-              {isDesktop && (
+              {menu.streak.open && isDesktop && (
                 <StreakCard
+                  isClassicMode={isStreakLegacyMode}
                   isTodayStudy={isTodayStudy}
                   streakDay={isStreakLegacyMode ? streakDay6th : streakDay}
-                  titleOpensModal={!isStreakLegacyMode}
                 />
               )}
               <DailyGoalCard
@@ -655,13 +655,6 @@ export default function MainLayout({
                 }}>
                 {t('t8th316')}
               </GoTo7thButtonStyle>
-              {/* Home 기능 주석 처리
-              <GoTo7thButtonStyle
-                onClick={() => {
-                  window.location.href = '/'
-                }}>
-                {'Home'}
-              </GoTo7thButtonStyle> */}
             </RightContainerStyle>
 
             {isShowRightContainerOverlay && (
@@ -728,14 +721,13 @@ function MenuItemCalendar({ onClick }: { onClick?: () => void }) {
 function MenuItemStreak({
   isTodayStudy,
   streakCount,
+  isStreakLegacyMode,
   onClick,
-  disabled = false,
 }: {
   isTodayStudy: boolean
   streakCount: number
+  isStreakLegacyMode: boolean
   onClick?: () => void
-  /** 레거시(6th) 연속 표기 시 모달 등 상호작용 비활성 */
-  disabled?: boolean
 }) {
   const streakIconSrc = isTodayStudy
     ? Assets.Icon.Side.streakDone
@@ -745,11 +737,12 @@ function MenuItemStreak({
 
   return (
     <MenuItemStyle
-      className={`menu-item-streak-with-count${disabled ? ' menu-item-streak-disabled' : ''}`}
+      className={`menu-item-streak-with-count${isStreakLegacyMode ? ' menu-item-streak-disabled' : ''}`}
       style={{ padding: 0 }}
-      onClick={disabled ? undefined : onClick}
-      aria-disabled={disabled || undefined}>
-      <div style={{ position: 'relative', width: 46, height: 46, flexShrink: 0 }}>
+      onClick={isStreakLegacyMode ? undefined : onClick}
+      aria-disabled={isStreakLegacyMode || undefined}>
+      <div
+        style={{ position: 'relative', width: 46, height: 46, flexShrink: 0 }}>
         <Image
           src={streakIconSrc}
           alt="streak"
@@ -794,7 +787,8 @@ function MenuItemAvatar({
       className={levelName ? 'menu-item-avatar-with-level' : undefined}
       style={{ padding: 0 }}
       onClick={onClick}>
-      <div style={{ position: 'relative', width: 46, height: 46, flexShrink: 0 }}>
+      <div
+        style={{ position: 'relative', width: 46, height: 46, flexShrink: 0 }}>
         {frameImage && (
           <Image
             src={frameImage}
@@ -823,13 +817,11 @@ function MenuItemAvatar({
             zIndex: 1,
           }}
         />
-        {levelName ? (
-          <span
-            className="menu-item-avatar-level-label"
-            title={levelName}>
+        {!!levelName && (
+          <span className="menu-item-avatar-level-label" title={levelName}>
             {levelName}
           </span>
-        ) : null}
+        )}
       </div>
     </MenuItemStyle>
   )

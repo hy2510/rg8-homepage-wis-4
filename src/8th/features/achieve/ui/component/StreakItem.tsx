@@ -32,7 +32,11 @@ export default function StreakItem({
   return (
     <StreakItemStyle streakDays={rangeMaxDay.toString()}>
       {streakType === 'earned' && (
-        <StreakAwardEarnedItem streakImageSrc={awardImgSrc} earnDate={date!} />
+        <StreakAwardEarnedItem
+          streakImageSrc={awardImgSrc}
+          earnDate={date!}
+          itemDay={rangeMaxDay}
+        />
       )}
       {streakType === 'progress' && (
         <StreakAwardProgressItem
@@ -53,10 +57,15 @@ export default function StreakItem({
 function StreakAwardEarnedItem({
   streakImageSrc,
   earnDate,
+  itemDay,
 }: {
   streakImageSrc: string
   earnDate: string
+  itemDay: number
 }) {
+  // @language 'common'
+  const { t } = useTranslation()
+
   return (
     <BoxStyle
       display="flex"
@@ -64,9 +73,18 @@ function StreakAwardEarnedItem({
       alignItems="center"
       gap={10}>
       <Image src={streakImageSrc} alt="Streak Award" width={120} height={120} />
-      <TextStyle fontFamily="sans" fontColor="secondary" fontWeight="bold">
-        +{earnDate}
-      </TextStyle>
+      <BoxStyle display="flex" flexDirection="column" alignItems="center">
+        <TextStyle fontFamily="sans" fontColor="secondary" fontWeight="bold">
+          +{earnDate}
+        </TextStyle>
+        <TextStyle
+          fontFamily="sans"
+          fontColor="secondary"
+          fontWeight="bold"
+          margin="6px 0 0 0">
+          {t('t8th339', { num: itemDay })}
+        </TextStyle>
+      </BoxStyle>
     </BoxStyle>
   )
 }

@@ -5,6 +5,7 @@ import { useStudentInfoMainPhone } from '@/7th/_client/store/student/info/select
 import { Button, Modal } from '@/7th/_ui/common/common-components'
 import { useScreenMode, useStyle } from '@/7th/_ui/context/StyleContext'
 import LoadingScreen from '@/7th/_ui/modules/LoadingScreen'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import { useState } from 'react'
 import PayerInfo from './PayerInfo'
@@ -27,6 +28,8 @@ export default function Ticket({
   const { t } = useTranslation()
 
   const isMobile = useScreenMode() === 'mobile'
+
+  const maketingEventTracker = useTrack()
 
   const [isPolicyAgree, setPolicyAgree] = useState(!isChangeUserInfo)
   const [tickets, setTickets] = useState<{ id: string; ticket: string[] }[]>([
@@ -78,6 +81,11 @@ export default function Ticket({
     }
 
     setRegistLoading(true)
+    maketingEventTracker.eventAction('이용권 코드 입력 시도', {
+      voucher_code_masked: JSON.stringify(
+        ticket.map((code) => code.replace(/-/g, '').substring(0, 4) + '*'),
+      ),
+    })
     fetchRegist({
       tickets: ticket.filter((ticketNum) => !!ticketNum),
       callback: (isSuccess, result) => {
@@ -93,9 +101,36 @@ export default function Ticket({
           })
           setRegistResult(result?.result)
           setTickets(newTicket)
+          maketingEventTracker.eventAction('이용권 등록 실패', {
+            voucher_code_masked: JSON.stringify(
+              ticket.map(
+                (code) => code.replace(/-/g, '').substring(0, 4) + '*',
+              ),
+            ),
+            error_reason: JSON.stringify(
+              result?.result.map((item) => {
+                let errorVal = 'invalid'
+                if (item.code === 0) {
+                  errorVal = 'success'
+                } else if (item.code === -3) {
+                  errorVal = 'already_used'
+                } else if (item.code === -10) {
+                  errorVal = 'expired'
+                }
+                return errorVal
+              }),
+            ),
+          })
         } else {
           setTickets([{ id: `id${Math.random()}`, ticket: [...EMPTY_TICKET] }])
           alert(t('t712')) // 이용권 등록이 완료되었습니다.
+          maketingEventTracker.eventAction('이용권 등록 완료', {
+            voucher_code_masked: JSON.stringify(
+              ticket.map(
+                (code) => code.replace(/-/g, '').substring(0, 4) + '*',
+              ),
+            ),
+          })
         }
         setRegistLoading(false)
       },
@@ -233,6 +268,8 @@ function TicketRegistFailedModal({
             let message = t('t723') // 유효하지 않는 티켓입니다.
             if (info.code === -3) {
               message = t('t724') // 이미 사용이 완료된 티켓입니다.
+            } else if (info.code === -10) {
+              // 유효기간이 지난 티켓입니다.
             } else if (info.code === 0) {
               message = t('t725') // 성공적으로 등록 되었습니다.
             }

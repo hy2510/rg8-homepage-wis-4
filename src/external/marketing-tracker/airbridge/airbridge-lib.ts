@@ -1,3 +1,5 @@
+import { findEventCategory } from './airbridge-event-list'
+
 const AIR_BRIDGE_APP_NAME = 'readinggatemarketing'
 const AIR_BRIDGE_WEB_TOKEN = '37d33bb625364ea48d9afb78384a1916'
 export const HEADER_INCLUDE_SCRIPT = `(function(a_,i_,r_,_b,_r,_i,_d,_g,_e){if(!a_[_b]){var n=function(){var c=i_.createElement(r_);c.onerror=function(){h.queue.filter(function(a){return 0<=_d.indexOf(a[0])}).forEach(function(a){a=a[1];a=a[a.length-1];"function"===typeof a&&a("error occur when load airbridge")})};c.async=1;c.src=_r;"complete"===i_.readyState?i_.head.appendChild(c):a_.addEventListener("load",function k(){a_.removeEventListener("load",k);i_.head.appendChild(c)})},h={queue:[],get isSDKEnabled(){return!1}};_i.concat(_d).forEach(function(c){var a=c.split("."),k=a.pop();a.reduce(function(p,q){return p[q]=p[q]||{}},h)[k]=function(){h.queue.push([c,arguments])}});a_[_b]=h;"undefined"!==typeof i_.documentMode&&(_r=_r.replace(/^https:/,""));0<_g?(_b=new (a_.XDomainRequest||a_.XMLHttpRequest),_i=function(){},_b.open("GET",_r),_b.timeout=_g,_b.onload=function(){n()},_b.onerror=_i,_b.onprogress=_i,_b.ontimeout=_i,_b.send()):n()}})(window,document,"script","airbridge","https://static.airbridge.io/sdk/latest/airbridge.min.js","init startTracking stopTracking openBanner setBanner setDownload setDownloads openDeeplink setDeeplinks sendWeb setUserAgent setMobileAppData setUserID clearUserID setUserEmail clearUserEmail setUserPhone clearUserPhone setUserAttribute removeUserAttribute clearUserAttributes setUserAlias removeUserAlias clearUserAlias clearUser setUserId setUserAttributes addUserAlias setDeviceAlias removeDeviceAlias clearDeviceAlias setDeviceIFV setDeviceIFA setDeviceGAID events.send events.signIn events.signUp events.signOut events.purchased events.addedToCart events.productDetailsViewEvent events.homeViewEvent events.productListViewEvent events.searchResultViewEvent".split(" "),["events.wait","fetchResource","createTouchpoint","createTrackingLink"],0);`
@@ -56,14 +58,7 @@ const AirBridge: IfAirBridge = {
   },
   eventAction: function (eventName: string, args?: any) {
     if (this.airbridge && eventName) {
-      let category = ''
-      if (eventName === '회원가입') {
-        category = 'airbridge.user.signup'
-      } else if (eventName === '상품구매') {
-        category = 'airbridge.ecommerce.order.completed'
-      } else if (eventName === '로그인') {
-        category = 'airbridge.user.signin'
-      }
+      const category = findEventCategory(eventName)
       if (category) {
         if (args) {
           this.airbridge.events.send(category, {

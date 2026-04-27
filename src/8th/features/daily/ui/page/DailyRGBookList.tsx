@@ -24,9 +24,11 @@ import { useLayoutEffect, useState } from 'react'
 export default function DailyRGBookList({
   stageId,
   sectionId,
+  level,
 }: {
   stageId: string
   sectionId: string
+  level?: string
 }) {
   useLayoutEffect(() => {
     window?.scrollTo(0, 0)
@@ -165,11 +167,10 @@ export default function DailyRGBookList({
     }
   }
 
+  const parentPath = `${SITE_PATH.NW82.DAILY_RG}?${level ? `level=${level}` : `stage=${stageId}`}`
   return (
     <>
-      <SubPageNavHeader
-        parentPath={`${SITE_PATH.NW82.DAILY_RG}?stage=${stageId}`}
-      />
+      <SubPageNavHeader parentPath={parentPath} />
       <Gap size={15} />
       <DailyRgResultActionBar
         title={title}
@@ -236,6 +237,7 @@ export default function DailyRGBookList({
                 passCount={book.rgPointCount}
                 isPreK={isPreK}
                 preKCharacter={book.character}
+                isMovieAvailable={!!book.animationPath}
                 expendMenu={expendMenu}
                 onExpendMenuClick={(isOpen) => {
                   if (isStudyEnd) {
@@ -259,6 +261,22 @@ export default function DailyRGBookList({
                       isShowMore: false,
                     })
                   }
+                }}
+                onContentClick={() => {
+                  if (isStudyEnd) {
+                    onStudyEndMessage()
+                    return
+                  }
+                  setSelectBookInfo({
+                    levelRoundId: book.levelRoundId,
+                    surfaceImagePath: book.surfaceImagePath,
+                    title: book.topicTitle,
+                    bookCode: book.levelName,
+                  })
+                  setSelectBookInfoOption({
+                    ...selectBookInfoOption,
+                    isShowModal: true,
+                  })
                 }}
               />
             )

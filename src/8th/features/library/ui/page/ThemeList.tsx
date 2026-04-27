@@ -6,10 +6,21 @@ import { useIsPhone } from '@/8th/shared/context/ScreenModeContext'
 import { BoxStyle } from '@/8th/shared/ui/Misc'
 import { SubPageNavHeader } from '@/8th/shared/ui/SubPageNavHeader'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 export default function ThemeList({ booktype }: { booktype: string }) {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 섹션 탭 클릭', {
+      version: '8th',
+      section_name: 'Theme',
+      book_type: booktype === 'EB' ? 'eBook' : 'p Book Quiz',
+    })
+  }, [maketingEventTracker, booktype])
+
   //@language 'common'
   const { t } = useTranslation()
 
@@ -25,8 +36,8 @@ export default function ThemeList({ booktype }: { booktype: string }) {
     <>
       <SubPageNavHeader
         title={`${t('t8th008')}`}
+        subTitle={booktype === 'EB' ? `(${t('t8th325')})` : `(${t('t8th326')})`}
         parentPath={booktype === 'EB' ? SITE_PATH.NW82.EB : SITE_PATH.NW82.PB}
-        libraryBookType={booktype as 'EB' | 'PB'}
       />
       <BoxStyle
         display="grid"

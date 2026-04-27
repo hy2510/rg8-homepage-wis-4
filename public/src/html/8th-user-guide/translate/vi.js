@@ -5,9 +5,14 @@ window.TRANSLATE_VI = {
     aria_label: "Bảng hướng dẫn sử dụng",
     header: { menu: "Menu", intro: "Mẹo sử dụng" },
     daily: {
-      menu: "DAILY RG",
+      menu: "RG TRACK",
       desc: "Gơi ý sách tiếng Anh mỗi ngày theo trình độ học.",
       tip: "Khi thay đổi level học, danh sách sách đề xuất cũng sẽ thay đổi."
+    },
+    library: {
+      menu: "LIBRARY",
+      desc: "Đoc sách điên tử online và làm bài tâp sau khi đọc.",
+      tip: "Trong Continue, ban có thế chon sách theo series, level, chủ đề hoăc Movie Book."
     },
     ebooks: {
       menu: "E-BOOKS",
@@ -20,9 +25,9 @@ window.TRANSLATE_VI = {
       tip: "Trong Continue, ban có thể chon sách theo series, level."
     },
     my_activity: {
-      menu: "MY ACTIVITY",
+      menu: "MY PAGE",
       desc: "Xem level học tâp, bảng xếp hang đọc và lich sử học.",
-      tip: "Trong MY ACTIVITY, ban có thể xem chi tiết kết quả học theo từng giai đoan."
+      tip: "Trong MY PAGE, ban có thể xem chi tiết kết quả học theo từng giai đoan."
     },
     calendar: {
       menu: "CALENDAR",

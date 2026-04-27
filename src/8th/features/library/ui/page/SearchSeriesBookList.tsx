@@ -34,19 +34,21 @@ import Pagenation from '@/8th/shared/ui/Pagenation'
 import { SubPageNavHeader } from '@/8th/shared/ui/SubPageNavHeader'
 import { convertEBPBFilter } from '@/8th/shared/utils/convert'
 import { openDownloadLink, openWindow } from '@/8th/shared/utils/open-window'
-import { peekLibrarySeriesNav } from '@/8th/features/library/ui/librarySeriesNavRestore'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
-import { useLayoutEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function SearchSeriesBookList({
   booktype,
   seriesName,
   level,
+  referrer,
 }: {
   booktype: string
   seriesName: string
   level?: string
+  referrer?: string
 }) {
   if ((booktype !== 'EB' && booktype !== 'PB') || !seriesName) {
     return (
@@ -61,6 +63,7 @@ export default function SearchSeriesBookList({
       booktype={booktype as 'EB' | 'PB'}
       seriesName={seriesName}
       level={level}
+      referrer={referrer}
     />
   )
 }
@@ -69,10 +72,12 @@ function LibraryBookListDependency({
   booktype,
   seriesName,
   level,
+  referrer,
 }: {
   booktype: 'EB' | 'PB'
   seriesName: string
   level?: string
+  referrer?: string
 }) {
   // @Language 'common'
   const { t } = useTranslation()
@@ -96,34 +101,20 @@ function LibraryBookListDependency({
           student.data?.student?.libraryPBFindSortName || 'Round',
         )
 
-  const [seriesParentPath, setSeriesParentPath] = useState(
-    booktype === 'EB' ? SITE_PATH.NW82.EB : SITE_PATH.NW82.PB,
-  )
-
-  useLayoutEffect(() => {
-    const p = peekLibrarySeriesNav()
-    if (
-      p?.returnTarget === 'seriesList' &&
-      p.bookType === booktype
-    ) {
-      setSeriesParentPath(
-        booktype === 'EB'
-          ? SITE_PATH.NW82.EB_SERIES
-          : SITE_PATH.NW82.PB_SERIES,
-      )
+  let parentPath = booktype === 'EB' ? SITE_PATH.NW82.EB : SITE_PATH.NW82.PB
+  if (referrer === 'list') {
+    if (booktype === 'EB') {
+      parentPath = SITE_PATH.NW82.EB_SERIES
     } else {
-      setSeriesParentPath(
-        booktype === 'EB' ? SITE_PATH.NW82.EB : SITE_PATH.NW82.PB,
-      )
+      parentPath = SITE_PATH.NW82.PB_SERIES
     }
-  }, [booktype])
-
+  }
   return (
     <>
       <SubPageNavHeader
         title={`${t('t8th039')}`}
-        parentPath={seriesParentPath}
-        libraryBookType={booktype}
+        subTitle={booktype === 'EB' ? `(${t('t8th325')})` : `(${t('t8th326')})`}
+        parentPath={parentPath}
       />
       <LibraryBookList
         bookType={booktype}
@@ -157,6 +148,16 @@ function LibraryBookList({
     sort: string
   }
 }) {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 검색', {
+      version: '8th',
+      section_name: 'Series Book',
+      book_type: bookType === 'EB' ? 'eBook' : 'p Book Quiz',
+      series_name: seriesName,
+    })
+  }, [maketingEventTracker, bookType, seriesName])
+
   // @Language 'common'
   const { t } = useTranslation()
 

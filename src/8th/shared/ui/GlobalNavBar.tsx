@@ -7,6 +7,7 @@ import { useCustomerConfiguration } from '@/8th/shared/context/CustomerContext'
 import { useIsTabletLarge } from '@/8th/shared/context/ScreenModeContext'
 import DropdownMenu from '@/8th/shared/ui/Dropdowns'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import Image, { StaticImageData } from 'next/image'
 import Link from 'next/link'
@@ -22,7 +23,7 @@ import { Gap } from './Misc'
 import AppUserGuideModal from './modal/app-user-guide/AppUserGuideModal'
 
 /**
- * Daily RG ... More 까지
+ * RG TRACK ... More 까지
  */
 
 const MP3_URL = {
@@ -35,6 +36,8 @@ export default function GlobalNavBar() {
   const { t } = useTranslation()
 
   const { menu } = useCustomerConfiguration()
+
+  const maketingEventTracker = useTrack()
 
   const isGnbBottom = useIsTabletLarge('smaller')
 
@@ -58,46 +61,72 @@ export default function GlobalNavBar() {
   if (menu.activity.tryAgain.open) {
     dropdownItems.push({
       text: 'Try Again',
-      onClick: () => router.push(SITE_PATH.NW82.TRYAGAIN),
+      onClick: () => {
+        maketingEventTracker.eventAction('GNB 탭 클릭', {
+          version: '8th',
+          tab_name: 'Try Again',
+        })
+        router.push(SITE_PATH.NW82.TRYAGAIN)
+      },
     })
   }
   if (menu.account.setting.open) {
     dropdownItems.push({
       text: 'Setting',
-      onClick: () => router.push(SITE_PATH.NW82.ACCOUNTINFO_SETTING),
+      onClick: () => {
+        maketingEventTracker.eventAction('GNB 탭 클릭', {
+          version: '8th',
+          tab_name: 'Setting',
+        })
+        router.push(SITE_PATH.NW82.ACCOUNTINFO_SETTING)
+      },
     })
   }
   if (menu.eb.collections.workbooks.open) {
     dropdownItems.push({
       text: 'Workbook Units',
-      onClick: () => router.push(`${SITE_PATH.NW82.EB_WORKBOOK}/ka`),
+      onClick: () => {
+        maketingEventTracker.eventAction('GNB 탭 클릭', {
+          version: '8th',
+          tab_name: 'Workbook Units',
+        })
+        router.push(`${SITE_PATH.NW82.EB_WORKBOOK}/ka`)
+      },
     })
   }
   if (menu.dodoAbcWorkbookMp3.open && menu.eb.readingLevel.level.dodoAbc.open) {
     dropdownItems.push({
       text: 'PK Workbook MP3',
-      onClick: () =>
+      onClick: () => {
+        maketingEventTracker.eventAction('GNB 탭 클릭', {
+          version: '8th',
+          tab_name: 'PK Workbook MP3',
+        })
         openWindow(MP3_URL.dodo, {
           external: true,
           target: '_blank',
           feature: 'noopener, noreferrer',
-        }),
+        })
+      },
     })
   }
   if (menu.pkWorkbookMp3.open && menu.eb.readingLevel.level.prekClassic.open) {
     dropdownItems.push({
       text: 'PK Classic Workbook MP3',
-      onClick: () =>
+      onClick: () => {
+        maketingEventTracker.eventAction('GNB 탭 클릭', {
+          version: '8th',
+          tab_name: 'PK Classic Workbook MP3',
+        })
         openWindow(MP3_URL.pk, {
           external: true,
           target: '_blank',
           feature: 'noopener, noreferrer',
-        }),
+        })
+      },
     })
   }
-
-  // 랭킹 메뉴 추가
-  if (true) {
+  if (menu.rank.open) {
     dropdownItems.push({
       text: t('t8th229'),
       onClick: () => router.push(SITE_PATH.NW82.RANKING),
@@ -108,7 +137,13 @@ export default function GlobalNavBar() {
   if (true) {
     dropdownItems.push({
       text: t('t8th317'),
-      onClick: () => setShowAppUserGuideModal(true),
+      onClick: () => {
+        maketingEventTracker.eventAction('GNB 탭 클릭', {
+          version: '8th',
+          tab_name: 'App User Guide',
+        })
+        setShowAppUserGuideModal(true)
+      },
     })
   }
 
@@ -134,25 +169,34 @@ export default function GlobalNavBar() {
         {menu.dailyRg.open && (
           <MenuItem
             icon={Assets.Icon.Gnb.readingPath}
-            text="RG PATH"
+            text="RG TRACK"
             isActive={pathname.includes(SITE_PATH.NW82.DAILY_RG)}
             linkUrl={SITE_PATH.NW82.DAILY_RG}
           />
         )}
 
-        {menu.eb.open && (
+        {(menu.eb.readingLevel.level.dodoAbc.open ||
+          menu.eb.readingLevel.level.prekClassic.open ||
+          menu.eb.open ||
+          menu.pb.open) && (
           <MenuItem
-            icon={Assets.Icon.Gnb.ebooks}
+            icon={Assets.Icon.Gnb.library}
             text="LIBRARY"
-            isActive={
-              pathname.includes(SITE_PATH.NW82.EB) ||
-              pathname.includes(SITE_PATH.NW82.PB)
-            }
-            linkUrl={SITE_PATH.NW82.EB}
+            isActive={pathname.includes(SITE_PATH.NW82.LIBRARY)}
+            linkUrl={SITE_PATH.NW82.LIBRARY}
           />
         )}
 
-        {/* {menu.pb.open && (
+        {/* 
+        {menu.eb.open && (
+          <MenuItem
+            icon={Assets.Icon.Gnb.ebooks}
+            text="E-BOOK"
+            isActive={pathname.includes(SITE_PATH.NW82.EB)}
+            linkUrl={SITE_PATH.NW82.EB}
+          />
+        )}
+        {menu.pb.open && (
           <MenuItem
             icon={Assets.Icon.Gnb.bookQuiz}
             text="P-BOOK QUIZ"
@@ -182,7 +226,13 @@ export default function GlobalNavBar() {
             <Gap size={10} />
             <MenuItemCalendar
               text="CALENDAR"
-              onClick={() => setCalendarOpen(true)}
+              onClick={() => {
+                maketingEventTracker.eventAction('GNB 탭 클릭', {
+                  version: '8th',
+                  tab_name: 'Calendar',
+                })
+                setCalendarOpen(true)
+              }}
             />
           </DisplayNoneStyle>
         )}
@@ -203,7 +253,7 @@ export default function GlobalNavBar() {
         <CalendarModal onCloseModal={() => setCalendarOpen(false)} />
       )}
       {isLevelTestOpen && (
-        <LevelTestInfoModal onCloseModal={() => setLevelTestOpen(false)} />
+        <LevelTestInfoModal onClose={() => setLevelTestOpen(false)} />
       )}
       {isShowAppUserGuideModal && (
         <AppUserGuideModal
@@ -237,6 +287,8 @@ function MenuItem({
   linkUrl,
   onClick,
 }: MenuItemProps) {
+  const maketingEventTracker = useTrack()
+
   const isGnbBottom = useIsTabletLarge('smaller')
 
   const [dropDownPosition, setDropDownPosition] = useState<
@@ -280,6 +332,10 @@ function MenuItem({
     if (onClick) {
       onClick()
     } else if (linkUrl) {
+      maketingEventTracker.eventAction('GNB 탭 클릭', {
+        version: '8th',
+        tab_name: text,
+      })
       router.push(linkUrl)
     } else if (isDropdown && onDropdownToggle) {
       onDropdownToggle()

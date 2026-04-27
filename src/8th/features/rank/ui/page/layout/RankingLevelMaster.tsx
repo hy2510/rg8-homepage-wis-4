@@ -6,13 +6,21 @@ import RankLevelMasterItem from '@/8th/features/rank/ui/component/RankLevelMaste
 import { useCustomerConfiguration } from '@/8th/shared/context/CustomerContext'
 import { TextStyle } from '@/8th/shared/ui/Misc'
 import Pagenation from '@/8th/shared/ui/Pagenation'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import LevelUtils from '@/util/level-utils'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const RECORD_PER_PAGE = 10
 
 export default function RankingLevelMaster() {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('레벨마스터 랭킹 조회', {
+      version: '8th',
+    })
+  }, [maketingEventTracker])
+
   const { menu } = useCustomerConfiguration()
 
   // @language 'common'

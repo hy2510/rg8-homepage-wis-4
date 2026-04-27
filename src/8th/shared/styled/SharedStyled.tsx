@@ -1065,13 +1065,16 @@ export const MenuItemStyle = styled.div`
   }
 
   .menu-item-text {
+    width: 100%;
     font-size: var(--font-size-medium);
     font-weight: 400;
-    text-align: center;
+    text-align: start;
 
     ${labtopL(`
       // display: none;
+      width: 47px;
       font-size: 0.55em;
+      text-align: center;
     `)}
   }
 

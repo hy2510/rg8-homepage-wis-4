@@ -405,7 +405,7 @@ export function buildCustomerConfiguration(
           movies: { open: studyEBUseYn },
           workbooks: { open: studyEBUseYn },
           themes: { open: studyEBUseYn },
-          series: { open: false }, // { open: studyEBUseYn }, // 현재 시리즈 전체목록은 제공계획이 없으므로 false
+          series: { open: studyEBUseYn },
           schoolSubjects: { open: false }, // { open: studyEBUseYn && target === 'school' }, // 현재 교과연계도서 목록은 개발중 이므로 false
         },
       },
@@ -422,7 +422,7 @@ export function buildCustomerConfiguration(
           open: studyPBUseYn,
           newBooks: { open: studyPBUseYn },
           themes: { open: studyPBUseYn },
-          series: { open: false }, // { open: studyPBUseYn }, // 현재 시리즈 전체목록은 제공계획이 없으므로 false
+          series: { open: studyPBUseYn },
         },
       },
       activity: {
@@ -473,9 +473,9 @@ export function buildCustomerConfiguration(
           avatar: { open: true },
           quizFriends: { open: true },
           listenAndRepeat: {
-            open: true,
-            levelK: { open: true },
-            level1: { open: true },
+            open: false,
+            levelK: { open: false },
+            level1: { open: false },
           },
           quizHelper: {
             open: true,

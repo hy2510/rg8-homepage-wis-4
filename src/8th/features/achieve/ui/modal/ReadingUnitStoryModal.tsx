@@ -8,8 +8,10 @@ import {
 } from '@/8th/shared/styled/SharedStyled'
 import { BoxStyle, StreakLine } from '@/8th/shared/ui/Misc'
 import { ModalContainer } from '@/8th/shared/ui/Modal'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import { useLanguagePackContext } from '@/localization/client/LanguagePackContext'
 import useTranslation from '@/localization/client/useTranslations'
+import { flushSync } from 'react-dom'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import ReadingUnitStoryItem, {
   ReadingUnitStoryPrologue,
@@ -25,6 +27,13 @@ interface ReadingUnitStoryModalProps {
 export default function ReadingUnitStoryModal({
   onClose,
 }: ReadingUnitStoryModalProps) {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('리딩유닛 스토리 화면 진입', {
+      version: '8th',
+    })
+  }, [maketingEventTracker])
+
   // @language 'common'
   const { t } = useTranslation()
   const { language } = useLanguagePackContext()
@@ -35,6 +44,7 @@ export default function ReadingUnitStoryModal({
     return getDodoFriendsStory(language)
   }, [language])
 
+  const currentVideoRef = useRef<HTMLVideoElement | null>(null)
   const currentProgressRef = useRef<HTMLDivElement>(null)
 
   // 전체 캐릭터 중에서 current 스토리 찾기
@@ -93,8 +103,20 @@ export default function ReadingUnitStoryModal({
   const onClickReadingUnitStoryItem = (unitId: string) => {
     if (openedReadingUnitId === unitId) {
       setOpenedReadingUnitId(undefined)
+      currentVideoRef.current = null
     } else {
-      setOpenedReadingUnitId(unitId)
+      flushSync(() => {
+        setOpenedReadingUnitId(unitId)
+      })
+      currentVideoRef.current = document.querySelector(
+        `[data-video-id="${unitId}"]`,
+      ) as HTMLVideoElement
+      setTimeout(() => {
+        if (currentVideoRef.current) {
+          currentVideoRef.current.classList.remove('transparent')
+          currentVideoRef.current.play()
+        }
+      }, 350)
     }
   }
 
@@ -156,9 +178,11 @@ export default function ReadingUnitStoryModal({
                           data-story-id={unitId}
                           ref={isCurrent ? currentProgressRef : null}>
                           <ReadingUnitStoryItem
+                            id={unitId}
                             type={itemType}
                             imgSrc={story.imagePath}
                             imgAniSrc={story.imagePath2}
+                            videoSrc={story.moviePath}
                             earnedTitle={story.title}
                             earnedMessage={story.description}
                             currentPoint={point}

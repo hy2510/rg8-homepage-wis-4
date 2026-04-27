@@ -37,9 +37,10 @@ import { BoxStyle, Gap, TextStyle } from '@/8th/shared/ui/Misc'
 import { SubPageNavHeader } from '@/8th/shared/ui/SubPageNavHeader'
 import { openDownloadLink, openWindow } from '@/8th/shared/utils/open-window'
 import SITE_PATH from '@/app/site-path'
+import { useTrack } from '@/external/marketing-tracker/component/MarketingTrackerContext'
 import useTranslation from '@/localization/client/useTranslations'
 import DateUtils from '@/util/date-utils'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import TodoBookInfoModal from '../modal/TodoBookInfoModal'
 
 export default function TodoList() {
@@ -61,7 +62,7 @@ function TodoListDependency() {
       <SubPageNavHeader
         title={`${t('t8th028')}`}
         iconSrc={Assets.Icon.Side.toDo.src}
-        parentPath={SITE_PATH.NW82.ACTIVITY}
+        parentPath={SITE_PATH.NW82.LIBRARY}
       />
       <BookList />
     </>
@@ -76,6 +77,14 @@ type TodoBookExportType =
   | 'EditDelete'
 
 function BookList() {
+  const maketingEventTracker = useTrack()
+  useEffect(() => {
+    maketingEventTracker.eventAction('도서 섹션 탭 클릭', {
+      version: '8th',
+      section_name: 'To-Do',
+    })
+  }, [maketingEventTracker])
+
   // @Language 'common'
   const { t } = useTranslation()
 

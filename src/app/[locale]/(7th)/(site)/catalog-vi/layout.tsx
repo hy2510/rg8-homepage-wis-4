@@ -8,7 +8,9 @@ export default function Layout({ children }: { children?: React.ReactNode }) {
   const { target, country } = useSiteBlueprint()
   return (
     <>
-      {target.private && country.vietnam && <VnFloatingMenu />}
+      {target.private && country.vietnam && (
+        <VnFloatingMenu targetScreen="vn-catalog" />
+      )}
       {children}
     </>
   )

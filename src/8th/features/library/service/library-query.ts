@@ -3,6 +3,7 @@ import {
   OverrideQueryOptions,
 } from '@/8th/shared/react-query/types'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { historyKeys } from '../../review/service/history-key'
 import { todoKeys } from '../../todo/service/todo-key'
 import { BookDetailInfo, getBookDetailInfo } from '../model/book-info'
 import { getCategoryContinue } from '../model/category-continue'
@@ -113,7 +114,41 @@ export function useAddFavorite(options?: OverrideMutationOptions) {
         ...old,
         bookMarkYn: true,
       }))
-      return { beforeData: bookInfo, todoBeforeData: bookInfos }
+
+      const historyBookInfoQueryKey = historyKeys.bookInfoParent()
+      const historyBookInfoDatas = queryClient.getQueriesData({
+        queryKey: historyBookInfoQueryKey,
+        predicate: (query) => {
+          const key = query.queryKey
+          const queryKeySerial = historyBookInfoQueryKey.join('-')
+          const keySerial = key.join('-')
+          return (
+            Array.isArray(key) &&
+            keySerial.startsWith(queryKeySerial) &&
+            !!key[historyBookInfoQueryKey.length] &&
+            key.length === historyBookInfoQueryKey.length + 1
+          )
+        },
+      })
+      historyBookInfoDatas?.forEach(([queryKey, data]) => {
+        if (
+          !!data &&
+          typeof data === 'object' &&
+          'levelRoundId' in data &&
+          data.levelRoundId === variables.levelRoundId
+        ) {
+          queryClient.setQueryData(queryKey, {
+            ...data,
+            bookMarkYn: true,
+          })
+        }
+      })
+
+      return {
+        beforeData: bookInfo,
+        todoBeforeData: bookInfos,
+        historyBeforeData: historyBookInfoDatas,
+      }
     },
     onSuccess: (data, variables) => {
       const bookInfo = queryClient.getQueryData(
@@ -138,6 +173,36 @@ export function useAddFavorite(options?: OverrideMutationOptions) {
           bookMarkYn: true,
         }),
       )
+
+      const historyBookInfoQueryKey = historyKeys.bookInfoParent()
+      const historyBookInfoDatas = queryClient.getQueriesData({
+        queryKey: historyBookInfoQueryKey,
+        predicate: (query) => {
+          const key = query.queryKey
+          const queryKeySerial = historyBookInfoQueryKey.join('-')
+          const keySerial = key.join('-')
+          return (
+            Array.isArray(key) &&
+            keySerial.startsWith(queryKeySerial) &&
+            !!key[historyBookInfoQueryKey.length] &&
+            key.length === historyBookInfoQueryKey.length + 1
+          )
+        },
+      })
+      historyBookInfoDatas?.forEach(([queryKey, data]) => {
+        if (
+          !!data &&
+          typeof data === 'object' &&
+          'levelRoundId' in data &&
+          data.levelRoundId === variables.levelRoundId
+        ) {
+          queryClient.setQueryData(queryKey, {
+            ...data,
+            bookMarkYn: true,
+          })
+        }
+      })
+
       queryClient.invalidateQueries({
         queryKey: libraryKeys.searchWithType('favorite'),
       })
@@ -150,6 +215,10 @@ export function useAddFavorite(options?: OverrideMutationOptions) {
       )
 
       context?.todoBeforeData?.forEach(([queryKey, data]) => {
+        queryClient.setQueryData(queryKey, data)
+      })
+
+      context?.historyBeforeData?.forEach(([queryKey, data]) => {
         queryClient.setQueryData(queryKey, data)
       })
       options?.onError?.(error, variables)
@@ -185,7 +254,41 @@ export function useDeleteFavorite(options?: OverrideMutationOptions) {
         ...old,
         bookMarkYn: false,
       }))
-      return { beforeData: bookInfo, todoBeforeData: bookInfos }
+
+      const historyBookInfoQueryKey = historyKeys.bookInfoParent()
+      const historyBookInfoDatas = queryClient.getQueriesData({
+        queryKey: historyBookInfoQueryKey,
+        predicate: (query) => {
+          const key = query.queryKey
+          const queryKeySerial = historyBookInfoQueryKey.join('-')
+          const keySerial = key.join('-')
+          return (
+            Array.isArray(key) &&
+            keySerial.startsWith(queryKeySerial) &&
+            !!key[historyBookInfoQueryKey.length] &&
+            key.length === historyBookInfoQueryKey.length + 1
+          )
+        },
+      })
+      historyBookInfoDatas?.forEach(([queryKey, data]) => {
+        if (
+          !!data &&
+          typeof data === 'object' &&
+          'levelRoundId' in data &&
+          data.levelRoundId === variables.levelRoundId
+        ) {
+          queryClient.setQueryData(queryKey, {
+            ...data,
+            bookMarkYn: false,
+          })
+        }
+      })
+
+      return {
+        beforeData: bookInfo,
+        todoBeforeData: bookInfos,
+        historyBeforeData: historyBookInfoDatas,
+      }
     },
     onSuccess: (data, variables) => {
       const bookInfo = queryClient.getQueryData(
@@ -210,6 +313,36 @@ export function useDeleteFavorite(options?: OverrideMutationOptions) {
           bookMarkYn: false,
         }),
       )
+
+      const historyBookInfoQueryKey = historyKeys.bookInfoParent()
+      const historyBookInfoDatas = queryClient.getQueriesData({
+        queryKey: historyBookInfoQueryKey,
+        predicate: (query) => {
+          const key = query.queryKey
+          const queryKeySerial = historyBookInfoQueryKey.join('-')
+          const keySerial = key.join('-')
+          return (
+            Array.isArray(key) &&
+            keySerial.startsWith(queryKeySerial) &&
+            !!key[historyBookInfoQueryKey.length] &&
+            key.length === historyBookInfoQueryKey.length + 1
+          )
+        },
+      })
+      historyBookInfoDatas?.forEach(([queryKey, data]) => {
+        if (
+          !!data &&
+          typeof data === 'object' &&
+          'levelRoundId' in data &&
+          data.levelRoundId === variables.levelRoundId
+        ) {
+          queryClient.setQueryData(queryKey, {
+            ...data,
+            bookMarkYn: false,
+          })
+        }
+      })
+
       queryClient.invalidateQueries({
         queryKey: libraryKeys.searchWithType('favorite'),
       })
@@ -222,6 +355,12 @@ export function useDeleteFavorite(options?: OverrideMutationOptions) {
       )
       context?.todoBeforeData?.forEach(([queryKey, data]) => {
         queryClient.setQueryData(queryKey, data)
+      })
+      context?.historyBeforeData?.forEach(([queryKey, data]) => {
+        queryClient.setQueryData(queryKey, data)
+      })
+      queryClient.invalidateQueries({
+        queryKey: libraryKeys.searchWithType('favorite'),
       })
       options?.onError?.(error, variables)
     },
