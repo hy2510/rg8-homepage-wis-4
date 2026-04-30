@@ -16,6 +16,7 @@ interface StudentProfileCardProps {
   studentName: string
   avatar: string
   level: string
+  levelMasterProgress: number
   rank: number
   book: number
   point: number
@@ -31,6 +32,7 @@ export default function StudentProfileCard({
   studentName,
   avatar,
   level,
+  levelMasterProgress,
   rank,
   book,
   point,
@@ -85,7 +87,8 @@ export default function StudentProfileCard({
               fontSize="0.75em"
               fontColor="lightBlue"
               padding="0 0 0 2px">
-              Lv. {level} {0 < rank && rank < 1000 ? `/ Rank ${rank}` : ''}
+              Lv. {level} ({Math.min(levelMasterProgress, 100)}%){' '}
+              {0 < rank && rank < 1000 ? `/ Rank ${rank}` : ''}
             </TextStyle>
           </BoxStyle>
         </div>

@@ -1,3 +1,4 @@
+import { Assets } from '@/8th/assets/asset-library'
 import { LevelMasterItemStyle } from '@/8th/shared/styled/FeaturesStyled'
 import { BoxStyle, Gap, TextStyle } from '@/8th/shared/ui/Misc'
 import useTranslation from '@/localization/client/useTranslations'
@@ -87,25 +88,32 @@ export default function LevelMasterItem({
         flexDirection="column"
         alignItems="center"
         gap={3}>
-        <TextStyle className="books-read">
-          {isComplete ? `[${t('t8th193')}] ` : ''}
-          {t('t8th194', { num: booksRead })}
-        </TextStyle>
         <TextStyle className="earn-points">
+          {isComplete && (
+            <Image
+              src={Assets.Icon.Study.checkMarkGold}
+              alt=""
+              width={16}
+              height={16}
+            />
+          )}
           {t('t8th195', { num1: earnPoints, num2: totalPoints })}
+        </TextStyle>
+        <TextStyle className="books-read">
+          {t('t8th194', { num: booksRead })}
         </TextStyle>
         {isCertificationAvailable && (
           <>
             <Gap size={4} />
+            <TextStyle className="complete-text" onClick={onClickCertification}>
+              {t('t8th196')}
+            </TextStyle>
             <TextStyle
               fontSize="medium"
               fontFamily="sans"
               fontColor="secondary"
               fontWeight={700}>
               {certificationDate}
-            </TextStyle>
-            <TextStyle className="complete-text" onClick={onClickCertification}>
-              {t('t8th196')}
             </TextStyle>
           </>
         )}

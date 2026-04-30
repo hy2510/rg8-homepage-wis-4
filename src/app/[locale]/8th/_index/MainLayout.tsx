@@ -1,7 +1,10 @@
 'use client'
 
 import { Assets } from '@/8th/assets/asset-library'
-import { useLevelMasters } from '@/8th/features/achieve/service/achieve-query'
+import {
+  useLevelMasters,
+  useLevelPoints,
+} from '@/8th/features/achieve/service/achieve-query'
 import DailyGoalCard from '@/8th/features/achieve/ui/component/DailyGoalCard'
 import ReadingUnitCard from '@/8th/features/achieve/ui/component/ReadingUnitCard'
 import StreakCard from '@/8th/features/achieve/ui/component/StreakCard'
@@ -160,6 +163,7 @@ export default function MainLayout({
     page: 1,
   })
   const latestLevelMaster = useLevelMasters()
+  const levelPoints = useLevelPoints()
 
   const { mutate: changeStudyLevel } = useChangeStudyLearningLevel({
     onSuccess: () => {
@@ -405,6 +409,14 @@ export default function MainLayout({
   const isTodayStudy = continuousStudy.data?.todayStudyYn || false
   const streakDay = continuousStudy.data?.continuous || 0
   const streakDay6th = continuousStudy.data?.continuous6th || 0
+  const studyLevelName = dailyLearning.data?.settingLevelName || 'PK'
+  const studyLevelPoint = levelPoints.data?.list.find(
+    (level) => level.levelName === studyLevelName,
+  )
+  const levelMasterProgress = NumberUtils.getHundredPercentage(
+    studyLevelPoint?.myRgPoint || 0,
+    studyLevelPoint?.requiredRgPoint || 0,
+  )
   const dailyType = (dailyLearning.data?.settingType || 'Points') as
     | 'Points'
     | 'Books'
@@ -604,7 +616,8 @@ export default function MainLayout({
               <StudentProfileCard
                 studentName={student.data?.student?.name || ''}
                 avatar={myAvatar?.imageCircle || ''}
-                level={dailyLearning.data?.settingLevelName || 'PK'}
+                level={studyLevelName}
+                levelMasterProgress={levelMasterProgress}
                 rank={myRank}
                 book={student.data?.student?.brCount || 0}
                 point={NumberUtils.toRgDecimalPoint(

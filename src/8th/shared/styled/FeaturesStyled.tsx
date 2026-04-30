@@ -304,14 +304,23 @@ export const LevelMasterItemStyle = styled.div`
     font-family: var(--font-family-secondary);
     font-size: var(--font-size-medium);
     font-weight: bold;
-    color: var(--font-color-primary);
+    color: var(--font-color-secondary);
   }
 
   .earn-points {
     font-family: var(--font-family-secondary);
     font-size: var(--font-size-medium);
     font-weight: bold;
-    color: var(--font-color-secondary);
+    color: var(--font-color-primary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    img {
+      display: block;
+      width: 16px;
+      height: 16px;
+    }
   }
 
   .complete-text {
